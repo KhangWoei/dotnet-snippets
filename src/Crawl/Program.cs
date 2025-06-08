@@ -14,7 +14,7 @@ public class Program
 
         // Dependency injection 
         var services = new ServiceCollection();
-        services.AddTransient<WebCrawler>();
+        services.UserCrawler();
 
         var provider = services.BuildServiceProvider();
 
