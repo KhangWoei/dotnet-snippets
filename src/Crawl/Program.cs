@@ -10,7 +10,10 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var seed = new Option<string>(name: "--seed", description: "Website to start crawling from.");
+        var seed = new Option<string>(name: "--seed", description: "Website to start crawling from.")
+        {
+            IsRequired = true
+        };
 
         // Dependency injection 
         var services = new ServiceCollection();
