@@ -1,4 +1,6 @@
-﻿namespace Crawler;
+﻿using HtmlAgilityPack;
+
+namespace Crawler;
 
 public class WebCrawler
 {
@@ -10,9 +12,12 @@ public class WebCrawler
         var uri = new Uri(seed);
         var html = await client.GetStringAsync(uri, cancellationToken);
 
-        Console.WriteLine($"""
-                            Website: {seed}
-                            Content: {html}
-                           """);
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        foreach(var link in doc.DocumentNode.SelectNodes("//a[@href]"))
+        {
+            var attribute = link.Attributes["href"];
+            Console.WriteLine(attribute.Value);
+        }
     }
 }

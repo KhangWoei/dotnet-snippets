@@ -15,7 +15,6 @@ public class Program
             IsRequired = true
         };
 
-        // Dependency injection 
         var services = new ServiceCollection();
         services.UserCrawler();
 
