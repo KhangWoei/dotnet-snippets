@@ -12,13 +12,14 @@ public class WebCrawler
         var uri = new Uri(seed);
 
         var baseUri = new Uri(uri.GetLeftPart(UriPartial.Authority));
-        var robotsUri = new Uri(baseUri, "/robots.txt");
-        var robotsContent = await client.GetStringAsync(robotsUri, cancellationToken);
-    
-        Console.WriteLine(robots);
+
+        var disallowedSites = await Robots.GetDisallowedSites(uri, cancellationToken);
+        foreach (var site in disallowedSites)
+        {
+            Console.WriteLine(site);
+        }
             
         var html = await client.GetStringAsync(uri, cancellationToken);
-        
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
         foreach(var link in doc.DocumentNode.SelectNodes("//a[@href]"))
