@@ -12,7 +12,7 @@ flowchart TD
         InvokeCrawlerLibrary-->Library
 
         InvokeCrawlerLibrary-->SeedFlag
-        SeedFlag(("Seeds"))
+        SeedFlag(("Seeds - done"))
 
         InvokeCrawlerLibrary-->DepthFlag
         DepthFlag(("Depth"))
@@ -53,6 +53,9 @@ flowchart TD
 
     Library-->PolitenessPolicy
     PolitenessPolicy(("Politeness policy"))
+    
+        PolitenesPolicy-->ParseRobots
+        ParseRobots(("Parse robots"))
 
   SelectionPolicy-->FrontierAPI
   PolitenessPolicy-->FrontierAPI
