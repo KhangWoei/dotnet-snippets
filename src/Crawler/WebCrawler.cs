@@ -10,8 +10,15 @@ public class WebCrawler
 
         var client = new HttpClient();
         var uri = new Uri(seed);
-        var html = await client.GetStringAsync(uri, cancellationToken);
 
+        var baseUri = new Uri(uri.GetLeftPart(UriPartial.Authority));
+        var robotsUri = new Uri(baseUri, "/robots.txt");
+        var robotsContent = await client.GetStringAsync(robotsUri, cancellationToken);
+    
+        Console.WriteLine(robots);
+            
+        var html = await client.GetStringAsync(uri, cancellationToken);
+        
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
         foreach(var link in doc.DocumentNode.SelectNodes("//a[@href]"))
