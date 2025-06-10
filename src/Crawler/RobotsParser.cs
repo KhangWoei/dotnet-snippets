@@ -6,7 +6,6 @@ internal static class RobotsParser
 {   
     public static async IAsyncEnumerable<string> ParseAsync(Stream stream, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var websites = new HashSet<string>();
         using var reader = new StreamReader(stream);
         string line;
 
