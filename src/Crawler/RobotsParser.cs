@@ -6,62 +6,82 @@ namespace Crawler;
 
 internal static class RobotsParser
 {
-    private static readonly Regex _userAgentPattern = new Regex(@"^User agent: (?<agent>\*)$");
     private static readonly Regex _disallowPattern = new Regex(@"^disallow:(?<value>.+)$", RegexOptions.IgnoreCase);
 
 
     public static async IAsyncEnumerable<string> ParseAsync(Stream stream, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var userAgent = string.Empty;
         using var reader = new StreamReader(stream);
         string line;
 
+        var isWildCard = false;
         while ((line = await reader.ReadLineAsync()) is not null)
         {
-            var agentMatch = _userAgentPattern.Match(line);
-            if (_userAgentPattern.Match(line).Success)
+            if (string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith('#'))
             {
-                userAgent = agentMatch.Groups["agent"].Value.Trim();
+                continue;
             }
 
-            if (TryParseLine(line, out var output))
+            if (line.StartsWith("user-agent:", StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return output;
+                isWildCard = ProcessKeyValue(line, "user-agent") == "*";
+                continue;
+            }
+
+            if (isWildCard)
+            {
+                var value = ProcessKeyValue(line, "disallow:");
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    yield return value;
+                }
             }
         }
     }
 
     public static IEnumerable<string> Parse(string content)
     {
-        var userAgent = string.Empty;
-        var lines = content.Split(Environment.NewLine);
+        var lines = content.Split(Environment.NewLine, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
+        var isWildCard = false;
         foreach (var line in lines)
         {
-            var agentMatch = _userAgentPattern.Match(line);
-            if (_userAgentPattern.Match(line).Success)
+            if (string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith('#'))
             {
-                userAgent = agentMatch.Groups["agent"].Value.Trim();
+                continue;
             }
 
-            if (userAgent == "*" && TryParseLine(line, out var output))
+            if (line.StartsWith("user-agent:", StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return output;
+                isWildCard = ProcessKeyValue(line, "user-agent") == "*";
+                continue;
+            }
+
+            if (isWildCard)
+            {
+                var value = ProcessKeyValue(line, "disallow:");
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    yield return value;
+                }
             }
         }
     }
 
-    private static bool TryParseLine(string line, [MaybeNullWhen(false)] out string output)
+    private static string ProcessKeyValue(string line, string prefix)
     {
-        output = null;
-
-        var match = _disallowPattern.Match(line);
-        if (match.Success)
+        if (line.StartsWith(prefix, StringComparison.InvariantCultureIgnoreCase))
         {
-            output = match.Groups["value"].Value.Trim();
-            return true;
+            var parts = line.Split(":", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length == 2)
+            {
+                return parts[1];
+            }
         }
 
-        return false;
+        return string.Empty;
     }
 }

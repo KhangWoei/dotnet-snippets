@@ -39,9 +39,13 @@ public class RobotsParserTests
                      User agent: some bot
 
                      Disallow: test
+
+                     User agent: *
+                     
+                     Disallow: included
                      """;
 
-        var expected = Array.Empty<string>();
+        var expected = new string[] { "included" };
 
         var actual = RobotsParser.Parse(robots).ToArray();
 
