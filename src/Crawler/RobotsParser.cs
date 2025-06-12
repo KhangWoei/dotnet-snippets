@@ -1,13 +1,9 @@
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 
 namespace Crawler;
 
 internal static class RobotsParser
 {
-    private static readonly Regex _disallowPattern = new Regex(@"^disallow:(?<value>.+)$", RegexOptions.IgnoreCase);
-
-
     public static async IAsyncEnumerable<string> ParseAsync(Stream stream, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         using var reader = new StreamReader(stream);
