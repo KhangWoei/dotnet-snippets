@@ -11,8 +11,6 @@ public class WebCrawler
         var client = new HttpClient();
         var uri = new Uri(seed);
 
-        var baseUri = new Uri(uri.GetLeftPart(UriPartial.Authority));
-
         var disallowedSites = await Robots.GetDisallowedSites(uri, cancellationToken);
         foreach (var site in disallowedSites)
         {
