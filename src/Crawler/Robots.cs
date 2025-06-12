@@ -8,10 +8,10 @@ internal static class Robots
         var robotsUri = new Uri(baseUri, "/robots.txt");
         
         var client = new HttpClient();
-        using var robotStream = await client.GetStreamAsync(robotsUri, cancellationToken);
+        var robots = await client.GetStringAsync(robotsUri, cancellationToken);
         var disallowed = new HashSet<Uri>();
 
-        await foreach (var endpoint in RobotsParser.ParseAsync(robotStream, cancellationToken))
+        foreach (var endpoint in RobotsParser.Parse(robots))
         {
             var disallowedUri = new Uri(baseUri, endpoint);
             
