@@ -1,5 +1,6 @@
 ﻿namespace Crawler.Tests;
 
+[TestFixture]
 public class RobotsParserTests
 {
     [Test]
