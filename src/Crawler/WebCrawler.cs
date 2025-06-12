@@ -1,6 +1,4 @@
-﻿using HtmlAgilityPack;
-
-namespace Crawler;
+﻿namespace Crawler;
 
 public class WebCrawler
 {
@@ -11,19 +9,12 @@ public class WebCrawler
         var client = new HttpClient();
         var uri = new Uri(seed);
 
-        var disallowedSites = await Robots.GetDisallowedSites(uri, cancellationToken);
-        foreach (var site in disallowedSites)
-        {
-            Console.WriteLine(site);
-        }
-            
         var html = await client.GetStringAsync(uri, cancellationToken);
-        var doc = new HtmlDocument();
-        doc.LoadHtml(html);
-        foreach(var link in doc.DocumentNode.SelectNodes("//a[@href]"))
+        var links = LinkHarvester.Harvest(uri, html);
+
+        foreach(var link in links)
         {
-            var attribute = link.Attributes["href"];
-            Console.WriteLine(attribute.Value);
+            Console.WriteLine(link);
         }
     }
 }
