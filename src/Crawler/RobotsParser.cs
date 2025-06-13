@@ -2,11 +2,14 @@ namespace Crawler;
 
 internal static class RobotsParser
 {
-    public static IEnumerable<string> Parse(string content)
+    public static Robot Parse(Uri baseUri, string content)
     {
         var lines = content.Split(Environment.NewLine, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
+        
+        var disallowed = new HashSet<Uri>();
         var isWildCard = false;
+        var delay = 0;
+        
         foreach (var line in lines)
         {
             if (string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith('#'))
@@ -19,17 +22,28 @@ internal static class RobotsParser
                 isWildCard = ProcessKeyValue(line, "user-agent:") == "*";
                 continue;
             }
-
+            
             if (isWildCard)
             {
-                var value = ProcessKeyValue(line, "disallow:");
-
-                if (!string.IsNullOrWhiteSpace(value))
+                if (line.StartsWith("crawl-delay:", StringComparison.InvariantCultureIgnoreCase) )
                 {
-                    yield return value;
+                    delay = int.Parse(ProcessKeyValue(line, "crawl-delay:"));
+                    continue;
+                }
+                
+                var disallowedSite = ProcessKeyValue(line, "disallow:");
+                
+                if (!string.IsNullOrWhiteSpace(disallowedSite))
+                {
+                    if (baseUri.TryCreateRelativeOrAbsolute(disallowedSite, out var output))
+                    {
+                        disallowed.Add(output);
+                    }
                 }
             }
         }
+        
+        return new Robot(disallowed, delay);
     }
 
     private static string ProcessKeyValue(string line, string prefix)

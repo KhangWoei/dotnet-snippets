@@ -3,40 +3,45 @@
 [TestFixture]
 public class RobotsParserTests
 {
+    // TODO: I can probably test case this instead.
     [Test]
     public void DisallowListForAllBots_Parsed()
     {
+        var baseUri = new Uri("https://www.contoso.com");
         var robots = """
                      User-agent: *
                      
-                     Disallow: test 
+                     Disallow: /test 
                      """;
 
-        var expected = new string[] { "test" };
+        var expected = new[] { new Uri("https://www.contoso.com/test") };
 
-        var actual = RobotsParser.Parse(robots).ToArray();
+        var actual = RobotsParser.Parse(baseUri, robots);
 
-        Assert.That(actual, Is.EquivalentTo(expected));
+        Assert.That(actual.Disallowed, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void Comments_Ignored()
     {
+        var baseUri = new Uri("https://www.contoso.com");
         var robots = """
                      User-agent: *
                      #Disallow: test
                      """;
 
-        var expected = Array.Empty<string>();
+        var expected = Array.Empty<Uri>();
 
-        var actual = RobotsParser.Parse(robots).ToArray();
+        var actual = RobotsParser.Parse(baseUri, robots);
 
-        Assert.That(actual, Is.EquivalentTo(expected));
+        Assert.That(actual.Disallowed, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void DisallowListForSpecificBots_Ignored()
     {
+        
+        var baseUri = new Uri("https://www.contoso.com");
         var robots = """
                      User-agent: some bot
 
@@ -44,14 +49,14 @@ public class RobotsParserTests
 
                      User-agent: *
                      
-                     Disallow: included
+                     Disallow: /included
                      """;
 
-        var expected = new string[] { "included" };
+        var expected = new[] { new Uri("https://www.contoso.com/included") };
 
-        var actual = RobotsParser.Parse(robots).ToArray();
+        var actual = RobotsParser.Parse(baseUri, robots);
 
-        Assert.That(actual, Is.EquivalentTo(expected));
+        Assert.That(actual.Disallowed, Is.EquivalentTo(expected));
     }
 }
 
