@@ -1,6 +1,6 @@
 namespace Crawler;
 
-internal static class Robots
+internal static class RobotsHandler
 {
     public static async Task<Robot> GetDisallowedSites(Uri uri, CancellationToken cancellationToken)
     {
