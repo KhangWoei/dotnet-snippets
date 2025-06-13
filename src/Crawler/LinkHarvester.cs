@@ -19,16 +19,10 @@ internal static class LinkHarvester
         {
             var attribute = link.Attributes["href"];
             var value = attribute.Value;
-
-            if (Uri.IsWellFormedUriString(value, UriKind.Absolute))
+            
+            if (baseUri.TryCreateRelativeOrAbsolute(value, out var output))
             {
-                yield return new Uri(value, UriKind.Absolute);
-            }
-
-            if (Uri.IsWellFormedUriString(value, UriKind.Relative))
-            {
-                var relative = new Uri(value, UriKind.Relative);
-                yield return new Uri(baseUri, relative);
+                yield return output;
             }
         }
     }
