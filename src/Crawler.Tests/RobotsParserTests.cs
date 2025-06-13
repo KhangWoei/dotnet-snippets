@@ -20,6 +20,24 @@ public class RobotsParserTests
 
         Assert.That(actual.Disallowed, Is.EquivalentTo(expected));
     }
+    
+    [Test]
+    public void CrawlDelay_Parsed()
+    {
+        
+        var baseUri = new Uri("https://www.contoso.com");
+        var robots = """
+                     User-agent: *
+            
+                     Crawl-delay: 30
+                     """;
+
+        var expected = 30;
+
+        var actual = RobotsParser.Parse(baseUri, robots);
+
+        Assert.That(actual.Delay, Is.EqualTo(expected));
+    }
 
     [Test]
     public void Comments_Ignored()
