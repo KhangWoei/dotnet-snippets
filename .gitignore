@@ -15,3 +15,6 @@ publish/
 
 # NuGet
 packages/
+
+# Rider
+.idea
