@@ -23,10 +23,10 @@ public class Program
         var rootCommand = new RootCommand("Web crawler.");
         rootCommand.AddOption(seed);
 
-        rootCommand.SetHandler(async (seed) =>
+        rootCommand.SetHandler(async s =>
         {
             var crawler = provider.GetRequiredService<WebCrawler>();
-            await crawler.Crawl(seed);
+            await crawler.Crawl(s);
         }, seed);
 
         var builder = new CommandLineBuilder(rootCommand)

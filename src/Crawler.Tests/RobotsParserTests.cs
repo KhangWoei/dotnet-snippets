@@ -7,7 +7,7 @@ public class RobotsParserTests
     public void DisallowListForAllBots_Parsed()
     {
         var robots = """
-                     User agent: *
+                     User-agent: *
                      
                      Disallow: test 
                      """;
@@ -23,6 +23,7 @@ public class RobotsParserTests
     public void Comments_Ignored()
     {
         var robots = """
+                     User-agent: *
                      #Disallow: test
                      """;
 
@@ -37,11 +38,11 @@ public class RobotsParserTests
     public void DisallowListForSpecificBots_Ignored()
     {
         var robots = """
-                     User agent: some bot
+                     User-agent: some bot
 
                      Disallow: test
 
-                     User agent: *
+                     User-agent: *
                      
                      Disallow: included
                      """;

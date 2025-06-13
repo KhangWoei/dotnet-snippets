@@ -16,7 +16,7 @@ internal static class RobotsParser
 
             if (line.StartsWith("user-agent:", StringComparison.InvariantCultureIgnoreCase))
             {
-                isWildCard = ProcessKeyValue(line, "user-agent") == "*";
+                isWildCard = ProcessKeyValue(line, "user-agent:") == "*";
                 continue;
             }
 
