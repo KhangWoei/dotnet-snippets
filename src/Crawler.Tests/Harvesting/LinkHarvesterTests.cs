@@ -1,3 +1,5 @@
+using Crawler.Harvesting;
+
 namespace Crawler.Tests;
 
 [TestFixture]

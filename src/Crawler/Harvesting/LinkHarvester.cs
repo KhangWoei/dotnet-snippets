@@ -1,6 +1,6 @@
 using HtmlAgilityPack;
 
-namespace Crawler;
+namespace Crawler.Harvesting;
 
 internal static class LinkHarvester
 {
