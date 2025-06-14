@@ -1,4 +1,4 @@
-namespace Crawler;
+namespace Crawler.Robots;
 
 internal static class RobotsHandler
 {
@@ -9,7 +9,7 @@ internal static class RobotsHandler
         
         var client = new HttpClient();
         var robots = await client.GetStringAsync(robotsUri, cancellationToken);
-
+    
         return RobotsParser.Parse(baseUri, robots);
     }
 }

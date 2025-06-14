@@ -1,4 +1,6 @@
-﻿namespace Crawler.Tests;
+﻿using Crawler.Robots;
+
+namespace Crawler.Tests.Robots;
 
 [TestFixture]
 public class RobotsParserTests
@@ -15,7 +17,7 @@ public class RobotsParserTests
                      """;
 
         var expected = new[] { new Uri("https://www.contoso.com/test") };
-
+        
         var actual = RobotsParser.Parse(baseUri, robots);
 
         Assert.That(actual.Disallowed, Is.EquivalentTo(expected));

@@ -1,4 +1,6 @@
-﻿namespace Crawler;
+﻿using Crawler.Robots;
+
+namespace Crawler;
 
 public class WebCrawler
 {

@@ -1,4 +1,4 @@
-﻿namespace Crawler;
+﻿namespace Crawler.Robots;
 
 internal sealed class Robot (HashSet<Uri> disallowed, int delay)
 {
