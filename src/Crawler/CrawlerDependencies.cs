@@ -1,3 +1,4 @@
+using Crawler.LinkVisiting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawler;
