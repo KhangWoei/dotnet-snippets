@@ -3,7 +3,7 @@ using Crawler.Robots;
 
 namespace Crawler;
 
-public class WebCrawler
+public class WebCrawler(ILinkVisitor linkVisitor)
 {
     private const int MaxDepth = 1;
 
@@ -27,7 +27,7 @@ public class WebCrawler
                 var current = visitQueue.Dequeue();
                 seen.Add(current);
 
-                var html = await LinkVisitor.VisitAsync(current, cancellationToken);
+                var html = await linkVisitor.VisitAsync(current, cancellationToken);
                 if (!string.IsNullOrEmpty(html))
                 {
                     foreach (var links in LinkHarvester.Harvest(uri, html))

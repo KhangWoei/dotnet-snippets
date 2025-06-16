@@ -6,6 +6,10 @@ public static class CrawlerDependencies
 {
     public static void UserCrawler(this IServiceCollection services)
     {
-        services.AddTransient<WebCrawler>();
+        services.AddTransient<WebCrawler>(provider => 
+                new WebCrawler(provider.GetRequiredService<ILinkVisitor>()));
+
+        services.AddTransient<HttpClient>();
+        services.AddTransient<ILinkVisitor, LinkVisitor>();
     }
 }
