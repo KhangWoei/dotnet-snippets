@@ -1,5 +1,6 @@
 using Crawler.LinkVisiting;
-using NSubstitute;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace Crawler.Tests;
 
@@ -20,12 +21,12 @@ public sealed class LinkVisitingTests
 
     private ILinkVisitor CreateLinkVisitor(string html, bool isHtml)
     {
-        var response = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
             Content = new StringContent(html),
         };
 
-        response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/html");
+        response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
 
         return new LinkVisitor(new HttpClient(new FakeMessageHandler(response)));
     }
