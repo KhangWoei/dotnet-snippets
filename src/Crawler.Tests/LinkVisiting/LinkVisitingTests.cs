@@ -8,7 +8,7 @@ public sealed class LinkVisitingTests
 {
     [TestCase("some html", true)]
     [TestCase("", false)]
-    public Task WhenMediaTypeIsHtml_GetsHtml(string expected, bool isHtml)
+    public async Task WhenMediaTypeIsHtml_GetsHtml(string expected, bool isHtml)
     {
         var visitor = CreateLinkVisitor(expected, isHtml);
 
@@ -20,11 +20,21 @@ public sealed class LinkVisitingTests
 
     private ILinkVisitor CreateLinkVisitor(string html, bool isHtml)
     {
-        var httpClient = Substitute.For<HttpClient>();
-        var response = new HttpResponseMessage();
+        var response = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+        {
+            Content = new StringContent(html),
+        };
 
-        httpClient.GetAsync(Arg.Any<Uri>(), Arg.Any<CancellationToken>());
+        response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/html");
 
-        return new LinkVisitor(httpClient);
+        return new LinkVisitor(new HttpClient(new FakeMessageHandler(response)));
+    }
+
+    private class FakeMessageHandler(HttpResponseMessage response) : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(response);
+        }
     }
 }
