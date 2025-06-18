@@ -29,10 +29,14 @@ public class WebCrawler(ILinkVisitor linkVisitor)
                     foreach (var link in LinkHarvester.Harvest(html))
                     {
                         // TODO - handle links that are not relative to the current source
-                        if (!source.Seen.Contains(link) && !source.Robot.Disallowed.Contains(link) && source.Base.IsBaseOf(link))
+                        if (source.Base.IsBaseOf(link))
                         {
-                            visitQueue.Enqueue(link);
+                            if (source.CanVisit(link))
+                            {
+                                visitQueue.Enqueue(link);
+                            }
                         }
+                        
                     }
 
                 }
