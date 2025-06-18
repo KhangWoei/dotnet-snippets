@@ -28,11 +28,11 @@ public class WebCrawler(ILinkVisitor linkVisitor)
                 var html = await linkVisitor.VisitAsync(current, cancellationToken);
                 if (!string.IsNullOrEmpty(html))
                 {
-                    foreach (var links in LinkHarvester.Harvest(source.Base, html))
+                    foreach (var link in LinkHarvester.Harvest(html))
                     {
-                        if (!source.Seen.Contains(links) && !source.Robot.Disallowed.Contains(links))
+                        if (!source.Seen.Contains(link) && !source.Robot.Disallowed.Contains(link) && source.Base.IsBaseOf(link))
                         {
-                            visitQueue.Enqueue(links);
+                            visitQueue.Enqueue(link);
                         }
                     }
 

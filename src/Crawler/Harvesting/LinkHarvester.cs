@@ -4,7 +4,7 @@ namespace Crawler.Harvesting;
 
 internal static class LinkHarvester
 {
-    public static IEnumerable<Uri> Harvest(Uri baseUri, string html)
+    public static IEnumerable<Uri> Harvest(string html)
     {
         var document = new HtmlDocument();
         document.LoadHtml(html);
@@ -19,10 +19,10 @@ internal static class LinkHarvester
         {
             var attribute = link.Attributes["href"];
             var value = attribute.Value;
-            
-            if (baseUri.TryCreateRelativeOrAbsolute(value, out var output))
+
+            if (Uri.TryCreate(value, UriKind.Absolute, out var uri))
             {
-                yield return output;
+                yield return uri;
             }
         }
     }
