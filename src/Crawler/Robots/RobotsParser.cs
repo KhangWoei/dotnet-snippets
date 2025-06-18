@@ -8,7 +8,7 @@ internal static class RobotsParser
         
         var disallowed = new HashSet<Uri>();
         var isWildCard = false;
-        var delay = 0;
+        int? delay = null;
         
         foreach (var line in lines)
         {

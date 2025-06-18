@@ -38,7 +38,7 @@ public class RobotsParserTests
 
         var actual = RobotsParser.Parse(baseUri, robots);
 
-        Assert.That(actual.Delay, Is.EqualTo(expected));
+        Assert.That(actual.DelayMs, Is.EqualTo(expected));
     }
 
     [Test]

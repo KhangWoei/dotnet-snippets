@@ -41,7 +41,7 @@ public class WebCrawler(ILinkVisitor linkVisitor)
 
                 }
 
-                Thread.Sleep(300);
+                Thread.Sleep(robot.DelayMs);
             }
 
             if (depth == MaxDepth)
