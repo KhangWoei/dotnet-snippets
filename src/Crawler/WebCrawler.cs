@@ -36,6 +36,7 @@ public class WebCrawler(ILinkVisitor linkVisitor)
                                 visitQueue.Enqueue(link);
                             }
                         }
+                        // else send a new seed or base uri request and have the orchestration service handle it
                         
                     }
 
