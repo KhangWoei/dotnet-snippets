@@ -37,9 +37,7 @@ public class WebCrawler(ILinkVisitor linkVisitor)
                             }
                         }
                         // else send a new seed or base uri request and have the orchestration service handle it
-                        
                     }
-
                 }
 
                 Thread.Sleep(source.Robot.DelayMs);

@@ -30,5 +30,4 @@ internal sealed class CrawlSource
     public HashSet<Uri> Seen { get; init; }
     
     public bool CanVisit(Uri uri) => !Seen.Contains(uri) && !Robot.Disallowed.Contains(uri);
-
 }
