@@ -15,6 +15,7 @@ internal sealed class CrawlSource
     
     public Robot Robot { get; init; }
     
+    // TODO -  Kinda want to use a trie tree, would make it easier to reconstruct the output or map of the site it just crawled
     public HashSet<Uri> Seen { get; init; }
 
     public static async Task<CrawlSource> Create(string seed, CancellationToken cancellationToken)
