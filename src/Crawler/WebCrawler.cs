@@ -6,17 +6,15 @@ namespace Crawler;
 
 public class WebCrawler(ILinkVisitor linkVisitor)
 {
-    private const int MaxDepth = 1;
-
-    public async Task Crawl(string seed, CancellationToken cancellationToken = default)
+    public async Task Crawl(string seed, int depth, CancellationToken cancellationToken = default)
     {
-        var source = await CrawlSource.Create(seed, cancellationToken);
+        var source = await CrawlSource.Create(seed, depth, cancellationToken);
 
         var visitQueue = new Queue<Uri>();
         visitQueue.Enqueue(source.Base);
         
-        var depth = 0;
-        while (visitQueue.Count > 0)
+        var currentDepth = 0;
+        while (visitQueue.Count > 0 && currentDepth < source.Depth)
         {
             var width = visitQueue.Count;
 
@@ -41,13 +39,8 @@ public class WebCrawler(ILinkVisitor linkVisitor)
 
                 Thread.Sleep(source.Robot.DelayMs);
             }
-
-            if (depth == MaxDepth)
-            {
-                break;
-            }
-
-            depth++;
+            
+            currentDepth++;
         }
     }
 }

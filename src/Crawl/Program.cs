@@ -10,10 +10,17 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var seed = new Option<string>(name: "--seed", description: "Website to start crawling from.")
+        var seedOption = new Option<string>(name: "--seed", description: "Website to start crawling from.")
         {
             IsRequired = true
         };
+
+        var depthOption = new Option<int>(name: "--depth", description: "Depth of the crawled site.")
+        {
+            IsRequired = false
+        };
+        
+        depthOption.SetDefaultValue(3);
 
         var services = new ServiceCollection();
         services.UserCrawler();
@@ -21,13 +28,17 @@ public class Program
         var provider = services.BuildServiceProvider();
 
         var rootCommand = new RootCommand("Web crawler.");
-        rootCommand.AddOption(seed);
+        rootCommand.AddOption(seedOption);
+        rootCommand.AddOption(depthOption);
 
-        rootCommand.SetHandler(async s =>
+        rootCommand.SetHandler(async context =>
         {
             var crawler = provider.GetRequiredService<WebCrawler>();
-            await crawler.Crawl(s);
-        }, seed);
+            var seed = context.ParseResult.GetValueForOption(seedOption)!;
+            var depth = context.ParseResult.GetValueForOption(depthOption);
+            
+            await crawler.Crawl(seed, depth, context.GetCancellationToken());
+        });
 
         var builder = new CommandLineBuilder(rootCommand)
             .UseHelp()
