@@ -10,14 +10,11 @@ public class WebCrawler(ILinkVisitor linkVisitor)
 
     public async Task Crawl(string seed, CancellationToken cancellationToken = default)
     {
-        var uri = new Uri(seed);
-
-        var robot = await RobotsHandler.GetDisallowedSites(uri, cancellationToken);
+        var source = await CrawlSource.Create(seed, cancellationToken);
 
         var visitQueue = new Queue<Uri>();
-        visitQueue.Enqueue(uri);
-
-        var seen = new HashSet<Uri>();
+        visitQueue.Enqueue(source.Base);
+        
         var depth = 0;
         while (visitQueue.Count > 0)
         {
@@ -26,14 +23,14 @@ public class WebCrawler(ILinkVisitor linkVisitor)
             for (var i = 0; i < width; i++)
             {
                 var current = visitQueue.Dequeue();
-                seen.Add(current);
+                source.Seen.Add(current);
 
                 var html = await linkVisitor.VisitAsync(current, cancellationToken);
                 if (!string.IsNullOrEmpty(html))
                 {
-                    foreach (var links in LinkHarvester.Harvest(uri, html))
+                    foreach (var links in LinkHarvester.Harvest(source.Base, html))
                     {
-                        if (!seen.Contains(links) && !robot.Disallowed.Contains(links))
+                        if (!source.Seen.Contains(links) && !source.Robot.Disallowed.Contains(links))
                         {
                             visitQueue.Enqueue(links);
                         }
@@ -41,7 +38,7 @@ public class WebCrawler(ILinkVisitor linkVisitor)
 
                 }
 
-                Thread.Sleep(robot.DelayMs);
+                Thread.Sleep(source.Robot.DelayMs);
             }
 
             if (depth == MaxDepth)
