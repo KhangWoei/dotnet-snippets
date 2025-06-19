@@ -29,6 +29,9 @@ E.g. :
     ▼                       │            
 /cat.jpg          /file.txt◄┴► /file2.txt
 ```
+## Radix or Compressed Trees
+Basically an optimized tree where any node with one children will just be combined. So only create children if there are more than one children available.
+
 ## Pseudo code
 
 ```
