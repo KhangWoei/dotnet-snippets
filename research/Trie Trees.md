@@ -10,8 +10,6 @@ E.g. :
         - `/home/user/documents/file.txt`
         - `/home/user/documents/file2.txt`
         - `/home/user/pictures/cat.jpg`
-
-    Tree:
 ```
                /                         
                │                         
