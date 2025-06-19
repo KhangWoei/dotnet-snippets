@@ -29,5 +29,10 @@ E.g. :
     ▼                       │            
 /cat.jpg          /file.txt◄┴► /file2.txt
 ```
+## Pseudo code
 
-
+```
+class TrieNode
+    Dictionary<key: URL segment, value: Trie Node>() Children;
+    boolean IsTerminal;
+```
