@@ -23,7 +23,7 @@ internal sealed class Tree
 
     public bool TryInsert(Uri value)
     {
-        if (value.GetLeftPart(UriPartial.Authority) != _baseUri)
+        if (!IsBaseOf(value))
         {
             return false;
         }
@@ -52,4 +52,8 @@ internal sealed class Tree
         throw new NotImplementedException();
     }
     
+    private bool IsBaseOf(Uri value)
+    {
+        return value.GetLeftPart(UriPartial.Authority) == _baseUri;
+    }
 }
