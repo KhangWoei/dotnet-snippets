@@ -61,13 +61,14 @@ internal sealed class Tree
         {
             if (!current.Children.TryGetValue(part, out var child))
             {
+                current = null;
                 break;
             }
 
             current = child;
         }
         
-        return current.IsTerminal;
+        return current?.IsTerminal ?? false;
     }
     
     private bool IsBaseOf(Uri value)
