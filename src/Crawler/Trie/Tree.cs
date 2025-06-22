@@ -29,7 +29,7 @@ internal sealed class Tree
         }
 
         var current = _root;
-        var parts = value.AbsolutePath.Split('/');
+        var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries);
 
         foreach (var part in parts)
         {
@@ -55,7 +55,7 @@ internal sealed class Tree
         }
         
         var current = _root;
-        var parts = value.AbsolutePath.Split('/');
+        var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries);
 
         foreach (var part in parts)
         {
