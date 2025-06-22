@@ -1,21 +1,21 @@
-namespace Crawler.Trie;
+namespace Crawler.TrieTree;
 
-internal sealed class Tree
+internal sealed class Trie
 {
     private readonly Node _root;
     private readonly string _baseUri;
 
-    private Tree(string baseUri)
+    private Trie(string baseUri)
     {
         _baseUri = baseUri;
-        _root = new Node();
+        _root = new();
     }
 
-    public static Tree Create(Uri uri)
+    public static Trie Create(Uri uri)
     {
         var baseUri = uri.GetLeftPart(UriPartial.Authority);
 
-        var tree = new Tree(baseUri);
+        var tree = new Trie(baseUri);
         tree.TryInsert(uri);
 
         return tree;

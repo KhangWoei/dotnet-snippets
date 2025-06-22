@@ -1,15 +1,13 @@
-﻿using Crawler.Trie;
-
-namespace Crawler.Tests.Trie;
+﻿namespace Crawler.Tests.Trie;
 
 [TestFixture]
-public sealed class TreeTests
+public sealed class TrieTests
 {
     [Test]
     public void TryInsert_WhenBaseUriIsIncompatible_ReturnsFalse()
     {
         var uri = new Uri("http://www.contoso.com");
-        var tree = Tree.Create(uri);
+        var tree = TrieTree.Trie.Create(uri);
 
         var insertedUri = new Uri("http://www.google.com");
 
@@ -20,7 +18,7 @@ public sealed class TreeTests
     public void TryInsert_WhenBaseUriIsCompatible_ReturnsTrue()
     {
         var uri = new Uri("http://www.contoso.com");
-        var tree = Tree.Create(uri);
+        var tree = TrieTree.Trie.Create(uri);
 
         var insertedUri = new Uri("http://www.contoso.com/test");
 
@@ -35,7 +33,7 @@ public sealed class TreeTests
     [TestCase("http://www.contoso.com", "", "http://www.google.com", false)]
     public void Contains(string baseUri, string insert, string uriToCheck, bool expected)
     {
-        var tree = Tree.Create(new Uri(baseUri));
+        var tree = TrieTree.Trie.Create(new Uri(baseUri));
 
         if (!string.IsNullOrEmpty(insert))
         {
