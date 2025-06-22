@@ -23,7 +23,28 @@ internal sealed class Tree
     
     public bool TryInsert(Uri value)
     {
-        throw new NotImplementedException();
+        if (value.GetLeftPart(UriPartial.Authority) != _baseUri)
+        {
+            return false;
+        }
+        
+        var current = _root;
+        var parts = value.AbsolutePath.Split('/');
+            
+        foreach (var part in parts)
+        {
+            if (!current.Children.TryGetValue(part, out var child))
+            {
+                child = new Node();
+                current.Children[part] = child;
+            }
+
+            current = child;
+        }
+            
+        current.IsTerminal = true;
+
+        return true;
     }
 
     public bool Contains(Uri value)
