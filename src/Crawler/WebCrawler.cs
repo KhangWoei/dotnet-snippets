@@ -17,14 +17,19 @@ public class WebCrawler(ILinkVisitor linkVisitor)
             {
                 foreach (var link in LinkHarvester.Harvest(html))
                 {
-                    // TODO - handle links that are not relative to the current source
-                    if (source.Base.IsBaseOf(link))
+                    if (!source.CanVisit(link))
                     {
-                        if (source.CanVisit(link))
-                        {
-                            source.Seen.Add(link);
-                            source.Queue.Enqueue(link, currentDepth + 1);
-                        }
+                        continue;
+                    }
+
+                    /*
+                     * TODO: Review - introducing very implicit or side-effect-y logic, one needs to know that Seen is a Trie tree
+                     *                and that it would return false if the link we are inserting does not share a base
+                     */
+                    
+                    if (source.Seen.TryInsert(link))
+                    {
+                        source.Queue.Enqueue(link, currentDepth + 1);
                     }
                     // else send a new seed or base uri request and have the orchestration service handle it
                 }

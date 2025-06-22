@@ -1,4 +1,5 @@
 ﻿using Crawler.Robots;
+using Crawler.TrieTree;
 
 namespace Crawler;
 
@@ -6,10 +7,9 @@ internal sealed class CrawlSource
 {
     private CrawlSource(Uri uri, int depth, Robot robot)
     {
-        Base = uri;
         Depth = depth;
         Robot = robot;
-        Seen = [uri];
+        Seen = Trie.Create(uri);
         Queue = new PriorityQueue<Uri, int>();
         Queue.Enqueue(uri, -1);
     }
@@ -21,15 +21,12 @@ internal sealed class CrawlSource
 
         return new CrawlSource(uri, depth, robots);
     }
-    
-    public Uri Base { get; }
-    
+
     public int Depth { get; }
     
     public Robot Robot { get; }
     
-    // TODO -  Kinda want to use a trie tree, would make it easier to reconstruct the output or map of the site it just crawled
-    public HashSet<Uri> Seen { get; }
+    public Trie Seen { get; }
     
     public PriorityQueue<Uri, int> Queue { get; }
     
