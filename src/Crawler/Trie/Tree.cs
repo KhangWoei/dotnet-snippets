@@ -17,20 +17,20 @@ internal sealed class Tree
 
         var tree = new Tree(baseUri);
         tree.TryInsert(uri);
-        
+
         return tree;
     }
-    
+
     public bool TryInsert(Uri value)
     {
         if (value.GetLeftPart(UriPartial.Authority) != _baseUri)
         {
             return false;
         }
-        
+
         var current = _root;
         var parts = value.AbsolutePath.Split('/');
-            
+
         foreach (var part in parts)
         {
             if (!current.Children.TryGetValue(part, out var child))
@@ -41,7 +41,7 @@ internal sealed class Tree
 
             current = child;
         }
-            
+
         current.IsTerminal = true;
 
         return true;
