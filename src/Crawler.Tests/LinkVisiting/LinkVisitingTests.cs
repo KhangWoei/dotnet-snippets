@@ -1,8 +1,8 @@
-using Crawler.LinkVisiting;
 using System.Net;
 using System.Net.Http.Headers;
+using Crawler.LinkVisiting;
 
-namespace Crawler.Tests;
+namespace Crawler.Tests.LinkVisiting;
 
 [TestFixture]
 public sealed class LinkVisitingTests

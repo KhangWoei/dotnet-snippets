@@ -1,6 +1,6 @@
 using Crawler.Harvesting;
 
-namespace Crawler.Tests;
+namespace Crawler.Tests.Harvesting;
 
 [TestFixture]
 public sealed class LinkHarvesterTests
