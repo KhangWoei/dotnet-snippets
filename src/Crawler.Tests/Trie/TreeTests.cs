@@ -26,4 +26,22 @@ public sealed class TreeTests
 
         Assert.That(tree.TryInsert(insertedUri), Is.True);
     }
+
+    // This test is testign a lot of things, multiple points of failure.
+    [TestCase("http://www.contoso.com", "http://www.contoso.com/test", "http://www.contoso.com/test", true)]
+    [TestCase("http://www.contoso.com", "", "http://www.contoso.com/test", false)]
+    [TestCase("http://www.contoso.com/test", "", "http://www.contoso.com/test", true)]
+    [TestCase("http://www.contoso.com", "", "http://www.contoso.com", true)]
+    [TestCase("http://www.contoso.com", "", "http://www.google.com", false)]
+    public void Contains(string baseUri, string insert, string uriToCheck, bool expected)
+    {
+        var tree = Tree.Create(new Uri(baseUri));
+
+        if (!string.IsNullOrEmpty(insert))
+        {
+            tree.TryInsert(new Uri(insert));
+        }
+        
+        Assert.That(tree.Contains(new Uri(uriToCheck)), Is.EqualTo(expected));
+    }
 }

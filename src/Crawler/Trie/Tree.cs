@@ -49,7 +49,25 @@ internal sealed class Tree
 
     public bool Contains(Uri value)
     {
-        throw new NotImplementedException();
+        if (!IsBaseOf(value))
+        {
+            return false;
+        }
+        
+        var current = _root;
+        var parts = value.AbsolutePath.Split('/');
+
+        foreach (var part in parts)
+        {
+            if (!current.Children.TryGetValue(part, out var child))
+            {
+                break;
+            }
+
+            current = child;
+        }
+        
+        return current.IsTerminal;
     }
     
     private bool IsBaseOf(Uri value)
