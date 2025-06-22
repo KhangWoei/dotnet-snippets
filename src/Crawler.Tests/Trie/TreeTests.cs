@@ -27,7 +27,7 @@ public sealed class TreeTests
         Assert.That(tree.TryInsert(insertedUri), Is.True);
     }
 
-    // This test is testign a lot of things, multiple points of failure.
+    // This test is testing a lot of things, multiple points of failure.
     [TestCase("http://www.contoso.com", "http://www.contoso.com/test", "http://www.contoso.com/test", true)]
     [TestCase("http://www.contoso.com", "", "http://www.contoso.com/test", false)]
     [TestCase("http://www.contoso.com/test", "", "http://www.contoso.com/test", true)]
