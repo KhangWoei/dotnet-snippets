@@ -22,11 +22,6 @@ public class WebCrawler(ILinkVisitor linkVisitor)
                         continue;
                     }
 
-                    /*
-                     * TODO: Review - introducing very implicit or side-effect-y logic, one needs to know that Seen is a Trie tree
-                     *                and that it would return false if the link we are inserting does not share a base
-                     */
-                    
                     if (source.Seen.TryInsert(link))
                     {
                         source.Queue.Enqueue(link, currentDepth + 1);
