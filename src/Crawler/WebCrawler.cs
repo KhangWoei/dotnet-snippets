@@ -6,17 +6,17 @@ namespace Crawler;
 
 public class WebCrawler(ILinkVisitor linkVisitor)
 {
-    public async Task Crawl(string seed, int depth, int width, CancellationToken cancellationToken = default)
+    public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
         var seenSeeds = new HashSet<string>();
         var seeds = new Queue<string>();
-        seeds.Enqueue(seed);
+        seeds.Enqueue(configuration.Seed);
         var currentWidth = 0;
         
-        while (seeds.Count > 0 && currentWidth < width)
+        while (seeds.Count > 0 && currentWidth < configuration.Width)
         {
             var currentSeed = seeds.Dequeue();
-            var source = await CrawlSource.Create(currentSeed, depth, cancellationToken);
+            var source = await CrawlSource.Create(currentSeed, configuration.Depth, cancellationToken);
 
             while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
             {

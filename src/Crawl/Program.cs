@@ -45,8 +45,9 @@ public class Program
             var seed = context.ParseResult.GetValueForOption(seedOption)!;
             var depth = context.ParseResult.GetValueForOption(depthOption);
             var width = context.ParseResult.GetValueForOption(widthOption);
+            var configuration = new Configuration(seed, depth, width);
             
-            await crawler.Crawl(seed, depth, width , context.GetCancellationToken());
+            await crawler.Crawl(configuration, context.GetCancellationToken());
         });
 
         var builder = new CommandLineBuilder(rootCommand)
