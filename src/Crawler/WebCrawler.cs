@@ -8,29 +8,47 @@ public class WebCrawler(ILinkVisitor linkVisitor)
 {
     public async Task Crawl(string seed, int depth, CancellationToken cancellationToken = default)
     {
-        var source = await CrawlSource.Create(seed, depth, cancellationToken);
-
-        while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
+        var seenSeeds = new HashSet<string>();
+        var seeds = new Queue<string>();
+        seeds.Enqueue(seed);
+        
+        while (seeds.Count > 0)
         {
-            var html = await linkVisitor.VisitAsync(current, cancellationToken);
-            if (!string.IsNullOrEmpty(html))
+            var currentSeed = seeds.Dequeue();
+            var source = await CrawlSource.Create(currentSeed, depth, cancellationToken);
+
+            while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
             {
-                foreach (var link in LinkHarvester.Harvest(html))
+                var html = await linkVisitor.VisitAsync(current, cancellationToken);
+                if (!string.IsNullOrEmpty(html))
                 {
-                    if (!source.CanVisit(link))
+                    foreach (var link in LinkHarvester.Harvest(html))
                     {
-                        continue;
-                    }
+                        if (!source.CanVisit(link))
+                        {
+                            continue;
+                        }
 
-                    if (source.Seen.TryInsert(link))
-                    {
-                        source.Queue.Enqueue(link, currentDepth + 1);
+                        if (source.Seen.TryInsert(link))
+                        {
+                            source.Queue.Enqueue(link, currentDepth + 1);
+                        }
+                        else
+                        {
+                            // TODO: Normalize 
+                            var newSeed = link.GetLeftPart(UriPartial.Authority);
+                            
+                            if (!seenSeeds.Add(newSeed))
+                            {
+                                seeds.Enqueue(link.GetLeftPart(UriPartial.Authority));
+                            }
+                        }
+                        
                     }
-                    // else send a new seed or base uri request and have the orchestration service handle it
                 }
-            }
 
-            Thread.Sleep(source.Robot.DelayMs);
+                Thread.Sleep(source.Robot.DelayMs);
+            }
         }
     }
 }
