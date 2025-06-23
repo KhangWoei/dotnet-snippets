@@ -2,6 +2,7 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
+using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawl;
@@ -19,8 +20,14 @@ public class Program
         {
             IsRequired = false
         };
+
+        var widthOption = new Option<int>(name: "--width", description: "Width of the crawler.")
+        {
+            IsRequired = false
+        };
         
-        depthOption.SetDefaultValue(3);
+        depthOption.SetDefaultValue(2);
+        widthOption.SetDefaultValue(2);
 
         var services = new ServiceCollection();
         services.UserCrawler();
@@ -30,14 +37,16 @@ public class Program
         var rootCommand = new RootCommand("Web crawler.");
         rootCommand.AddOption(seedOption);
         rootCommand.AddOption(depthOption);
+        rootCommand.AddOption(widthOption);
 
         rootCommand.SetHandler(async context =>
         {
             var crawler = provider.GetRequiredService<WebCrawler>();
             var seed = context.ParseResult.GetValueForOption(seedOption)!;
             var depth = context.ParseResult.GetValueForOption(depthOption);
+            var width = context.ParseResult.GetValueForOption(widthOption);
             
-            await crawler.Crawl(seed, depth, context.GetCancellationToken());
+            await crawler.Crawl(seed, depth, width , context.GetCancellationToken());
         });
 
         var builder = new CommandLineBuilder(rootCommand)

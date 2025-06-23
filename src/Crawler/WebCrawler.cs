@@ -6,13 +6,14 @@ namespace Crawler;
 
 public class WebCrawler(ILinkVisitor linkVisitor)
 {
-    public async Task Crawl(string seed, int depth, CancellationToken cancellationToken = default)
+    public async Task Crawl(string seed, int depth, int width, CancellationToken cancellationToken = default)
     {
         var seenSeeds = new HashSet<string>();
         var seeds = new Queue<string>();
         seeds.Enqueue(seed);
+        var currentWidth = 0;
         
-        while (seeds.Count > 0)
+        while (seeds.Count > 0 && currentWidth < width)
         {
             var currentSeed = seeds.Dequeue();
             var source = await CrawlSource.Create(currentSeed, depth, cancellationToken);
@@ -49,6 +50,8 @@ public class WebCrawler(ILinkVisitor linkVisitor)
 
                 Thread.Sleep(source.Robot.DelayMs);
             }
+
+            currentWidth++;
         }
     }
 }
