@@ -20,7 +20,7 @@ public class Worker(IServiceQueue queue, ILogger<Worker> logger): BackgroundServ
             {
                 var work = await queue.DequeueAsync(stoppingToken);
 
-                await work(stoppingToken);
+                _ = work(stoppingToken);
             }
             catch (OperationCanceledException) {}
             catch (Exception ex)
