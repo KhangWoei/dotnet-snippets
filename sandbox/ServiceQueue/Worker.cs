@@ -1,16 +1,39 @@
 namespace ServiceQueue;
 
-public class Worker(ILogger<Worker> logger): BackgroundService
+public class Worker(IServiceQueue queue, ILogger<Worker> logger): BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        logger.LogInformation("""
+                              {Name} is running.
+                              Tap W to add a work item to the background queue.
+                              """, nameof(Worker));
+        
+        return ProcessQueuedTaskAsync(stoppingToken);
+    }
+
+    private async Task ProcessQueuedTaskAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (logger.IsEnabled(LogLevel.Information))
+            try
             {
-                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                var work = await queue.DequeueAsync(stoppingToken);
+
+                await work(stoppingToken);
             }
-            await Task.Delay(1000, stoppingToken);
+            catch (OperationCanceledException) {}
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+            }
         }
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("{Name} is stopping.", nameof(Worker));
+        
+        await base.StopAsync(cancellationToken);
     }
 }
