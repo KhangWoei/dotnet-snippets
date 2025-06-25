@@ -1,4 +1,4 @@
-﻿using Crawler;
+﻿using Crawling;
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;

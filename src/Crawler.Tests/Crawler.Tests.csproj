@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crawler\Crawler.csproj" />
+    <ProjectReference Include="..\Crawling\Crawling.csproj" />
   </ItemGroup>
 
 </Project>

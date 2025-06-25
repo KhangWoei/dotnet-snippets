@@ -1,4 +1,4 @@
-namespace Crawler.LinkVisiting;
+namespace Crawling.LinkVisiting;
 
 public interface ILinkVisitor 
 {

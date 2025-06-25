@@ -1,7 +1,7 @@
-using Crawler.LinkVisiting;
+using Crawling.LinkVisiting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crawler;
+namespace Crawling;
 
 public static class CrawlerDependencies
 {

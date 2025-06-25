@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Crawler\Crawler.csproj" />
+    <ProjectReference Include="..\Crawling\Crawling.csproj" />
   </ItemGroup>
 
   <ItemGroup>

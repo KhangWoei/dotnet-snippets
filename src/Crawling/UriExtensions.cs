@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Crawler;
+namespace Crawling;
 
 public static class UriExtensions
 {

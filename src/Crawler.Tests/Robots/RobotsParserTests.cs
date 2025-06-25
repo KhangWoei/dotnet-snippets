@@ -1,4 +1,4 @@
-﻿using Crawler.Robots;
+﻿using Crawling.Robots;
 
 namespace Crawler.Tests.Robots;
 

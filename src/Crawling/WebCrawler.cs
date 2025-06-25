@@ -1,7 +1,7 @@
-﻿using Crawler.Harvesting;
-using Crawler.LinkVisiting;
+﻿using Crawling.Harvesting;
+using Crawling.LinkVisiting;
 
-namespace Crawler;
+namespace Crawling;
 
 public class WebCrawler(ILinkVisitor linkVisitor)
 {

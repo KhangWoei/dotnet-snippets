@@ -1,4 +1,4 @@
-﻿namespace Crawler.TrieTree;
+﻿namespace Crawling.TrieTree;
 
 internal sealed class Node
 {

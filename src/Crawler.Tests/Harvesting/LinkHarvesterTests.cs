@@ -1,4 +1,4 @@
-using Crawler.Harvesting;
+using Crawling.Harvesting;
 
 namespace Crawler.Tests.Harvesting;
 

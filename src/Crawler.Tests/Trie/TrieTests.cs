@@ -7,7 +7,7 @@ public sealed class TrieTests
     public void TryInsert_WhenBaseUriIsIncompatible_ReturnsFalse()
     {
         var uri = new Uri("http://www.contoso.com");
-        var tree = TrieTree.Trie.Create(uri);
+        var tree = Crawling.TrieTree.Trie.Create(uri);
 
         var insertedUri = new Uri("http://www.google.com");
 
@@ -18,7 +18,7 @@ public sealed class TrieTests
     public void TryInsert_WhenBaseUriIsCompatible_ReturnsTrue()
     {
         var uri = new Uri("http://www.contoso.com");
-        var tree = TrieTree.Trie.Create(uri);
+        var tree = Crawling.TrieTree.Trie.Create(uri);
 
         var insertedUri = new Uri("http://www.contoso.com/test");
 
@@ -33,7 +33,7 @@ public sealed class TrieTests
     [TestCase("http://www.contoso.com", "", "http://www.google.com", false)]
     public void Contains(string baseUri, string insert, string uriToCheck, bool expected)
     {
-        var tree = TrieTree.Trie.Create(new Uri(baseUri));
+        var tree = Crawling.TrieTree.Trie.Create(new Uri(baseUri));
 
         if (!string.IsNullOrEmpty(insert))
         {

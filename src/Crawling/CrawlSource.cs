@@ -1,7 +1,7 @@
-﻿using Crawler.Robots;
-using Crawler.TrieTree;
+﻿using Crawling.Robots;
+using Crawling.TrieTree;
 
-namespace Crawler;
+namespace Crawling;
 
 internal sealed class CrawlSource
 {

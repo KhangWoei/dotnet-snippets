@@ -1,4 +1,4 @@
-namespace Crawler.Robots;
+namespace Crawling.Robots;
 
 internal static class RobotsParser
 {

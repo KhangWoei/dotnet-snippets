@@ -1,4 +1,4 @@
-namespace Crawler.LinkVisiting;
+namespace Crawling.LinkVisiting;
 
 internal sealed class LinkVisitor(HttpClient client) : ILinkVisitor
 {

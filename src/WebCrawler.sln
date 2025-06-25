@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawl", "Crawl\Crawl.csproj", "{A2EC4E7F-91CE-4531-AC07-77B8E774C747}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler", "Crawler\Crawler.csproj", "{6DE608E9-9F7A-424E-9F5A-819E33E30322}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawling", "Crawling\Crawling.csproj", "{6DE608E9-9F7A-424E-9F5A-819E33E30322}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.Tests", "Crawler.Tests\Crawler.Tests.csproj", "{4C0DE722-DAAB-4C4F-9EDA-C1619DF61795}"
 EndProject

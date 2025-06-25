@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
-using Crawler.LinkVisiting;
+using Crawling.LinkVisiting;
 
 namespace Crawler.Tests.LinkVisiting;
 
