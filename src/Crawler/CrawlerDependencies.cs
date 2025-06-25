@@ -9,8 +9,8 @@ public static class CrawlerDependencies
     {
         services.AddTransient<WebCrawler>(provider =>
                 new WebCrawler(provider.GetRequiredService<ILinkVisitor>()));
-
-        services.AddSingleton<HttpClient>(provider => new HttpClient(new SocketsHttpHandler
+        
+        services.AddSingleton<HttpClient>(_ => new HttpClient(new SocketsHttpHandler
         {
             PooledConnectionLifetime = TimeSpan.FromMinutes(30),
             PooledConnectionIdleTimeout = TimeSpan.FromSeconds(10)
