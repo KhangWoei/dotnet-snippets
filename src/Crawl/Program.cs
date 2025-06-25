@@ -2,7 +2,6 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
-using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawl;
