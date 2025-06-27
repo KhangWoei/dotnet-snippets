@@ -1,6 +1,6 @@
 namespace Crawling.TrieTree;
 
-internal sealed class Trie
+internal sealed class Trie : ITrie
 {
     private readonly Node _root;
     private readonly string _baseUri;
