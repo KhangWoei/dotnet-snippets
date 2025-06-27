@@ -1,10 +1,11 @@
 ﻿using Crawling.CrawlSource;
 using Crawling.Harvesting;
 using Crawling.LinkVisiting;
+using MediatR;
 
 namespace Crawling;
 
-public class WebCrawler(ICrawlSourceFactory factory, ILinkVisitor linkVisitor)
+public class WebCrawler(IMediator mediator, ICrawlSourceFactory factory, ILinkVisitor linkVisitor)
 {
     public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
@@ -38,7 +39,7 @@ public class WebCrawler(ICrawlSourceFactory factory, ILinkVisitor linkVisitor)
                         }
                         else
                         {
-                            // TODO: Normalize 
+                            await mediator.Publish(new UriDiscoveredNotification(link), cancellationToken);
                             var newSeed = link.GetLeftPart(UriPartial.Authority);
                             
                             if (!seenSeeds.Add(newSeed))
