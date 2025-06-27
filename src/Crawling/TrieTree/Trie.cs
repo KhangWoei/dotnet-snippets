@@ -1,21 +1,19 @@
 namespace Crawling.TrieTree;
 
-internal sealed class Trie : ITrie
+internal sealed class Trie(Uri uri) : ITrie
 {
-    private readonly Node _root;
-    private readonly string _baseUri;
+    private readonly Node _root = new ();
 
-    private Trie(string baseUri)
+    public static ITrie Create(Uri uri)
     {
-        _baseUri = baseUri;
-        _root = new();
-    }
+        var uriBuilder = new UriBuilder(uri)
+        {
+            Fragment = string.Empty,
+            Query = string.Empty,
+            Path = string.Empty,
+        };
 
-    public static Trie Create(Uri uri)
-    {
-        var baseUri = uri.GetLeftPart(UriPartial.Authority);
-
-        var tree = new Trie(baseUri);
+        var tree = new Trie(uriBuilder.Uri);
         tree.TryInsert(uri);
 
         return tree;
@@ -71,8 +69,5 @@ internal sealed class Trie : ITrie
         return current?.IsTerminal ?? false;
     }
     
-    private bool IsBaseOf(Uri value)
-    {
-        return value.GetLeftPart(UriPartial.Authority) == _baseUri;
-    }
+    private bool IsBaseOf(Uri value) => uri.IsBaseOf(value);
 }
