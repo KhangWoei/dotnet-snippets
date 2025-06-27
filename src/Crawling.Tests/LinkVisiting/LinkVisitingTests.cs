@@ -7,28 +7,45 @@ namespace Crawler.Tests.LinkVisiting;
 [TestFixture]
 public sealed class LinkVisitingTests
 {
-    [TestCase("some html", true)]
-    [TestCase("", false)]
-    public async Task WhenMediaTypeIsHtml_GetsHtml(string expected, bool isHtml)
+    [Test]
+    public async Task WhenMediaTypeIsHtml_GetsHtml()
     {
-        var visitor = CreateLinkVisitor(expected, isHtml);
-
+        
+        var visitor = new LinkVisitor();
+        var expected = "some html";
+        
         var uri = new Uri("https://contoso.com");
-        var actual = await visitor.VisitAsync(uri, default);
+        var client = CreateHttpClient(expected, true);
+        var actual = await visitor.VisitAsync(client, uri, default);
 
         Assert.That(actual, Is.EqualTo(expected));
     }
+    
+    [Test]
+    public async Task WhenMediaTypeIsNotHtml_ReturnsNull()
+    {
+        
+        var visitor = new LinkVisitor();
+        
+        var uri = new Uri("https://contoso.com");
+        var client = CreateHttpClient("some html", false);
+        var actual = await visitor.VisitAsync(client, uri, default);
 
-    private ILinkVisitor CreateLinkVisitor(string html, bool isHtml)
+        Assert.That(actual, Is.Null);
+    }
+
+    private static HttpClient CreateHttpClient(string html, bool isHtml)
     {
         var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            Content = new StringContent(html),
+            Content = new StringContent(html)
         };
 
-        response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+        response.Content.Headers.ContentType = isHtml
+            ? new MediaTypeHeaderValue("text/html")
+            : new MediaTypeHeaderValue("text/plain");
 
-        return new LinkVisitor(new HttpClient(new FakeMessageHandler(response)));
+        return new HttpClient(new FakeMessageHandler(response));
     }
 
     private class FakeMessageHandler(HttpResponseMessage response) : HttpMessageHandler

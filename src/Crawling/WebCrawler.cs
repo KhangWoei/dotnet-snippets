@@ -20,7 +20,9 @@ public class WebCrawler(ICrawlSourceFactory factory, ILinkVisitor linkVisitor)
 
             while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
             {
-                var html = await linkVisitor.VisitAsync(current, cancellationToken);
+                var client = source.CreateClient();
+                
+                var html = await linkVisitor.VisitAsync(client, current, cancellationToken);
                 if (!string.IsNullOrEmpty(html))
                 {
                     foreach (var link in LinkHarvester.Harvest(html))

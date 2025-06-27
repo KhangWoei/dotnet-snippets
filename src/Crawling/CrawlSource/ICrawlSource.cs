@@ -13,5 +13,7 @@ public interface ICrawlSource
     
     int Depth { get; }
 
+    HttpClient CreateClient();
+    
     bool CanVisit(Uri uriToVisit);
 }

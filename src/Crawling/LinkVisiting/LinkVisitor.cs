@@ -1,8 +1,8 @@
 namespace Crawling.LinkVisiting;
 
-internal sealed class LinkVisitor(HttpClient client) : ILinkVisitor
+internal sealed class LinkVisitor : ILinkVisitor
 {
-    public async Task<string> VisitAsync(Uri uri, CancellationToken cancellationToken)
+    public async Task<string?> VisitAsync(HttpClient client, Uri uri, CancellationToken cancellationToken)
     {   
         var response = await client.GetAsync(uri, cancellationToken);
         
@@ -12,6 +12,6 @@ internal sealed class LinkVisitor(HttpClient client) : ILinkVisitor
             return await client.GetStringAsync(uri, cancellationToken);
         }
 
-        return string.Empty;
+        return null;
     }
 }

@@ -13,7 +13,7 @@ internal sealed class CrawlSource(IHttpClientFactory httpClientFactory, Uri uri,
 
     public int Depth { get; } = depth;
 
-    private HttpClient CreateClient() => httpClientFactory.CreateClient(uri.Host);
+    public HttpClient CreateClient() => httpClientFactory.CreateClient(uri.Host);
      
     public bool CanVisit(Uri uriToVisit) => !Seen.Contains(uriToVisit) && !Robot.Disallowed.Contains(uriToVisit);
 }
