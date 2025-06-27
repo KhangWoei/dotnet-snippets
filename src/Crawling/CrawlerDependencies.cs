@@ -1,3 +1,4 @@
+using Crawling.CrawlSource;
 using Crawling.LinkVisiting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,17 +9,12 @@ public static class CrawlerDependencies
     public static void UserCrawler(this IServiceCollection services)
     {
         services.AddTransient<WebCrawler>(provider =>
-                new WebCrawler(provider.GetRequiredService<ILinkVisitor>()));
-        
-        services.AddSingleton<HttpClient>(_ => new HttpClient(new SocketsHttpHandler
-        {
-            PooledConnectionLifetime = TimeSpan.FromMinutes(30),
-            PooledConnectionIdleTimeout = TimeSpan.FromSeconds(10)
-        })
-        {
-            DefaultRequestHeaders = { { "accept", "text/html" } },
-            Timeout = TimeSpan.FromSeconds(15)
-        });
+                new WebCrawler(
+                    provider.GetRequiredService<ICrawlSourceFactory>(),
+                    provider.GetRequiredService<ILinkVisitor>()));
+
+        services.AddHttpClient();
+        services.AddSingleton<ICrawlSourceFactory, CrawlSourceFactory>();
         services.AddTransient<ILinkVisitor, LinkVisitor>();
     }
 }

@@ -1,9 +1,10 @@
-﻿using Crawling.Harvesting;
+﻿using Crawling.CrawlSource;
+using Crawling.Harvesting;
 using Crawling.LinkVisiting;
 
 namespace Crawling;
 
-public class WebCrawler(ILinkVisitor linkVisitor)
+public class WebCrawler(ICrawlSourceFactory factory, ILinkVisitor linkVisitor)
 {
     public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
@@ -15,7 +16,7 @@ public class WebCrawler(ILinkVisitor linkVisitor)
         while (seeds.Count > 0 && currentWidth < configuration.Width)
         {
             var currentSeed = seeds.Dequeue();
-            var source = await CrawlSource.Create(currentSeed, configuration.Depth, cancellationToken);
+            var source = await factory.Create(currentSeed, configuration.Depth, cancellationToken);
 
             while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
             {
