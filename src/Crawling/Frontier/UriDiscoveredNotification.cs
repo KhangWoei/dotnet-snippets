@@ -2,4 +2,4 @@
 
 namespace Crawling.Frontier;
 
-internal record UriDiscoveredNotification(Uri Uri) : INotification;
+internal record UriDiscoveredNotification(string Seed, int Depth) : INotification;

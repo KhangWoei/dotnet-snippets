@@ -19,7 +19,6 @@ public static class CrawlerDependencies
         services.AddTransient<WebCrawler>(provider =>
                 new WebCrawler(
                     provider.GetRequiredService<IMediator>(),
-                    provider.GetRequiredService<ICrawlSourceFactory>(),
                     provider.GetRequiredService<ILinkVisitor>()));
         services.AddTransient<ILinkVisitor, LinkVisitor>();
         

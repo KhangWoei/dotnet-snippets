@@ -7,7 +7,7 @@ public class SeedQueue : ISeedQueue<ICrawlSource>
 {
     private readonly Channel<ICrawlSource> _channel;
 
-    private SeedQueue()
+    public SeedQueue()
     {
         var options = new BoundedChannelOptions(100);
         _channel = Channel.CreateBounded<ICrawlSource>(options);

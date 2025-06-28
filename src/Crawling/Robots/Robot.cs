@@ -1,6 +1,6 @@
 ﻿namespace Crawling.Robots;
 
-internal sealed class Robot (HashSet<Uri> disallowed, int? delay) : IRobot
+internal sealed class Robot (HashSet<Uri> disallowed, int? delay = null) : IRobot
 {
     public HashSet<Uri> Disallowed { get; } = disallowed;
     

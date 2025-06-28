@@ -6,20 +6,18 @@ using MediatR;
 
 namespace Crawling;
 
-public class WebCrawler(IMediator mediator, ICrawlSourceFactory factory, ILinkVisitor linkVisitor)
+public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
 {
     public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
         var seenSeeds = new HashSet<string>();
-        var seeds = new Queue<string>();
-        seeds.Enqueue(configuration.Seed);
+        await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth), cancellationToken);
         var currentWidth = 0;
-        
-        while (seeds.Count > 0 && currentWidth < configuration.Width)
-        {
-            var currentSeed = seeds.Dequeue();
-            var source = await factory.Create(currentSeed, configuration.Depth, cancellationToken);
 
+        // Matches the return of medaitor.Send(seedRequest) to { } and if so assign to source;
+        // { } is a property or object pattern, it matches any object that has accessible properties
+        while (await mediator.Send(new SeedRequest(), cancellationToken) is { } source && currentWidth < configuration.Width)
+        {
             while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
             {
                 var client = source.CreateClient();
@@ -40,12 +38,11 @@ public class WebCrawler(IMediator mediator, ICrawlSourceFactory factory, ILinkVi
                         }
                         else
                         {
-                            await mediator.Publish(new UriDiscoveredNotification(link), cancellationToken);
                             var newSeed = link.GetLeftPart(UriPartial.Authority);
                             
-                            if (!seenSeeds.Add(newSeed))
+                            if (seenSeeds.Add(newSeed))
                             {
-                                seeds.Enqueue(link.GetLeftPart(UriPartial.Authority));
+                                await mediator.Publish(new UriDiscoveredNotification(newSeed, configuration.Depth), cancellationToken);
                             }
                         }
                         
