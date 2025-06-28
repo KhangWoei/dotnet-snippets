@@ -1,4 +1,5 @@
 ﻿using Crawling.CrawlSource;
+using Crawling.Frontier;
 using Crawling.Harvesting;
 using Crawling.LinkVisiting;
 using MediatR;

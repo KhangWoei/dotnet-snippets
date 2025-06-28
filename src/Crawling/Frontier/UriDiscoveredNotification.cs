@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace Crawling;
+namespace Crawling.Frontier;
 
 internal record UriDiscoveredNotification(Uri Uri) : INotification;
