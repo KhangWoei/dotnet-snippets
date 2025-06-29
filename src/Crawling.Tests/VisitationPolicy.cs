@@ -1,39 +1,45 @@
 using System.Net;
 using System.Net.Http.Headers;
+using Crawling.Frontier;
 using Crawling.LinkVisiting;
+using NSubstitute;
 
 namespace Crawler.Tests.LinkVisiting;
 
 [TestFixture]
-public sealed class LinkVisitingTests
+public sealed class VisitationPolicy
 {
     [Test]
-    public async Task WhenMediaTypeIsHtml_GetsHtml()
+    public async Task True_WhenMediaTypeIsHtml()
     {
-        
-        var visitor = new LinkVisitor();
-        var expected = "some html";
-        
+        var policy = CreateVisitationPolicy(true);
         var uri = new Uri("https://contoso.com");
-        var client = CreateHttpClient(expected, true);
-        var actual = await visitor.VisitAsync(client, uri, default);
 
-        Assert.That(actual, Is.EqualTo(expected));
+        var actual = await policy.ShouldVisit(uri, CancellationToken.None);
+
+        Assert.That(actual, Is.True);
     }
     
     [Test]
-    public async Task WhenMediaTypeIsNotHtml_ReturnsNull()
+    public async Task False_WhenMediaTypeIsNotHtml()
     {
-        
-        var visitor = new LinkVisitor();
-        
+        var policy = CreateVisitationPolicy(false);
         var uri = new Uri("https://contoso.com");
-        var client = CreateHttpClient("some html", false);
-        var actual = await visitor.VisitAsync(client, uri, default);
 
-        Assert.That(actual, Is.Null);
+        var actual = await policy.ShouldVisit(uri, CancellationToken.None);
+
+        Assert.That(actual, Is.False);
     }
 
+    private static IVisitationPolicy CreateVisitationPolicy(bool isHtml)
+    {
+        var factory = Substitute.For<IHttpClientFactory>();
+        var client = CreateHttpClient("", isHtml);
+        factory.CreateClient(Arg.Any<string>()).Returns(client);
+
+        return new Crawling.Frontier.VisitationPolicy(factory);
+    }
+    
     private static HttpClient CreateHttpClient(string html, bool isHtml)
     {
         var response = new HttpResponseMessage(HttpStatusCode.OK)

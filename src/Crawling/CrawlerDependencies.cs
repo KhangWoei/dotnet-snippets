@@ -21,6 +21,6 @@ public static class CrawlerDependencies
                     provider.GetRequiredService<IMediator>(),
                     provider.GetRequiredService<ILinkVisitor>()));
         services.AddTransient<ILinkVisitor, LinkVisitor>();
-        
+        services.AddTransient<IVisitationPolicy, VisitationPolicy>();
     }
 }

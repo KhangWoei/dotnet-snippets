@@ -1,12 +1,12 @@
+using Crawling.Frontier;
+
 namespace Crawling.LinkVisiting;
 
-internal sealed class LinkVisitor : ILinkVisitor
+internal sealed class LinkVisitor(IVisitationPolicy visitationPolicy) : ILinkVisitor
 {
     public async Task<string?> VisitAsync(HttpClient client, Uri uri, CancellationToken cancellationToken)
     {   
-        var response = await client.GetAsync(uri, cancellationToken);
-        
-        if (response.IsSuccessStatusCode && response.Content.Headers.ContentType?.MediaType == "text/html")
+        if (await visitationPolicy.ShouldVisit(uri, cancellationToken))
         {
             Console.WriteLine($"Downloading {uri}");
             return await client.GetStringAsync(uri, cancellationToken);
