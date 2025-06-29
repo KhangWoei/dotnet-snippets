@@ -13,14 +13,16 @@ public class SeedQueue : ISeedQueue<Task<ICrawlSource>>
         _channel = Channel.CreateBounded<Task<ICrawlSource>>(options);
     }
 
-    public async Task EnqueueAsync(Task<ICrawlSource> item, CancellationToken cancellationToken)
+    public async ValueTask EnqueueAsync(Task<ICrawlSource> item, CancellationToken cancellationToken)
     {
         await _channel.Writer.WriteAsync(item, cancellationToken);
     }
 
-    public async Task<Task<ICrawlSource>> DequeueAsync(CancellationToken cancellationToken)
+    public Task<ICrawlSource>? Dequeue()
     {
-        return await _channel.Reader.ReadAsync(cancellationToken);
+        _channel.Reader.TryRead(out var result);
+        
+        return result;
     }
 
     public int GetCount() => _channel.Reader.Count;

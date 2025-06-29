@@ -1,10 +1,12 @@
-﻿namespace Crawling.Frontier;
+﻿using Crawling.CrawlSource;
+
+namespace Crawling.Frontier;
 
 public interface ISeedQueue<T>
 {
-    Task EnqueueAsync(T item, CancellationToken cancellationToken);
+    ValueTask EnqueueAsync(T item, CancellationToken cancellationToken);
 
-    Task<T> DequeueAsync(CancellationToken cancellationToken);
+    Task<ICrawlSource>? Dequeue();
 
     int GetCount();
 }
