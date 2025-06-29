@@ -49,7 +49,7 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
                     }
                 }
 
-                Thread.Sleep(source.Robot.DelayMs);
+                await Task.Delay(source.Robot.DelayMs, cancellationToken);
             }
 
             currentWidth++;
