@@ -12,8 +12,16 @@ internal class VisitationPolicy(IHttpClientFactory factory) : IVisitationPolicy
 
     public async Task<bool> ShouldVisit(string seed, CancellationToken cancellationToken)
     {
-        var uri = new UriBuilder(seed);
+        // TODO - handle seeds that can't be made into uris
+        try
+        {
+            var uri = new UriBuilder(seed);
 
-        return await ShouldVisit(uri.Uri, cancellationToken);
+            return await ShouldVisit(uri.Uri, cancellationToken);
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
