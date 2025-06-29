@@ -15,7 +15,7 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
 
         // Matches the return of medaitor.Send(seedRequest) to { } and if so assign to source;
         // { } is a property or object pattern, it matches any object that has accessible properties
-        while (await mediator.Send(new SeedRequest(), cancellationToken) is { } queuedSource && currentWidth < configuration.Width)
+        while (await mediator.Send(new SeedRequest(), cancellationToken) is { } queuedSource && currentWidth++ < configuration.Width)
         {
             var source = await queuedSource;
             
@@ -51,8 +51,6 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
 
                 await Task.Delay(source.Robot.DelayMs, cancellationToken);
             }
-
-            currentWidth++;
         }
     }
 }
