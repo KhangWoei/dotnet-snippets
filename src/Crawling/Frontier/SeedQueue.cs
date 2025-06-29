@@ -3,22 +3,22 @@ using Crawling.CrawlSource;
 
 namespace Crawling.Frontier;
 
-public class SeedQueue : ISeedQueue<ICrawlSource>
+public class SeedQueue : ISeedQueue<Task<ICrawlSource>>
 {
-    private readonly Channel<ICrawlSource> _channel;
+    private readonly Channel<Task<ICrawlSource>> _channel;
 
     public SeedQueue()
     {
         var options = new BoundedChannelOptions(100);
-        _channel = Channel.CreateBounded<ICrawlSource>(options);
+        _channel = Channel.CreateBounded<Task<ICrawlSource>>(options);
     }
 
-    public async Task EnqueueAsync(ICrawlSource item, CancellationToken cancellationToken)
+    public async Task EnqueueAsync(Task<ICrawlSource> item, CancellationToken cancellationToken)
     {
         await _channel.Writer.WriteAsync(item, cancellationToken);
     }
 
-    public async Task<ICrawlSource> DequeueAsync(CancellationToken cancellationToken)
+    public async Task<Task<ICrawlSource>> DequeueAsync(CancellationToken cancellationToken)
     {
         return await _channel.Reader.ReadAsync(cancellationToken);
     }

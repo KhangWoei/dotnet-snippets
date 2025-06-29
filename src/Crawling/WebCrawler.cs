@@ -1,5 +1,4 @@
-﻿using Crawling.CrawlSource;
-using Crawling.Frontier;
+﻿using Crawling.Frontier;
 using Crawling.Harvesting;
 using Crawling.LinkVisiting;
 using MediatR;
@@ -16,8 +15,10 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
 
         // Matches the return of medaitor.Send(seedRequest) to { } and if so assign to source;
         // { } is a property or object pattern, it matches any object that has accessible properties
-        while (await mediator.Send(new SeedRequest(), cancellationToken) is { } source && currentWidth < configuration.Width)
+        while (await mediator.Send(new SeedRequest(), cancellationToken) is { } queuedSource && currentWidth < configuration.Width)
         {
+            var source = await queuedSource;
+            
             while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
             {
                 var client = source.CreateClient();
@@ -42,10 +43,9 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
                             
                             if (seenSeeds.Add(newSeed))
                             {
-                                await mediator.Publish(new UriDiscoveredNotification(newSeed, configuration.Depth), cancellationToken);
+                                _ =  mediator.Publish(new UriDiscoveredNotification(newSeed, configuration.Depth), cancellationToken);
                             }
                         }
-                        
                     }
                 }
 

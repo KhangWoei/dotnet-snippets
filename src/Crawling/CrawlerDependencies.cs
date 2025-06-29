@@ -14,7 +14,7 @@ public static class CrawlerDependencies
         services.AddHttpClient();
         
         services.AddSingleton<ICrawlSourceFactory, CrawlSourceFactory>();
-        services.AddSingleton<ISeedQueue<ICrawlSource>, SeedQueue>();
+        services.AddSingleton<ISeedQueue<Task<ICrawlSource>>, SeedQueue>();
         
         services.AddTransient<WebCrawler>(provider =>
                 new WebCrawler(

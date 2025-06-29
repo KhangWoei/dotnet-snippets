@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Crawling.Frontier;
 
-internal sealed class SeedRequest : IRequest<ICrawlSource>;
+internal sealed class SeedRequest : IRequest<Task<ICrawlSource>>;
