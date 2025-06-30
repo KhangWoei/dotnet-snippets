@@ -14,7 +14,6 @@ internal sealed class CrawlSourceFactory(IHttpClientFactory httpClientFactory) :
         };
         
         var client = httpClientFactory.CreateClient(uriBuilder.Host);
-
         var robots = await RobotsHandler.GetDisallowedSites(client, uriBuilder.Uri, cancellationToken);
         
         return new CrawlSource(httpClientFactory, uriBuilder.Uri, robots, depth);

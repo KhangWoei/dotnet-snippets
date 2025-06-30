@@ -9,7 +9,6 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
 {
     public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
-        var seenSeeds = new HashSet<string>();
         await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth), cancellationToken);
         var currentWidth = 0;
 
@@ -39,12 +38,7 @@ public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
                         }
                         else
                         {
-                            var newSeed = link.GetLeftPart(UriPartial.Authority);
-                            
-                            if (seenSeeds.Add(newSeed))
-                            {
-                                _ =  mediator.Publish(new UriDiscoveredNotification(newSeed, configuration.Depth), cancellationToken);
-                            }
+                            _ = mediator.Publish(new UriDiscoveredNotification(link, configuration.Depth), cancellationToken);
                         }
                     }
                 }
