@@ -36,7 +36,7 @@ public sealed class VisitationPolicyTests
         var client = CreateHttpClient("", isHtml);
         factory.CreateClient(Arg.Any<string>()).Returns(client);
 
-        return new Crawling.Frontier.VisitationPolicy(factory);
+        return new VisitationPolicy(factory);
     }
     
     private static HttpClient CreateHttpClient(string html, bool isHtml)
