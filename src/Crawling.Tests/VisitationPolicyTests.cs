@@ -1,13 +1,12 @@
 using System.Net;
 using System.Net.Http.Headers;
 using Crawling.Frontier;
-using Crawling.LinkVisiting;
 using NSubstitute;
 
-namespace Crawler.Tests.LinkVisiting;
+namespace Crawler.Tests;
 
 [TestFixture]
-public sealed class VisitationPolicy
+public sealed class VisitationPolicyTests
 {
     [Test]
     public async Task True_WhenMediaTypeIsHtml()
