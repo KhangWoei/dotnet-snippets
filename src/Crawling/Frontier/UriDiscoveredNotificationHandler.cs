@@ -12,9 +12,8 @@ internal class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawl
     
     public async Task Handle(UriDiscoveredNotification notification, CancellationToken cancellationToken)
     {
-        if (!_seen.ContainsKey(notification.Seed) && await policy.ShouldVisit(notification.Seed, cancellationToken))
+        if (_seen.TryAdd(notification.Seed, 1) && await policy.ShouldVisit(notification.Seed, cancellationToken))
         {
-            _seen.TryAdd(notification.Seed, 1);
             await seedQueue.EnqueueAsync(factory.Create(notification.Seed.ToString(), notification.Depth, cancellationToken), cancellationToken);
         }
     }
