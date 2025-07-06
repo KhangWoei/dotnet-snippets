@@ -1,5 +1,3 @@
-using Crawling.Frontier;
-
 namespace Crawling.LinkVisiting;
 
 internal sealed class LinkVisitor(IVisitationPolicy visitationPolicy) : ILinkVisitor

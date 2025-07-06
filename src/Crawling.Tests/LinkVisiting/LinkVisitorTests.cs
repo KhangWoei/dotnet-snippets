@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using Crawling;
-using Crawling.Frontier;
 using Crawling.LinkVisiting;
 
 namespace Crawler.Tests.LinkVisiting;
