@@ -1,4 +1,4 @@
-﻿namespace Crawling.Frontier;
+﻿namespace Crawling;
 
 public interface IVisitationPolicy
 {

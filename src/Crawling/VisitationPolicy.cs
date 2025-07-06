@@ -1,4 +1,4 @@
-﻿namespace Crawling.Frontier;
+﻿namespace Crawling;
 
 internal class VisitationPolicy(IHttpClientFactory factory) : IVisitationPolicy
 {
