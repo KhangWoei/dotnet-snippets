@@ -5,13 +5,15 @@ using MediatR;
 
 namespace Crawling;
 
+// TODO: Make this into a background service
 public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
 {
     public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
         await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth), cancellationToken);
         var currentWidth = 0;
-
+            
+        // TODO: Make this handle requests in parallel
         // Matches the return of medaitor.Send(seedRequest) to { } and if so assign to source;
         // { } is a property or object pattern, it matches any object that has accessible properties
         while (await mediator.Send(new SeedRequest(), cancellationToken) is { } queuedSource && currentWidth++ < configuration.Width)
