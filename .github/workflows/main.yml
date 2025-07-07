@@ -15,6 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Configure git safe directory
+        id: git-configuration
+        run: git config --global --add safe.directory '*'
+
       - name: Compile
         id: compile
         run: |
