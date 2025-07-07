@@ -1,0 +1,22 @@
+name: Build
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:9.0
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile
+        id: compile
+        run: |
+          dotnet restore ./src/WebCrawler.sln
+          dotnet build ./src/WebCrawler.sln --configuration Release --no-restore
