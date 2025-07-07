@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Other Files", ".Other Files", "{8FA8BD9D-C3A6-4929-8B26-07ABC425376F}"
     ProjectSection(SolutionItems) = preProject
         Directory.Build.props = Directory.Build.props
+        Directory.Packages.props = Directory.Packages.props
         ..\README.md = ..\README.md
     EndProjectSection
 EndProject
