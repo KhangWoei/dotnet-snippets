@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawling", "Crawling\Crawli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawling.Tests", "Crawling.Tests\Crawling.Tests.csproj", "{4C0DE722-DAAB-4C4F-9EDA-C1619DF61795}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Other Files", ".Other Files", "{8FA8BD9D-C3A6-4929-8B26-07ABC425376F}"
+    ProjectSection(SolutionItems) = preProject
+        Directory.Build.props = Directory.Build.props
+        ..\README.md = ..\README.md
+    EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
