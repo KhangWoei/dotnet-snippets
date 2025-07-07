@@ -20,3 +20,19 @@ jobs:
         run: |
           dotnet restore ./src/WebCrawler.sln
           dotnet build ./src/WebCrawler.sln --configuration Release --no-restore
+
+      - name: Test
+        id: test
+        run: |
+          dotnet test --no-build --no-restore --logger:'trx;LogFileName=./test-results.trx' ./src/WebCrawler.sln
+
+      - name: Upload test results
+        uses: dorny/test-reporter@v2
+        if: ${{ !cancelled() }}
+        with:
+          name: Test results
+          path: ./test-results.trx
+          reporter: dotnet-trx
+          badge-title: 'Test results'
+          fail-on-error: 'true'
+          fail-on-empty: 'true'
