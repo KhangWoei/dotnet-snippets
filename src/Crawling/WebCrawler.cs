@@ -2,39 +2,45 @@
 using Crawling.Frontier;
 using MediatR;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace Crawling;
 
-public class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : IHostedService, IDisposable
+public class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : BackgroundService, IDisposable
 {
     private readonly ConcurrentDictionary<Guid, Task> _tasks = new();
     private readonly SemaphoreSlim _semaphore = new(4, 4);
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        _ = ProcessQueuedTasksAsync(cancellationToken);
-        return Task.CompletedTask;
+        try
+        {
+            await ProcessQueuedTasksAsync(cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            //ignored
+        }
     }
 
     private async Task ProcessQueuedTasksAsync(CancellationToken cancellationToken)
     {
-        await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth), cancellationToken);
-        
+        await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth),
+            cancellationToken);
+
         while (!cancellationToken.IsCancellationRequested)
         {
             var queuedTask = await mediator.Send(new SeedRequest(), cancellationToken);
 
             if (queuedTask is null)
             {
-                if (_tasks.Values.Any(t => t.Status == TaskStatus.Running))
+                if (_tasks.Values.Any(t => !t.IsCompleted))
                 {
                     continue;
                 }
 
                 break;
             }
-            
+
             try
             {
                 await _semaphore.WaitAsync(cancellationToken);
@@ -43,7 +49,7 @@ public class WebCrawler(IMediator mediator, Configuration configuration, Crawler
                 var crawlTaskCompletionSource = new TaskCompletionSource();
                 var crawlTask = crawlTaskCompletionSource.Task;
                 _tasks.TryAdd(taskId, crawlTask);
-                
+
                 _ = Task.Run(async () =>
                 {
                     try
@@ -62,9 +68,14 @@ public class WebCrawler(IMediator mediator, Configuration configuration, Crawler
                     }
                     finally
                     {
-                        _tasks.TryRemove(taskId, out _);
+                        _semaphore.Release();
                     }
                 }, cancellationToken);
+
+                foreach (var completedTasks in _tasks.Where(task => task.Value.IsCompleted).Select(k => k.Key))
+                {
+                    _tasks.TryRemove(completedTasks, out _);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -72,18 +83,19 @@ public class WebCrawler(IMediator mediator, Configuration configuration, Crawler
         }
     }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        var runningTasks = _tasks.Values.Where(t => t.Status == TaskStatus.Running).ToList();
+        var runningTasks = _tasks.Values.Where(t => !t.IsCompleted).ToList();
         if (runningTasks.Count != 0)
         {
             await Task.WhenAll(runningTasks).WaitAsync(TimeSpan.FromSeconds(30), cancellationToken);
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         _semaphore.Dispose();
+        base.Dispose();
         GC.SuppressFinalize(this);
     }
 }
