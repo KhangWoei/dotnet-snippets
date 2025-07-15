@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Crawling;
 
-public class WebCrawler(IMediator mediator, IOptions<Configuration> configuration, Crawler crawler) : IHostedService, IDisposable
+public class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : IHostedService, IDisposable
 {
     private readonly ConcurrentDictionary<Guid, Task> _tasks = new();
     private readonly SemaphoreSlim _semaphore = new(4, 4);
@@ -19,7 +19,7 @@ public class WebCrawler(IMediator mediator, IOptions<Configuration> configuratio
 
     private async Task ProcessQueuedTasksAsync(CancellationToken cancellationToken)
     {
-        await mediator.Publish(new UriDiscoveredNotification(configuration.Value.Seed, configuration.Value.Depth), cancellationToken);
+        await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth), cancellationToken);
         
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -49,7 +49,7 @@ public class WebCrawler(IMediator mediator, IOptions<Configuration> configuratio
                     try
                     {
                         var source = await queuedTask;
-                        await crawler.Crawl(source, configuration.Value.Depth, cancellationToken);
+                        await crawler.Crawl(source, configuration.Depth, cancellationToken);
                         crawlTaskCompletionSource.SetResult();
                     }
                     catch (OperationCanceledException)
@@ -84,5 +84,6 @@ public class WebCrawler(IMediator mediator, IOptions<Configuration> configuratio
     public void Dispose()
     {
         _semaphore.Dispose();
+        GC.SuppressFinalize(this);
     }
 }
