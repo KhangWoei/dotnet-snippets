@@ -14,7 +14,8 @@ internal class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawl
     {
         if (_seen.TryAdd(notification.Seed, 1) && await policy.ShouldVisit(notification.Seed, cancellationToken))
         {
-            await seedQueue.EnqueueAsync(factory.Create(notification.Seed.ToString(), notification.Depth, cancellationToken), cancellationToken);
+            var createCrawlSourceTask = factory.Create(notification.Seed.ToString(), notification.Depth, cancellationToken);
+            await seedQueue.EnqueueAsync(createCrawlSourceTask, cancellationToken);
         }
     }
 }
