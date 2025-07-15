@@ -7,7 +7,7 @@ using MediatR;
 namespace Crawling;
 
 // TODO: Make this into a background service
-public class WebCrawler(IMediator mediator, ILinkVisitor linkVisitor)
+public class Crawler(IMediator mediator, ILinkVisitor linkVisitor)
 {
     public async Task Crawl(Configuration configuration, CancellationToken cancellationToken = default)
     {
