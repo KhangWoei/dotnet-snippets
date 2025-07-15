@@ -17,7 +17,6 @@ internal static class CrawlInitializer
         var crawler = host.Services.GetRequiredService<WebCrawler>();
 
         await crawler.StartAsync(cancellationToken);
-
         return 0;
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Concurrent;
+using Crawling.CrawlSource;
 using Crawling.Frontier;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 
 namespace Crawling;
 
-public class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : BackgroundService, IDisposable
+public class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : BackgroundService
 {
     private readonly ConcurrentDictionary<Guid, Task> _tasks = new();
     private readonly SemaphoreSlim _semaphore = new(4, 4);
@@ -46,31 +47,8 @@ public class WebCrawler(IMediator mediator, Configuration configuration, Crawler
                 await _semaphore.WaitAsync(cancellationToken);
 
                 var taskId = Guid.NewGuid();
-                var crawlTaskCompletionSource = new TaskCompletionSource();
-                var crawlTask = crawlTaskCompletionSource.Task;
+                var crawlTask = ProcessCrawlTask(queuedTask, cancellationToken);
                 _tasks.TryAdd(taskId, crawlTask);
-
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        var source = await queuedTask;
-                        await crawler.Crawl(source, configuration.Depth, cancellationToken);
-                        crawlTaskCompletionSource.SetResult();
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        crawlTaskCompletionSource.TrySetCanceled();
-                    }
-                    catch (Exception ex)
-                    {
-                        crawlTaskCompletionSource.SetException(ex);
-                    }
-                    finally
-                    {
-                        _semaphore.Release();
-                    }
-                }, cancellationToken);
 
                 foreach (var completedTasks in _tasks.Where(task => task.Value.IsCompleted).Select(k => k.Key))
                 {
@@ -80,6 +58,18 @@ public class WebCrawler(IMediator mediator, Configuration configuration, Crawler
             catch (OperationCanceledException)
             {
             }
+        }
+    }
+    
+    private async Task ProcessCrawlTask(Task<ICrawlSource> source, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await crawler.Crawl(await source, configuration.Depth, cancellationToken);
+        }
+        finally
+        {
+            _semaphore.Release();
         }
     }
 
