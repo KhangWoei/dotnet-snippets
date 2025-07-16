@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Crawling;
 
-public class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : BackgroundService
+public class WebCrawler(IHostApplicationLifetime lifetime, IMediator mediator, Configuration configuration, Crawler crawler) : BackgroundService
 {
     private readonly ConcurrentDictionary<Guid, Task> _tasks = new();
     private readonly SemaphoreSlim _semaphore = new(4, 4);
@@ -59,6 +59,8 @@ public class WebCrawler(IMediator mediator, Configuration configuration, Crawler
             {
             }
         }
+        
+        lifetime.StopApplication();
     }
     
     private async Task ProcessCrawlTask(Task<ICrawlSource> source, CancellationToken cancellationToken)
