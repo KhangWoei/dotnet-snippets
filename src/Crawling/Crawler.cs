@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Crawling;
 
-internal class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : ICrawler
+internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : ICrawler
 {
     public async Task Crawl(ICrawlSource source, int depth, CancellationToken cancellationToken)
     {
