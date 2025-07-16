@@ -1,6 +1,6 @@
 ﻿namespace Crawling;
 
-internal class VisitationPolicy(IHttpClientFactory factory) : IVisitationPolicy
+internal sealed class VisitationPolicy(IHttpClientFactory factory) : IVisitationPolicy
 {
     public async Task<bool> ShouldVisit(Uri uri, CancellationToken cancellationToken)
     {

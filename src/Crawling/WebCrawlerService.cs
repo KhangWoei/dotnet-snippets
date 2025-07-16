@@ -2,7 +2,7 @@
 
 namespace Crawling;
 
-public class WebCrawlerService(IHostApplicationLifetime lifetime, WebCrawler webCrawler) : BackgroundService
+public sealed class WebCrawlerService(IHostApplicationLifetime lifetime, WebCrawler webCrawler) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {

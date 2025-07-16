@@ -3,7 +3,7 @@ using Crawling.CrawlSource;
 
 namespace Crawling.Frontier;
 
-public class SeedQueue : ISeedQueue<Task<ICrawlSource>>
+internal sealed class SeedQueue : ISeedQueue<Task<ICrawlSource>>
 {
     private readonly Channel<Task<ICrawlSource>> _channel;
 

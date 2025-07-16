@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Crawling.Frontier;
 
-internal class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawlSourceFactory factory, ISeedQueue<Task<ICrawlSource>> seedQueue) : INotificationHandler<UriDiscoveredNotification>
+internal sealed class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawlSourceFactory factory, ISeedQueue<Task<ICrawlSource>> seedQueue) : INotificationHandler<UriDiscoveredNotification>
 {
     // TODO - Wrap this in its own type
     // TODO - uri denormalization and figure out how to ensure we don't requeue the same base uris
