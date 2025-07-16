@@ -11,14 +11,14 @@ public static class CrawlerDependencies
 {
     public static void UserCrawler(this IServiceCollection services, Configuration configuration)
     {
+        services.AddHostedService<WebCrawler>();
         
         services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Crawler>());
         services.AddHttpClient();
 
         // TODO - reconsider this
         services.AddSingleton(configuration);
-        
-        services.AddSingleton<WebCrawler>();
+
         services.AddSingleton<ICrawlSourceFactory, CrawlSourceFactory>();
         services.AddSingleton<ISeedQueue<Task<ICrawlSource>>, SeedQueue>();
 
