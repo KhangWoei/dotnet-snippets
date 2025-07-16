@@ -22,7 +22,7 @@ public static class CrawlerDependencies
         services.AddSingleton<ICrawlSourceFactory, CrawlSourceFactory>();
         services.AddSingleton<ISeedQueue<Task<ICrawlSource>>, SeedQueue>();
 
-        services.AddTransient<Crawler>();
+        services.AddTransient<ICrawler, Crawler>();
         services.AddTransient<ILinkVisitor, LinkVisitor>();
         services.AddTransient<IVisitationPolicy, VisitationPolicy>();
     }

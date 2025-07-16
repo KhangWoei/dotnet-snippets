@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Crawling;
 
-public sealed class WebCrawler(IMediator mediator, Configuration configuration, Crawler crawler) : IDisposable
+public sealed class WebCrawler(IMediator mediator, Configuration configuration, ICrawler crawler) : IDisposable
 {
     private readonly SemaphoreSlim _semaphore = new(4, 4);
     public async Task Start(CancellationToken cancellationToken)
