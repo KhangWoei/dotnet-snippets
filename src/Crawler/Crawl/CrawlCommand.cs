@@ -9,11 +9,13 @@ internal sealed class CrawlCommand : RootCommand
         Add(Seed);
         Add(Depth);
         Add(Width);
+        Add(AsService);
 
         SetAction((result, cancellationToken) => CrawlInitializer.Run(
             result.GetRequiredValue(Seed),
             result.GetValue(Depth), 
             result.GetValue(Width),
+            result.GetValue(AsService),
             cancellationToken));
     }
 
@@ -34,6 +36,13 @@ internal sealed class CrawlCommand : RootCommand
     {
         Description = "Width of the crawler.",
         DefaultValueFactory = _ => 2,
+        Required = false
+    };
+
+    private static readonly Option<bool> AsService = new(name: "--as-service")
+    {
+        Description = "Run the crawler as a background service.",
+        DefaultValueFactory = _ => false,
         Required = false
     };
 }
