@@ -16,9 +16,9 @@ public static class CrawlerDependencies
         services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Crawler>());
         services.AddHttpClient();
 
-        // TODO - reconsider this
         services.AddSingleton(configuration);
 
+        services.AddSingleton<WebCrawler>();
         services.AddSingleton<ICrawlSourceFactory, CrawlSourceFactory>();
         services.AddSingleton<ISeedQueue<Task<ICrawlSource>>, SeedQueue>();
 
