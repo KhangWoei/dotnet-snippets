@@ -5,6 +5,7 @@ namespace Crawling.CrawlSource;
 
 internal sealed class CrawlSource(IHttpClientFactory httpClientFactory, Uri uri, Robot robot, int depth) : ICrawlSource
 {
+    public string Source { get; } = uri.Host;
     public ITrie Seen { get; } = Trie.Create(uri);
 
     public PriorityQueue<Uri, int> Queue { get; } = new([(uri, -1)]);
