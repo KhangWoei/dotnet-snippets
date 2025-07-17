@@ -4,18 +4,22 @@ using MediatR;
 
 namespace Crawling.Frontier;
 
-internal sealed class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawlSourceFactory factory, ISeedQueue<Task<ICrawlSource>> seedQueue) : INotificationHandler<UriDiscoveredNotification>
+internal sealed class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawlSourceFactory factory, ISeedQueue<Task<ICrawlSource>> seedQueue, Configuration configuration) : INotificationHandler<UriDiscoveredNotification>
 {
     // TODO - Wrap this in its own type
     // TODO - uri denormalization and figure out how to ensure we don't requeue the same base uris
     private static ConcurrentDictionary<Uri, byte> _seen = [];
+    private static int _currentWidth = 0;
     
     public async Task Handle(UriDiscoveredNotification notification, CancellationToken cancellationToken)
     {
-        if (_seen.TryAdd(notification.Seed, 1) && await policy.ShouldVisit(notification.Seed, cancellationToken))
+        if (_seen.TryAdd(notification.Seed, 1) 
+            && await policy.ShouldVisit(notification.Seed, cancellationToken) 
+            && Interlocked.Increment(ref _currentWidth) <= configuration.Width  )
         {
             var createCrawlSourceTask = factory.Create(notification.Seed.ToString(), notification.Depth, cancellationToken);
             await seedQueue.EnqueueAsync(createCrawlSourceTask, cancellationToken);
+
         }
     }
 }
