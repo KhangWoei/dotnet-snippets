@@ -7,9 +7,9 @@ namespace Crawling.Frontier;
 internal sealed class UriDiscoveredNotificationHandler(IVisitationPolicy policy, ICrawlSourceFactory factory, ISeedQueue<Task<ICrawlSource>> seedQueue, Configuration configuration) : INotificationHandler<UriDiscoveredNotification>
 {
     // TODO - Wrap this in its own type
-    // TODO - uri denormalization and figure out how to ensure we don't requeue the same base uris
+    // TODO - uri normalization and figure out how to ensure we don't requeue the same base uris
     private static ConcurrentDictionary<Uri, byte> _seen = [];
-    private static int _currentWidth = 0;
+    private static int _currentWidth;
     
     public async Task Handle(UriDiscoveredNotification notification, CancellationToken cancellationToken)
     {
