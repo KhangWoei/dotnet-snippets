@@ -25,6 +25,7 @@ public sealed class WebCrawler(IMediator mediator, Configuration configuration, 
             {
                 if (_tasks.Values.Any(t => !t.Task.IsCompleted))
                 {
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
                     continue;
                 }
 
