@@ -12,7 +12,7 @@ internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : IC
     {
         while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
         {
-            var client = source.CreateClient();
+            using var client = source.CreateClient();
 
             var html = await linkVisitor.VisitAsync(client, current, cancellationToken);
             if (!string.IsNullOrEmpty(html))
