@@ -30,8 +30,8 @@ internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : IC
                     }
                     else
                     {
-                        _ = mediator.Publish(new UriDiscoveredNotification(link, depth),
-                            cancellationToken);
+                        // This uses the configuration's depth not the current depth as we are crawling a different site entirely
+                        _ = mediator.Publish(new UriDiscoveredNotification(link, depth), cancellationToken);
                     }
                 }
             }
