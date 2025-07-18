@@ -7,13 +7,15 @@ namespace Crawling;
 
 public sealed class WebCrawler(IMediator mediator, Configuration configuration, ICrawler crawler) : IDisposable
 {
+    private sealed record CrawlTask(Task Task, CancellationTokenSource CancellationTokenSource);
+    
     private readonly SemaphoreSlim _semaphore = new(4, 4);
+    private readonly ConcurrentDictionary<Guid, CrawlTask> _tasks = new();
+        
     public async Task Start(CancellationToken cancellationToken)
     {
-        ConcurrentDictionary<Guid, Task> tasks = new();
         
-        await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth),
-            cancellationToken);
+        await mediator.Publish(new UriDiscoveredNotification(configuration.Seed, configuration.Depth), cancellationToken);
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -21,7 +23,7 @@ public sealed class WebCrawler(IMediator mediator, Configuration configuration, 
 
             if (queuedTask is null)
             {
-                if (tasks.Values.Any(t => !t.IsCompleted))
+                if (_tasks.Values.Any(t => !t.Task.IsCompleted))
                 {
                     continue;
                 }
@@ -34,25 +36,22 @@ public sealed class WebCrawler(IMediator mediator, Configuration configuration, 
                 await _semaphore.WaitAsync(cancellationToken);
 
                 var taskId = Guid.NewGuid();
-                var crawlTask = ProcessCrawlTask(queuedTask, () => _semaphore.Release(), cancellationToken);
-                tasks.TryAdd(taskId, crawlTask);
+                var cancellationTokenSource = new CancellationTokenSource();
+                var task = ProcessCrawlTask(queuedTask, () => _semaphore.Release(), cancellationTokenSource.Token);
+                var crawlTask = new CrawlTask(task, cancellationTokenSource);
 
-                foreach (var completedTasks in tasks.Where(task => task.Value.IsCompleted).Select(k => k.Key))
+                _tasks.TryAdd(taskId, crawlTask);
+
+                foreach (var completedTasks in _tasks.Where(t => t.Value.Task.IsCompleted).Select(k => k.Key))
                 {
-                    tasks.TryRemove(completedTasks, out _);
+                    if (_tasks.TryRemove(completedTasks, out var t))
+                    {
+                        t.CancellationTokenSource.Dispose();
+                    }
                 }
             }
             catch (OperationCanceledException)
             {
-            }
-        }
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            var runningTasks = tasks.Values.Where(t => !t.IsCompleted).ToList();
-            if (runningTasks.Count != 0)
-            {
-                await Task.WhenAll(runningTasks).WaitAsync(TimeSpan.FromSeconds(30), cancellationToken);
             }
         }
     }
@@ -71,6 +70,28 @@ public sealed class WebCrawler(IMediator mediator, Configuration configuration, 
 
     public void Dispose()
     {
+        foreach (var task in _tasks.Values)
+        {
+            if (!task.Task.IsCompleted)
+            {
+                task.CancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(30));
+            }
+        }
+
+        try
+        {
+            Task.WhenAll(_tasks.Values.Select(t => t.Task)).GetAwaiter().GetResult();
+        }
+        catch (AggregateException) { }
+
+        foreach (var task in _tasks.Values)
+        {
+            try
+            {
+                task.CancellationTokenSource.Dispose();
+            } catch (ObjectDisposedException) { }
+        }
+
         _semaphore.Dispose();
     }
 }
