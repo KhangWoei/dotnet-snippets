@@ -4,7 +4,7 @@ internal sealed class VisitationPolicy(IHttpClientFactory factory) : IVisitation
 {
     public async Task<bool> ShouldVisit(Uri uri, CancellationToken cancellationToken)
     {
-        var client = factory.CreateClient(uri.Host);
+        using var client = factory.CreateClient(uri.Host);
         var response = await client.GetAsync(uri, cancellationToken);
 
         return response.IsSuccessStatusCode && response.Content.Headers.ContentType?.MediaType == "text/html";
