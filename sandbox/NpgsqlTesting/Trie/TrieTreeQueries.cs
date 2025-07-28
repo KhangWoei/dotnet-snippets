@@ -5,11 +5,9 @@ namespace NpgsqlTesting.Trie;
 
 public class TrieTreeQueries
 {
-    private const string _connectionString = "Host=localhost,5432;Username=postgres;Password=Password@1;";
-
     public async  Task<TrieTreeModel> Get(string treeName)
     {
-        await using var connection = new NpgsqlConnection(_connectionString);
+        await using var connection = new NpgsqlConnection(Connection.ConnectionString);
         await connection.OpenAsync();
 
         var command = connection.CreateCommand();
