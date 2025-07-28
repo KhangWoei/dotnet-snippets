@@ -9,8 +9,11 @@ public class Tests
     [TestCase]
     public async Task CreateAndGet()
     {
-        var command = new TrieTreeCommands();
-        var queries = new TrieTreeQueries();
+        var testDatabaseHelper = new TestDatabaseHelper("Host=localhost,5432;Username=postgres;Password=Password@1;");
+        var databaseConnection = await testDatabaseHelper.CreateDatabaseAsync();
+        
+        var command = new TrieTreeCommands(databaseConnection);
+        var queries = new TrieTreeQueries(databaseConnection);
 
         var expected = new TrieTreeModel("test", "some_url");
         await command.Create(expected);
@@ -22,5 +25,7 @@ public class Tests
             Assert.That(actual.Name, Is.EqualTo(expected.Name));
             Assert.That(actual.BaseUrl, Is.EqualTo(expected.BaseUrl));
         });
+
+        await testDatabaseHelper.Cleanup();
     }
 }

@@ -3,11 +3,11 @@ using Npgsql;
 
 namespace NpgsqlTesting.Trie;
 
-public class TrieTreeCommands
+public class TrieTreeCommands(string connectionString)
 {
     public async Task Create(TrieTreeModel tree)
     {
-        await using var connection = new NpgsqlConnection(Connection.ConnectionString);
+        await using var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
 
         var command = connection.CreateCommand();
