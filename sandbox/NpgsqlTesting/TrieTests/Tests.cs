@@ -16,9 +16,9 @@ public class Tests
         var queries = new TrieTreeQueries(databaseConnection);
 
         var expected = new TrieTreeModel("test", "some_url");
-        await command.Create(expected);
+        await command.CreateAsync(expected);
 
-        var actual = await queries.Get(expected.Name);
+        var actual = await queries.GetAsync(expected.Name);
         
         Assert.Multiple(() =>
         {

@@ -5,7 +5,7 @@ namespace NpgsqlTesting.Trie;
 
 public class TrieTreeQueries(string connectionString)
 {
-    public async  Task<TrieTreeModel> Get(string treeName)
+    public async Task<TrieTreeModel> GetAsync(string treeName)
     {
         await using var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
