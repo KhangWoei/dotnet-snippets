@@ -9,6 +9,11 @@ variable "ports" {
   }
 }
 
+variable "pg_data_volume" {
+  type     = string
+  nullable = false
+}
+
 variable "environment_variables" {
   type = object({
     postgres_password         = string
@@ -26,6 +31,6 @@ variable "environment_variables" {
     postgres_initdb_args      = ""
     postgres_initdb_waldir    = ""
     postgres_host_auth_method = "scram-sha-256"
-    pg_data                   = "/var/lib/postgresql/data"
+    pg_data                   = "/var/lib/postgresql/data/pgdata"
   }
 }

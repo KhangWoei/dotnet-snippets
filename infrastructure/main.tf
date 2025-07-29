@@ -16,7 +16,12 @@ resource "docker_container" "postgres" {
     "POSTGRES_INITDB_ARGS=${var.environment_variables.postgres_initdb_args}",
     "POSTGRES_INITDB_WALDIR=${var.environment_variables.postgres_initdb_waldir}",
     "POSTGRES_HOST_AUTH_METHOD=${var.environment_variables.postgres_host_auth_method}",
-    "PG_DATA=${var.environment_variables.pg_data}"
+    "PGDATA=${var.environment_variables.pg_data}"
   ]
+  mounts {
+    type   = "bind"
+    target = var.environment_variables.pg_data
+    source = var.pg_data_volume
+  }
 }
 
