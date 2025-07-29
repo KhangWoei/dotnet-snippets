@@ -1,11 +1,10 @@
-﻿using System.Data;
-using Npgsql;
+﻿using Npgsql;
 
 namespace NpgsqlTesting.Trie;
 
 public class TrieTreeCommands(string connectionString)
 {
-    public async Task CreateAsync(TrieTreeModel tree)
+    public async Task CreateAsync(CreateTreeRequest request)
     {
         await using var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
@@ -16,8 +15,8 @@ public class TrieTreeCommands(string connectionString)
                               VALUES (@n, @u);
                               """;
         
-        command.Parameters.AddWithValue("n", tree.Name);
-        command.Parameters.AddWithValue("u", tree.BaseUrl);
+        command.Parameters.AddWithValue("n", request.Name);
+        command.Parameters.AddWithValue("u", request.BaseUrl);
 
         await command.ExecuteNonQueryAsync();
     }

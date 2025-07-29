@@ -23,10 +23,11 @@ public class TrieTreeQueries(string connectionString)
 
         if (await reader.ReadAsync())
         {
+            var id = reader.GetInt32("id");
             var name = reader.GetString("name");
             var baseUrl = reader.GetString("base_url");
 
-            return new TrieTreeModel(name, baseUrl);
+            return new TrieTreeModel(id, name, baseUrl);
         }
 
         throw new TreeNotFoundError();

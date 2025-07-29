@@ -1,3 +1,3 @@
 ﻿namespace NpgsqlTesting.Trie;
 
-public record TrieTreeModel(string Name, string BaseUrl);
+public record TrieTreeModel(int Id, string Name, string BaseUrl);
