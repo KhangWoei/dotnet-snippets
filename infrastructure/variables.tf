@@ -9,6 +9,11 @@ variable "ports" {
   }
 }
 
+variable "database_name" {
+  type    = string
+  default = "crawl_db"
+}
+
 variable "pg_data_volume" {
   type     = string
   nullable = false
@@ -31,6 +36,6 @@ variable "environment_variables" {
     postgres_initdb_args      = ""
     postgres_initdb_waldir    = ""
     postgres_host_auth_method = "scram-sha-256"
-    pg_data                   = "/var/lib/postgresql/data/pgdata"
+    pg_data                   = "/var/lib/postgresql/data/"
   }
 }

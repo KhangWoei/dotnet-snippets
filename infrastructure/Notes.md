@@ -1,0 +1,1 @@
+- Was trying to use `bind/volume mounts` but that caused issues as the container did not have read/write access to the host's directory causing the container to fail to start up. Better to use `docker volumes` as those are managed by docker. Alternatively, the host needs to change the permission.
