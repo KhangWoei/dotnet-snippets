@@ -16,7 +16,7 @@ public class NodeCommands(string connectionString)
                               """;
         
         command.Parameters.AddWithValue("tree", createNodeRequest.TreeId);
-        command.Parameters.AddWithValue("parent", createNodeRequest.ParentId);
+        command.Parameters.AddWithValue("parent", createNodeRequest.ParentId ?? (object) DBNull.Value);
         command.Parameters.AddWithValue("path", createNodeRequest.Path);
         command.Parameters.AddWithValue("terminal", createNodeRequest.IsTerminal);
 
