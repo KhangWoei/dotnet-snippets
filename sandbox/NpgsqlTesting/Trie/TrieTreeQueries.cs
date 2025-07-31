@@ -12,7 +12,7 @@ public class TrieTreeQueries(string connectionString)
 
         var command = connection.CreateCommand();
         command.CommandText = """
-                              SELECT name, base_url
+                              SELECT id, name, base_url
                               FROM trees
                               WHERE name = @n
                               """;
