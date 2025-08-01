@@ -12,5 +12,6 @@ create table nodes (
     parent_id bigint references nodes(id) on delete cascade,
     full_path text not null,
     is_terminal boolean default false, 
-    created_at timestamptz default now()
+    created_at timestamptz default now(),
+    constraint unique_nodes_tree_id_and_full_path UNIQUE(tree_id, full_path)
 );
