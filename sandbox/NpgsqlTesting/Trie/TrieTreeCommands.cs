@@ -4,7 +4,7 @@ namespace NpgsqlTesting.Trie;
 
 public class TrieTreeCommands(string connectionString)
 {
-    public async Task<TrieTreeModel?> CreateAsync(CreateTreeRequest request, CancellationToken cancellationToken = default)
+    public async Task<TrieTreeModel> CreateAsync(CreateTreeRequest request, CancellationToken cancellationToken = default)
     {
         await using var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync(cancellationToken);
@@ -19,8 +19,8 @@ public class TrieTreeCommands(string connectionString)
         command.Parameters.AddWithValue("n", request.Name);
         command.Parameters.AddWithValue("u", request.BaseUrl);
 
-        var result = (int?) await command.ExecuteScalarAsync(cancellationToken);
-
-        return result is null ? null : new TrieTreeModel((int)result, request.Name, request.BaseUrl);
+        // The query should never return null, if it did we should expect a database exception
+        var result = (int)(await command.ExecuteScalarAsync(cancellationToken))!;
+        return new TrieTreeModel(result, request.Name, request.BaseUrl);
     }
 }

@@ -36,7 +36,7 @@ public class NodeQueries(string connectionString)
         throw new NodeNotFoundError();
     }
 
-    public bool TryGet(int treeId, string path, [MaybeNullWhen(false)] out NodeModel result)
+    public bool TryGet(int treeId, string path, [MaybeNullWhen(false)] out NodeModel? result)
     {
         var connection = new NpgsqlConnection(connectionString);
         connection.Open();
