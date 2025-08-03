@@ -17,7 +17,7 @@ public class TrieService(string connectionString)
         var nodesLookup = new Dictionary<Node, long>();
         foreach (var node in tree)
         {
-            if (!_nodeQueries.TryGet(persistedTree!.Id, node.Path, out var nodeModel))
+            if (!_nodeQueries.TryGet(persistedTree.Id, node.Path, out var nodeModel))
             {
                 // TODO: In other scenarios where we'd update or add a node independently, we need to query the DB for the parent instead using the treeId and the fullPath
                 long? parentId = node.Node.Parent is null ? null : nodesLookup.GetValueOrDefault(node.Node.Parent!);
