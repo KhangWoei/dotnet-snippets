@@ -4,10 +4,9 @@ using Npgsql;
 
 namespace TrieData.Nodes;
 
-internal sealed class NodesReadRepository(NpgsqlDataSource dataSource)
+internal sealed class NodesReadRepository(NpgsqlDataSource dataSource) : INodesReadRepository
 {
-    
-    public async Task<NodeModel?> GetAsync(int treeId, string path)
+    public async Task<INodeModel?> GetAsync(int treeId, string path, CancellationToken cancellationToken = default)
     {
         await using var command = dataSource.CreateCommand();
         command.CommandText = """
@@ -20,9 +19,9 @@ internal sealed class NodesReadRepository(NpgsqlDataSource dataSource)
         command.Parameters.AddWithValue("tree", treeId);
         command.Parameters.AddWithValue("path", path);
 
-        await using var reader = await command.ExecuteReaderAsync();
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
 
-        if (await reader.ReadAsync())
+        if (await reader.ReadAsync(cancellationToken))
         {
             var id = reader.GetInt64("id");
             var parentId = reader.GetInt64("parent_id");
@@ -35,7 +34,7 @@ internal sealed class NodesReadRepository(NpgsqlDataSource dataSource)
         return null;
     }
 
-    public bool TryGet(int treeId, string path, [MaybeNullWhen(false)] out NodeModel? result)
+    public bool TryGet(int treeId, string path, [MaybeNullWhen(false)] out INodeModel result)
     {
         using var command = dataSource.CreateCommand();
         command.CommandText = """
@@ -66,4 +65,10 @@ internal sealed class NodesReadRepository(NpgsqlDataSource dataSource)
 
         return result is not null;
     }
+}
+
+public interface INodesReadRepository
+{
+    Task<INodeModel?> GetAsync(int treeId, string path, CancellationToken cancellationToken);
+    bool TryGet(int treeId, string path, [MaybeNullWhen(false)] out INodeModel result);
 }

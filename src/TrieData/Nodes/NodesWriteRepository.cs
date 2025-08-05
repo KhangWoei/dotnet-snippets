@@ -2,10 +2,10 @@
 
 namespace TrieData.Nodes;
 
-internal sealed class NodesWriteRepository(NpgsqlDataSource dataSource)
+internal sealed class NodesWriteRepository(NpgsqlDataSource dataSource) : INodesWriteRepository
 {
 
-    public async Task<NodeModel> CreateAsync(CreateNodeRequest request, CancellationToken cancellationToken = default)
+    public async Task<INodeModel> CreateAsync(CreateNodeRequest request, CancellationToken cancellationToken = default)
     {
         await using var command = dataSource.CreateCommand();
         command.CommandText = """
@@ -23,4 +23,9 @@ internal sealed class NodesWriteRepository(NpgsqlDataSource dataSource)
         var result = (int)(await command.ExecuteScalarAsync(cancellationToken))!;
         return new NodeModel(result, request.ParentId, request.Path, request.IsTerminal);
     }
+}
+
+public interface INodesWriteRepository
+{
+    Task<INodeModel> CreateAsync(CreateNodeRequest request, CancellationToken cancellationToken);
 }
