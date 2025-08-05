@@ -1,5 +1,5 @@
 ﻿using Crawling.Robots;
-using Crawling.TrieTree;
+using TrieData;
 
 namespace Crawling.CrawlSource;
 

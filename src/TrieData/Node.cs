@@ -1,6 +1,6 @@
-﻿namespace Crawling.TrieTree;
+﻿namespace TrieData;
 
-internal sealed class Node
+public sealed class Node
 {
     public Dictionary<string, Node> Children { get; } = new();
 

@@ -1,4 +1,4 @@
-﻿namespace Crawling.TrieTree;
+﻿namespace TrieData;
 
 public interface ITrie
 {
