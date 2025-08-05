@@ -6,9 +6,7 @@ internal sealed class TreesWriteRepository(NpgsqlDataSource dataSource)
 {
     public async Task<TrieModel> CreateAsync(string name, string baseUrl, CancellationToken cancellationToken = default)
     {
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        
-        var command = connection.CreateCommand();
+        await using var command = dataSource.CreateCommand();
         command.CommandText = """
                               INSERT INTO trees (name, base_url)
                               VALUES (@n, @u)

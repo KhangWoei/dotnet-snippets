@@ -9,7 +9,7 @@ internal sealed class TreesReadRepository(NpgsqlDataSource dataSource)
     
     public async Task<TrieModel?> GetAsync(string treeName)
     {
-        var command = dataSource.CreateCommand();
+        await using var command = dataSource.CreateCommand();
         command.CommandText = """
                               SELECT id, name, base_url
                               FROM trees
@@ -34,7 +34,7 @@ internal sealed class TreesReadRepository(NpgsqlDataSource dataSource)
 
     public bool TryGet(string treeName, [MaybeNullWhen(false)] out TrieModel tree)
     {
-        var command = dataSource.CreateCommand();
+        using var command = dataSource.CreateCommand();
         command.CommandText = """
                               SELECT id, name, base_url
                               FROM trees
