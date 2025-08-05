@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace TrieData;
 
-public sealed class Trie(Uri uri) : ITrie
+public sealed class Trie(Uri uri) : ITrie, IEnumerable<(Node Node, string Path)>
 {
     private readonly Node _root = new ();
 
@@ -70,4 +72,14 @@ public sealed class Trie(Uri uri) : ITrie
     }
     
     private bool IsBaseOf(Uri value) => uri.IsBaseOf(value);
+    
+    public IEnumerator<(Node Node, string Path)> GetEnumerator()
+    {
+        return new TreeIterator(_root);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }
