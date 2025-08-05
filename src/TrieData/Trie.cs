@@ -33,7 +33,7 @@ public sealed class Trie(Uri uri) : ITrie
         {
             if (!current.Children.TryGetValue(part, out var child))
             {
-                child = new Node();
+                child = new Node("part", parent: current);
                 current.Children[part] = child;
             }
 
