@@ -6,6 +6,8 @@ public sealed class Trie(Uri uri) : ITrie, IEnumerable<(Node Node, string Path)>
 {
     private readonly Node _root = new ();
 
+    public string Name { get; } = uri.Host;
+
     public static ITrie Create(Uri uri)
     {
         var uriBuilder = new UriBuilder(uri)

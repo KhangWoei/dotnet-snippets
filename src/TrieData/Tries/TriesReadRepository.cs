@@ -26,7 +26,7 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesR
             var name = reader.GetString("name");
             var baseUrl = reader.GetString("base_url");
 
-            return new TrieModel(id, name, baseUrl);
+            return new TrieModel(id, name);
         }
 
         return null;
@@ -51,7 +51,7 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesR
             var name = reader.GetString("name");
             var baseUrl = reader.GetString("base_url");
 
-            tree = new TrieModel(id, name, baseUrl);
+            tree = new TrieModel(id, name);
         }
         else
         {

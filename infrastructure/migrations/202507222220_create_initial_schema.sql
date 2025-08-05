@@ -1,7 +1,6 @@
 create table trees (
     id SERIAL PRIMARY KEY, 
     name varchar(255) not null, 
-    base_url text, 
     created_at timestamptz default now(), 
     constraint unique_trees_name UNIQUE(name)
 );
