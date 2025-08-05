@@ -2,9 +2,9 @@
 
 namespace TrieData.Tries;
 
-internal sealed class TriesWriteRepository(NpgsqlDataSource dataSource)
+internal sealed class TriesWriteRepository(NpgsqlDataSource dataSource) : ITriesWriteRepository
 {
-    public async Task<TrieModel> CreateAsync(string name, string baseUrl, CancellationToken cancellationToken = default)
+    public async Task<ITrieModel> CreateAsync(string name, string baseUrl, CancellationToken cancellationToken = default)
     {
         await using var command = dataSource.CreateCommand();
         command.CommandText = """
@@ -20,4 +20,9 @@ internal sealed class TriesWriteRepository(NpgsqlDataSource dataSource)
         var result = (int)(await command.ExecuteScalarAsync(cancellationToken))!;
         return new TrieModel(result, name, baseUrl);
     }
+}
+
+public interface ITriesWriteRepository
+{
+    Task<ITrieModel> CreateAsync(string name, string baseUrl, CancellationToken cancellationToken);
 }

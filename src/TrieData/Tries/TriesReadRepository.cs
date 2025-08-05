@@ -4,10 +4,10 @@ using Npgsql;
 
 namespace TrieData.Tries;
 
-internal sealed class TriesReadRepository(NpgsqlDataSource dataSource)
+internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesReadRepository
 {
     
-    public async Task<TrieModel?> GetAsync(string treeName)
+    public async Task<ITrieModel?> GetAsync(string treeName)
     {
         await using var command = dataSource.CreateCommand();
         command.CommandText = """
@@ -32,7 +32,7 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource)
         return null;
     }
 
-    public bool TryGet(string treeName, [MaybeNullWhen(false)] out TrieModel tree)
+    public bool TryGet(string treeName, [MaybeNullWhen(false)] out ITrieModel tree)
     {
         using var command = dataSource.CreateCommand();
         command.CommandText = """
@@ -60,4 +60,11 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource)
 
         return tree is not null;
     }
+}
+
+public interface ITriesReadRepository
+{
+    Task<ITrieModel?> GetAsync(string triesTreeName);
+
+    bool TryGet(string triesTreeName, [MaybeNullWhen(false)]out ITrieModel tree);
 }
