@@ -1,3 +1,3 @@
 ﻿namespace TrieData.Nodes;
 
-internal sealed record CreateNodeRequest(int TreeId, long? ParentId, string Path, bool IsTerminal);
+public sealed record CreateNodeRequest(int TreeId, long? ParentId, string Path, bool IsTerminal);
