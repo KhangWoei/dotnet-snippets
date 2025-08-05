@@ -6,7 +6,7 @@
 
     <ItemGroup>
         <PackageReference Include="MediatR" />
-        <PackageReference Include="Npgsql" Version="9.0.3" />
-        <PackageReference Include="Npgsql.DependencyInjection" Version="9.0.3" />
+        <PackageReference Include="Npgsql" />
+        <PackageReference Include="Npgsql.DependencyInjection" />
     </ItemGroup>
 </Project>
