@@ -1,8 +1,8 @@
 ﻿using Npgsql;
 
-namespace TrieData;
+namespace TrieData.Tries;
 
-internal sealed class TreesWriteRepository(NpgsqlDataSource dataSource)
+internal sealed class TriesWriteRepository(NpgsqlDataSource dataSource)
 {
     public async Task<TrieModel> CreateAsync(string name, string baseUrl, CancellationToken cancellationToken = default)
     {

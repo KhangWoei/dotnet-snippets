@@ -2,9 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Npgsql;
 
-namespace TrieData;
+namespace TrieData.Tries;
 
-internal sealed class TreesReadRepository(NpgsqlDataSource dataSource)
+internal sealed class TriesReadRepository(NpgsqlDataSource dataSource)
 {
     
     public async Task<TrieModel?> GetAsync(string treeName)
