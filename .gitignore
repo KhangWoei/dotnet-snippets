@@ -19,3 +19,4 @@ packages/
 # Rider
 .idea
 *.sln.DotSettings.user
+Folder.DotSettings.user
