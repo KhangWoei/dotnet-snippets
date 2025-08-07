@@ -10,7 +10,7 @@ internal sealed class NodesWriteRepository(NpgsqlDataSource dataSource) : INodes
         await using var command = dataSource.CreateCommand();
         command.CommandText = """
                               INSERT INTO nodes (tree_id, parent_id, full_path, is_terminal)
-                              VALUES (@tree, @parent, @path, @terminal);
+                              VALUES (@tree, @parent, @path, @terminal)
                               RETURNING id;
                               """;
 
