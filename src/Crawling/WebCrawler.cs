@@ -2,10 +2,11 @@
 using Crawling.CrawlSource;
 using Crawling.Frontier;
 using MediatR;
+using TrieData;
 
 namespace Crawling;
 
-public sealed class WebCrawler(IMediator mediator, Configuration configuration, ICrawler crawler) : IDisposable
+public sealed class WebCrawler(IServiceProvider serviceProvider, IMediator mediator, Configuration configuration, ICrawler crawler) : IDisposable
 {
     private sealed record CrawlTask(Task Task, CancellationTokenSource CancellationTokenSource);
     
@@ -61,7 +62,13 @@ public sealed class WebCrawler(IMediator mediator, Configuration configuration, 
     {
         try
         {
-            await crawler.Crawl(await source, configuration.Depth, cancellationToken);
+            var trie = await crawler.Crawl(await source, configuration.Depth, cancellationToken);
+
+            // TODO: Fix this - i need some logging
+            if (serviceProvider.GetService(typeof(IRequestHandler<>).MakeGenericType(typeof(CreateTrieCommandRequest))) is not null)
+            {
+                await mediator.Send(new CreateTrieCommandRequest(trie), cancellationToken);
+            }
         }
         finally
         {

@@ -6,13 +6,14 @@ namespace Crawl.Crawl;
 
 internal static class CrawlInitializer
 {
-    public static async Task<int> Run(string seed, int depth, int width, bool asBackgroundService, CancellationToken cancellationToken)
+    public static async Task<int> Run(string seed, int depth, int width, bool asBackgroundService, string? connectionString, CancellationToken cancellationToken)
     {
         var configuration = new Configuration(seed, depth, width);
+        
         if (asBackgroundService)
         {
             var builder = Host.CreateApplicationBuilder();
-            builder.Services.UserCrawler(configuration);
+            builder.Services.UserCrawler(configuration, connectionString);
             builder.Services.AddHostedService<WebCrawlerService>();
 
             var host = builder.Build();
@@ -21,7 +22,7 @@ internal static class CrawlInitializer
         else
         {
             var services = new ServiceCollection();
-            services.UserCrawler(configuration);
+            services.UserCrawler(configuration, connectionString);
 
             var provider = services.BuildServiceProvider();
             var crawler = provider.GetRequiredService<WebCrawler>();
