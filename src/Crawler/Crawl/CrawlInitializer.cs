@@ -13,6 +13,7 @@ internal static class CrawlInitializer
         {
             var builder = Host.CreateApplicationBuilder();
             builder.Services.UserCrawler(configuration);
+            builder.Services.AddHostedService<WebCrawlerService>();
 
             var host = builder.Build();
             await host.RunAsync(cancellationToken);

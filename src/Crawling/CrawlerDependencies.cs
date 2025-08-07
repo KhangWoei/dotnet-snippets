@@ -11,7 +11,6 @@ public static class CrawlerDependencies
 {
     public static void UserCrawler(this IServiceCollection services, Configuration configuration)
     {
-        services.AddHostedService<WebCrawlerService>();
         
         services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Crawler>());
         services.AddHttpClient();
