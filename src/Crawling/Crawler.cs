@@ -3,12 +3,13 @@ using Crawling.Frontier;
 using Crawling.Harvesting;
 using Crawling.LinkVisiting;
 using MediatR;
+using TrieData;
 
 namespace Crawling;
 
 internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : ICrawler
 {
-    public async Task Crawl(ICrawlSource source, int depth, CancellationToken cancellationToken)
+    public async Task<Trie> Crawl(ICrawlSource source, int depth, CancellationToken cancellationToken)
     {
         while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
         {
@@ -38,5 +39,7 @@ internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : IC
 
             await Task.Delay(source.Robot.DelayMs, cancellationToken);
         }
+
+        return source.Seen;
     }
 }
