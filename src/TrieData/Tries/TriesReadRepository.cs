@@ -11,7 +11,7 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesR
     {
         await using var command = dataSource.CreateCommand();
         command.CommandText = """
-                              SELECT id, name, base_url
+                              SELECT id, name
                               FROM trees
                               WHERE name = @n
                               """;
@@ -24,7 +24,6 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesR
         {
             var id = reader.GetInt32("id");
             var name = reader.GetString("name");
-            var baseUrl = reader.GetString("base_url");
 
             return new TrieModel(id, name);
         }
@@ -36,7 +35,7 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesR
     {
         using var command = dataSource.CreateCommand();
         command.CommandText = """
-                              SELECT id, name, base_url
+                              SELECT id, name
                               FROM trees
                               WHERE name = @n
                               """;
@@ -49,8 +48,7 @@ internal sealed class TriesReadRepository(NpgsqlDataSource dataSource) : ITriesR
         {
             var id = reader.GetInt32("id");
             var name = reader.GetString("name");
-            var baseUrl = reader.GetString("base_url");
-
+            
             tree = new TrieModel(id, name);
         }
         else
