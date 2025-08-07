@@ -2,13 +2,13 @@ using System.Collections;
 
 namespace TrieData;
 
-public sealed class Trie(Uri uri) : ITrie, IEnumerable<(Node Node, string Path)>
+public sealed class Trie(Uri uri) : IEnumerable<(Node Node, string Path)>
 {
     private readonly Node _root = new ();
 
     public string Name { get; } = uri.Host;
 
-    public static ITrie Create(Uri uri)
+    public static Trie Create(Uri uri)
     {
         var uriBuilder = new UriBuilder(uri)
         {

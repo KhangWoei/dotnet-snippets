@@ -8,7 +8,7 @@ public interface ICrawlSource
     string Source { get; }
     PriorityQueue<Uri, int> Queue { get; }
     
-    ITrie Seen { get; }
+    Trie Seen { get; }
     
     IRobot Robot { get; }
     
