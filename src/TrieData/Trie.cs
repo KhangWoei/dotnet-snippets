@@ -37,7 +37,7 @@ public sealed class Trie(Uri uri) : IEnumerable<(Node Node, string Path)>
         {
             if (!current.Children.TryGetValue(part, out var child))
             {
-                child = new Node("part", parent: current);
+                child = new Node(part, parent: current);
                 current.Children[part] = child;
             }
 
