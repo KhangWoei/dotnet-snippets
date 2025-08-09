@@ -5,7 +5,7 @@ namespace Crawling.CrawlSource;
 
 internal sealed class CrawlSource(IHttpClientFactory httpClientFactory, Uri uri, Robot robot, int depth) : ICrawlSource
 {
-    public string Source { get; } = uri.Host;
+    public Uri Source { get; } = uri;
     public Trie Seen { get; } = Trie.Create(uri);
 
     public PriorityQueue<Uri, int> Queue { get; } = new([(uri, -1)]);
@@ -14,7 +14,7 @@ internal sealed class CrawlSource(IHttpClientFactory httpClientFactory, Uri uri,
 
     public int Depth { get; } = depth;
 
-    public HttpClient CreateClient() => httpClientFactory.CreateClient(uri.Host);
+    public HttpClient CreateClient() => httpClientFactory.CreateClient(Source.Host);
      
     public bool CanVisit(Uri uriToVisit) => !Seen.Contains(uriToVisit) && !Robot.Disallowed.Contains(uriToVisit);
 }

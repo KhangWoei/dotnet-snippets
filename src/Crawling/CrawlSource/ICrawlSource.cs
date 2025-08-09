@@ -5,7 +5,7 @@ namespace Crawling.CrawlSource;
 
 public interface ICrawlSource
 {
-    string Source { get; }
+    Uri Source { get; }
     PriorityQueue<Uri, int> Queue { get; }
     
     Trie Seen { get; }

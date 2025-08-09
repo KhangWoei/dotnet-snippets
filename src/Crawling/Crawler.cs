@@ -25,6 +25,13 @@ internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : IC
                         continue;
                     }
 
+                    if (!source.Source.IsBaseOf(link))
+                    {
+                        // This uses the configuration's depth not the current depth as we are crawling a different site entirely
+                        _ = mediator.Publish(new UriDiscoveredNotification(link, depth), cancellationToken);
+                        continue;
+                    }
+
                     if (source.Seen.TryInsert(link))
                     {
                         source.Queue.Enqueue(link, currentDepth + 1);
