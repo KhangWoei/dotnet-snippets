@@ -63,6 +63,8 @@ public sealed class WebCrawler(IServiceProvider serviceProvider, IMediator media
         try
         {
             var trie = await crawler.Crawl(await source, configuration.Depth, cancellationToken);
+            
+            await WriteToFile(trie, cancellationToken);
 
             // TODO: Fix this - i need some logging
             if (serviceProvider.GetService(typeof(IRequestHandler<>).MakeGenericType(typeof(CreateTrieCommandRequest))) is not null)
@@ -74,6 +76,15 @@ public sealed class WebCrawler(IServiceProvider serviceProvider, IMediator media
         {
             onComplete.Invoke();
         }
+    }
+
+    // TODO: Could be improved by using a StreamWriter
+    private static async Task WriteToFile(Trie trie, CancellationToken cancellationToken)
+    {
+        var dotNotation = trie.ToDotNotation();
+        var currentDirectory = Environment.CurrentDirectory;
+        var filePath = Path.Combine(currentDirectory, $"{trie.Name}.dot");
+        await File.WriteAllTextAsync(filePath, dotNotation, cancellationToken);
     }
 
     public void Dispose()
