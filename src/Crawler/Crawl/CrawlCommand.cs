@@ -14,6 +14,7 @@ internal sealed class CrawlCommand : RootCommand
         Add(Seed);
         Add(Depth);
         Add(Width);
+        Add(OutputDirectory);
         Add(ConnectionString);
         Add(AsService);
 
@@ -23,8 +24,9 @@ internal sealed class CrawlCommand : RootCommand
             result.GetRequiredValue(Seed)!,
             result.GetValue(Depth), 
             result.GetValue(Width),
-            result.GetValue(AsService), 
+            result.GetValue(OutputDirectory)!,
             result.GetValue(ConnectionString),
+            result.GetValue(AsService), 
             cancellationToken));
     }
 
@@ -74,6 +76,13 @@ internal sealed class CrawlCommand : RootCommand
     {
         Description = "Width of the crawler.",
         DefaultValueFactory = _ => 50,
+        Required = false
+    };
+    
+    private static readonly Option<DirectoryInfo> OutputDirectory = new(name: "--output-directory")
+    {
+        Description = "Directory for the outputs. Defaults to the calling directory.",
+        DefaultValueFactory = _ => new DirectoryInfo(Environment.CurrentDirectory),
         Required = false
     };
 

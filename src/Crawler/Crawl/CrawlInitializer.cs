@@ -6,9 +6,16 @@ namespace Crawl.Crawl;
 
 internal static class CrawlInitializer
 {
-    public static async Task<int> Run(string seed, int depth, int width, bool asBackgroundService, string? connectionString, CancellationToken cancellationToken)
+    public static async Task<int> Run(
+        string seed,
+        int depth, 
+        int width,
+        DirectoryInfo outputDirectory, 
+        string? connectionString, 
+        bool asBackgroundService, 
+        CancellationToken cancellationToken)
     {
-        var configuration = new Configuration(seed, depth, width);
+        var configuration = new Configuration(seed, depth, width, outputDirectory);
         
         if (asBackgroundService)
         {
