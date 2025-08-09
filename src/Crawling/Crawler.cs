@@ -13,9 +13,7 @@ internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : IC
     {
         while (source.Queue.TryDequeue(out var current, out var currentDepth) && currentDepth < source.Depth)
         {
-            using var client = source.CreateClient();
-
-            var html = await linkVisitor.VisitAsync(client, current, cancellationToken);
+            var html = await linkVisitor.VisitAsync(current, cancellationToken);
             if (!string.IsNullOrEmpty(html))
             {
                 foreach (var link in LinkHarvester.Harvest(html))
@@ -28,6 +26,7 @@ internal sealed class Crawler(IMediator mediator, ILinkVisitor linkVisitor) : IC
                     if (!source.Source.IsBaseOf(link))
                     {
                         // This uses the configuration's depth not the current depth as we are crawling a different site entirely
+                        logger.Debug("Relegating {link}", link);
                         _ = mediator.Publish(new UriDiscoveredNotification(link, depth), cancellationToken);
                         continue;
                     }

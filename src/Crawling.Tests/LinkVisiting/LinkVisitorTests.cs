@@ -10,17 +10,24 @@ public class LinkVisitorTests
     [Test]
     public async Task WhenVisiting_GetsContent()
     {
-        var linkVisitor = new LinkVisitor(new FakeLinkVisitor(true));
-
         var expected = "some content";
-        var client = new HttpClient(new FakeMessageHandler(new HttpResponseMessage(HttpStatusCode.OK)
-        {
-            Content = new StringContent(expected)
-        }));
+        var linkVisitor = new LinkVisitor(new FakeHttpClientFactory(expected), new FakeLinkVisitor(true));
 
-        var actual = await linkVisitor.VisitAsync(client, new Uri("https://contoso.com"), CancellationToken.None);
+
+        var actual = await linkVisitor.VisitAsync(new Uri("https://contoso.com"), CancellationToken.None);
 
         Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    private class FakeHttpClientFactory(string expected) : IHttpClientFactory
+    {
+        public HttpClient CreateClient(string name)
+        {
+            return new HttpClient(new FakeMessageHandler(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(expected)
+            }));
+        }
     }
 
     private class FakeLinkVisitor(bool shouldVisit) : IVisitationPolicy
