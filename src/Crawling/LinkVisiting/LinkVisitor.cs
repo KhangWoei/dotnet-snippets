@@ -6,7 +6,6 @@ internal sealed class LinkVisitor(IVisitationPolicy visitationPolicy) : ILinkVis
     {   
         if (await visitationPolicy.ShouldVisit(uri, cancellationToken))
         {
-            Console.WriteLine($"Downloading {uri}");
             return await client.GetStringAsync(uri, cancellationToken);
         }
 
