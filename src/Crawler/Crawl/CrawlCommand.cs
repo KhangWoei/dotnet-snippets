@@ -45,7 +45,8 @@ internal sealed class CrawlCommand : RootCommand
             
             try
             {
-                var connectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString).ToString();
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                new NpgsqlConnectionStringBuilder(connectionString).ToString();
             }
             catch (ArgumentException)
             {
