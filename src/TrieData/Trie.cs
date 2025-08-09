@@ -2,9 +2,9 @@ using System.Collections;
 
 namespace TrieData;
 
-public sealed class Trie(Uri uri) : IEnumerable<(Node Node, string Path)>
+public sealed class Trie(Uri uri) : IEnumerable<Node>
 {
-    private readonly Node _root = new ();
+    private readonly Node _root = new (path: "/");
 
     public string Name { get; } = uri.Host;
 
@@ -31,7 +31,7 @@ public sealed class Trie(Uri uri) : IEnumerable<(Node Node, string Path)>
         }
 
         var current = _root;
-        var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries);
+        var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var part in parts)
         {
@@ -75,7 +75,7 @@ public sealed class Trie(Uri uri) : IEnumerable<(Node Node, string Path)>
     
     private bool IsBaseOf(Uri value) => uri.IsBaseOf(value);
     
-    public IEnumerator<(Node Node, string Path)> GetEnumerator()
+    public IEnumerator<Node> GetEnumerator()
     {
         return new TreeIterator(_root);
     }

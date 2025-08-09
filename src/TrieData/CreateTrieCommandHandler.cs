@@ -23,11 +23,11 @@ public class CreateTrieCommandHandler(
             if (!nodesReadRepository.TryGet(persistedTree.Id, node.Path, out var nodeModel))
             {
                 // TODO: In other scenarios where we'd update or add a node independently, we need to query the DB for the parent instead using the treeId and the fullPath
-                long? parentId = node.Node.Parent is null ? null : nodesLookup.GetValueOrDefault(node.Node.Parent!);
-                nodeModel = await nodesWriteRepository.CreateAsync(new CreateNodeRequest(persistedTree.Id, parentId, node.Path, node.Node.IsTerminal), cancellationToken);
+                long? parentId = node.Parent is null ? null : nodesLookup.GetValueOrDefault(node.Parent!);
+                nodeModel = await nodesWriteRepository.CreateAsync(new CreateNodeRequest(persistedTree.Id, parentId, node.Path, node.IsTerminal), cancellationToken);
             }
             
-            nodesLookup.Add(node.Node, nodeModel.Id);
+            nodesLookup.Add(node, nodeModel.Id);
         }
     }
 }

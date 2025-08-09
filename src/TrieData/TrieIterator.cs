@@ -2,11 +2,11 @@
 
 namespace TrieData;
 
-public class TreeIterator : IEnumerator<(Node Node, string Path)>
+public class TreeIterator : IEnumerator<Node>
 {
     private readonly Node _head;
-    private readonly Stack<(Node Node, string Path)> _stack = [];
-    private (Node Node, string Path)? _current;
+    private readonly Stack<Node> _stack = [];
+    private Node? _current;
 
     public TreeIterator(Node head)
     {
@@ -20,12 +20,9 @@ public class TreeIterator : IEnumerator<(Node Node, string Path)>
 
         if (_current is not null)
         {
-            foreach (var child in _current.Value.Node.Children)
+            foreach (var child in _current.Children.Values)
             {
-                var currentPath = string.IsNullOrEmpty(_current.Value.Node.Path)
-                    ? string.Empty
-                    : string.Join("/", _current.Value.Node.Path, child.Value.Path);
-                _stack.Push((child.Value, currentPath));
+                _stack.Push(child);
             }
         }
 
@@ -35,10 +32,10 @@ public class TreeIterator : IEnumerator<(Node Node, string Path)>
     public void Reset()
     {
         _stack.Clear();
-        _stack.Push((_head, _head.Path));
+        _stack.Push(_head);
     }
 
-    (Node Node, string Path) IEnumerator<(Node Node, string Path)>.Current =>
+    Node IEnumerator<Node>.Current =>
         _current ?? throw new InvalidOperationException();
 
     object? IEnumerator.Current => _current;
