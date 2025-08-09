@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text;
 
 namespace TrieData;
 
@@ -55,7 +56,7 @@ public sealed class Trie(Uri uri) : IEnumerable<Node>
         {
             return false;
         }
-        
+
         var current = _root;
         var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries);
 
@@ -69,12 +70,38 @@ public sealed class Trie(Uri uri) : IEnumerable<Node>
 
             current = child;
         }
-        
+
         return current?.IsTerminal ?? false;
     }
-    
+
+    public string ToDotNotation()
+    {
+        var nodes = new StringBuilder();
+        foreach (var node in this)
+        {
+            var children = new StringBuilder();
+            foreach (var child in node.Children.Values)
+            {
+                children.Append($"\"{child.Path}\"");
+                children.Append(' ');
+            }
+
+            if (children.Length != 0)
+            {
+                nodes.Append($"\"{node.Path}\" -> {{ {children} }}");
+                nodes.AppendLine();
+            }
+        }
+
+        return $$"""
+                 digraph {
+                    {{nodes}}
+                 }
+                 """;
+    }
+
     private bool IsBaseOf(Uri value) => uri.IsBaseOf(value);
-    
+
     public IEnumerator<Node> GetEnumerator()
     {
         return new TreeIterator(_root);
