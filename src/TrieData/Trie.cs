@@ -58,7 +58,7 @@ public sealed class Trie(Uri uri) : IEnumerable<Node>
         }
 
         var current = _root;
-        var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries);
+        var parts = value.AbsolutePath.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var part in parts)
         {
