@@ -2,6 +2,7 @@
 using Crawling.CrawlSource;
 using Crawling.Frontier;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using TrieData;
 
 namespace Crawling;
