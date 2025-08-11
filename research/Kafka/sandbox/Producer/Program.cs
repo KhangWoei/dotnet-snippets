@@ -1,5 +1,4 @@
-﻿using System.Runtime.Loader;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 
 namespace Producer;
 
@@ -7,14 +6,14 @@ public static class Program
 {
     private static readonly CancellationTokenSource CancellationTokenSource = new();
 
-    public static async Task Main(string[] args)
+    public static async Task Main()
     {
         var configuration = new ProducerConfig { BootstrapServers = "localhost:9092" };
 
         var producerBuilder = new ProducerBuilder<Null, string>(configuration);
         using var producer = producerBuilder.Build();
 
-        Console.CancelKeyPress += (sender, e) =>
+        Console.CancelKeyPress += (_, e) =>
         {
             e.Cancel = true;
             CancellationTokenSource.CancelAsync();

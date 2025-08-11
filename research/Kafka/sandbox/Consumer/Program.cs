@@ -6,7 +6,7 @@ public static class Consumer
 {
     private static readonly CancellationTokenSource CancellationTokenSource = new();
 
-    public static void Main(string[] args)
+    public static void Main()
     {
         var configuration = new ConsumerConfig
         {
