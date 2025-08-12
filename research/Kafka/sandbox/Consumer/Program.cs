@@ -11,7 +11,7 @@ public static class Consumer
         var configuration = new ConsumerConfig
         {
             AutoOffsetReset = AutoOffsetReset.Earliest,
-            BootstrapServers = "localhost:99092",
+            BootstrapServers = "localhost:9092",
             GroupId = "test-consumer-group"
         };
 
