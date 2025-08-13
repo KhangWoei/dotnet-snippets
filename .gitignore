@@ -6,7 +6,6 @@ project.lock.json
 
 .idea/
 
-
 # User-specific files
 *.suo
 *.user
@@ -27,4 +26,6 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+
+.ipynb_checkpoints
 
