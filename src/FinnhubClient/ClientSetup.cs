@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Producer.Client;
+namespace FinnhubClient;
 
 public static class ClientSetup
 {
@@ -9,6 +9,6 @@ public static class ClientSetup
     {
         services.Configure<FinnhubOptions>(configuration.GetSection(nameof(FinnhubOptions)));
         
-        return services.AddHttpClient<Finnhub>();
+        return services.AddHttpClient<FinnhubClient.Client>();
     }
 }

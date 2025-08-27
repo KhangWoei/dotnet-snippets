@@ -1,16 +1,16 @@
 using System.Net.Http.Headers;
 using Microsoft.Extensions.Options;
 
-namespace Producer.Client;
+namespace FinnhubClient;
 
-public class Finnhub
+public class Client
 {
     private const string BaseAddress = "https://api.finnhub.io/api/v1/";
     private readonly HttpClient _client;
 
-    public Finnhub(HttpClient client, IOptions<FinnhubOptions> options) : this(client, options.Value.ApiKey) { }
+    public Client(HttpClient client, IOptions<FinnhubOptions> options) : this(client, options.Value.ApiKey) { }
     
-    private Finnhub(HttpClient client, string apiKey)
+    private Client(HttpClient client, string apiKey)
     {
         client.BaseAddress = new Uri(BaseAddress);
         client.DefaultRequestHeaders.Add("X-Finnhub-Token",  apiKey);

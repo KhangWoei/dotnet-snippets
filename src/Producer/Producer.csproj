@@ -14,4 +14,12 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Client\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\FinnhubClient\FinnhubClient.csproj" />
+    </ItemGroup>
 </Project>
