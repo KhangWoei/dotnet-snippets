@@ -1,10 +1,11 @@
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
-namespace Producer;
+namespace Producer.Client;
 
 public class Finnhub
 {
-    private const string _baseAddress = "https://api.finnhub.io/api/v1";
+    private const string BaseAddress = "https://api.finnhub.io/api/v1";
     private readonly HttpClient _client;
 
     private Finnhub(HttpClient client)
@@ -16,11 +17,17 @@ public class Finnhub
     {
         var client = new HttpClient()
         {
-            BaseAddress = new Uri(_baseAddress),
+            BaseAddress = new Uri(BaseAddress),
         };
 
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", apiKey);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         return new Finnhub(client);
+    }
+
+    public async Task<string> GetQuoteAsync(string symbol, CancellationToken cancellationToken)
+    {
+        return await _client.GetStringAsync($"quote?symbol{symbol}", cancellationToken);
     }
 }
