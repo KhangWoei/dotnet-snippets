@@ -1,5 +1,5 @@
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using Microsoft.Extensions.Options;
 
 namespace Producer.Client;
 
@@ -8,26 +8,23 @@ public class Finnhub
     private const string BaseAddress = "https://api.finnhub.io/api/v1/";
     private readonly HttpClient _client;
 
-    private Finnhub(HttpClient client)
+    public Finnhub(HttpClient client, IOptions<FinnhubOptions> options) : this(client, options.Value.ApiKey) { }
+    
+    private Finnhub(HttpClient client, string apiKey)
     {
+        client.BaseAddress = new Uri(BaseAddress);
+        client.DefaultRequestHeaders.Add("X-Finnhub-Token",  apiKey);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        
         _client = client;
     }
 
-    public static Finnhub Create(string apiKey)
-    {
-        var client = new HttpClient()
-        {
-            BaseAddress = new Uri(BaseAddress),
-        };
 
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("X-Finnhub-Token", apiKey);
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    public async Task<string> GetQuoteAsync(string symbol, CancellationToken cancellationToken) => 
+        await _client.GetStringAsync($"quote?symbol{symbol}", cancellationToken);
+}
 
-        return new Finnhub(client);
-    }
-
-    public async Task<string> GetQuoteAsync(string symbol, CancellationToken cancellationToken)
-    {
-        return await _client.GetStringAsync($"quote?symbol{symbol}", cancellationToken);
-    }
+public class FinnhubOptions
+{
+    public string ApiKey { get; init; }
 }
