@@ -5,7 +5,7 @@ namespace Producer.Client;
 
 public class Finnhub
 {
-    private const string BaseAddress = "https://api.finnhub.io/api/v1";
+    private const string BaseAddress = "https://api.finnhub.io/api/v1/";
     private readonly HttpClient _client;
 
     private Finnhub(HttpClient client)
@@ -20,7 +20,7 @@ public class Finnhub
             BaseAddress = new Uri(BaseAddress),
         };
 
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", apiKey);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("X-Finnhub-Token", apiKey);
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         return new Finnhub(client);
