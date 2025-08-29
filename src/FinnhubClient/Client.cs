@@ -26,5 +26,5 @@ public class Client
 
 public class FinnhubOptions
 {
-    public string ApiKey { get; init; }
+    public required string ApiKey { get; init; }
 }
