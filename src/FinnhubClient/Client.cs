@@ -20,11 +20,8 @@ public class Client
     }
 
 
-    public async Task<string> GetQuoteAsync(string symbol, CancellationToken cancellationToken) => 
-        await _client.GetStringAsync($"quote?symbol{symbol}", cancellationToken);
-}
-
-public class FinnhubOptions
-{
-    public required string ApiKey { get; init; }
+    public async Task<string> GetQuoteAsync(string symbol, CancellationToken cancellationToken)
+    {
+        return await _client.GetStringAsync($"quote?symbol={symbol}", cancellationToken);
+    }
 }
