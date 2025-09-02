@@ -30,3 +30,9 @@ msbuild.wrn
 .ipynb_checkpoints
 
 appsettings.json
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
