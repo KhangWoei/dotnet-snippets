@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using FinnhubClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,35 @@ var client = host.Services.GetRequiredService<Client>();
 var quotes = host.Services.GetRequiredService<IOptions<QuoteOptions>>().Value;
 
 var options = host.Services.GetRequiredService<IOptions<ProducerOptions>>().Value;
-var configuration = new ProducerConfig { BootstrapServers = options.BootstrapServers };
-var producerBuilder = new ProducerBuilder<Null, string>(configuration);
+
+var adminConfiguration = new AdminClientConfig
+{
+    BootstrapServers = options.BootstrapServers,
+};
+
+try
+{
+    using var admin = new AdminClientBuilder(adminConfiguration).Build();
+    await admin.CreateTopicsAsync([
+        new TopicSpecification
+        {
+            Name = "quotes",
+        }
+    ]);
+}
+catch (CreateTopicsException exception)
+{
+    if (exception.Results
+        .Select(r => r.Error.Code)
+        .Any(e => e != ErrorCode.TopicAlreadyExists && e != ErrorCode.NoError))
+    {
+        throw;
+    }
+}
+
+
+var producerConfiguration = new ProducerConfig { BootstrapServers = options.BootstrapServers };
+var producerBuilder = new ProducerBuilder<Null, string>(producerConfiguration);
 
 using var producer = producerBuilder.Build();
 
