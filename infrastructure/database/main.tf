@@ -1,5 +1,5 @@
 resource "docker_image" "database" {
-  name = "postgres:17"
+  name = "timescale/timescaledb-ha:pg17"
 }
 
 resource "docker_volume" "volume" {
