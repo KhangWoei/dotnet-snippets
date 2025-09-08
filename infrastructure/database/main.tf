@@ -1,5 +1,5 @@
 resource "docker_image" "database" {
-  name = "timescale/timescaledb-ha:pg17"
+  name = "timescale/timescaledb:latest-pg17"
 }
 
 resource "docker_volume" "volume" {
