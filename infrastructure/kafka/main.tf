@@ -28,12 +28,12 @@ resource "docker_container" "kafka" {
     "KAFKA_ADVERTISED_LISTENERS=${var.kafka-container.advertised-listeners}",
     "KAFKA_CONTROLLER_LISTENER_NAMES=${var.kafka-container.controller-listener-names}",
     "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=${var.kafka-container.listener-security-protocol-map}",
-    "KAFKA_CONTROLLER_QUORUM_VOTER=${var.kafka-container.controller-quorum-voters}",
+    "KAFKA_CONTROLLER_QUORUM_VOTERS=${var.kafka-container.controller-quorum-voters}",
     "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1",
-    "KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR= 1",
-    "KAFKA_TRANSACTION_STATE_LOG_MIN_ISR= 1",
-    "KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS= 0",
-    "KAFKA_NUM_PARTITIONS= 3"
+    "KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1",
+    "KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1",
+    "KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0",
+    "KAFKA_NUM_PARTITIONS=3"
   ]
 
   volumes {

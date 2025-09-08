@@ -33,7 +33,7 @@ variable "kafka-container" {
       external = 9092
     }
     node-id                        = 1
-    roles                          = "broker, container"
+    roles                          = "broker,controller"
     listeners                      = "PLAINTEXT://0.0.0.0:9092,CONTROLLER://127.0.0.1:9093"
     advertised-listeners           = "PLAINTEXT://localhost:9092"
     controller-listener-names      = "CONTROLLER"
