@@ -15,6 +15,7 @@ resource "docker_volume" "logs-volume" {
 resource "docker_container" "kafka" {
   name  = var.kafka-container.name
   image = docker_image.kafka.image_id
+  user  = "0:0"
 
   ports {
     internal = var.kafka-container.ports.internal
