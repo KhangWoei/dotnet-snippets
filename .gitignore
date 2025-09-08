@@ -36,3 +36,4 @@ appsettings.json
 .terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
+.terraform.tfstate.lock.info
