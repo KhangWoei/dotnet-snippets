@@ -33,7 +33,8 @@ resource "docker_container" "kafka" {
     "KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1",
     "KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1",
     "KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0",
-    "KAFKA_NUM_PARTITIONS=3"
+    "KAFKA_NUM_PARTITIONS=3",
+    "KAFKA_LOGS_DIRS=/tmp/kafka-logs"
   ]
 
   volumes {
