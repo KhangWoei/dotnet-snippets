@@ -1,7 +1,6 @@
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
 using FinnhubClient;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
