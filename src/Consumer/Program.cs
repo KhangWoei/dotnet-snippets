@@ -1,5 +1,8 @@
+using System.Text.Json;
 using Confluent.Kafka;
 using Consumer;
+using FinnhubClient;
+using FinnhubClient.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -21,7 +24,9 @@ var configuration = new ConsumerConfig
     EnablePartitionEof = false,
 };
 
-using var consumer = new ConsumerBuilder<Ignore, string>(configuration).Build();
+using var consumer = new ConsumerBuilder<Ignore, Quote>(configuration)
+    .SetValueDeserializer(new QuoteDeserializer())
+    .Build();
 
 consumer.Subscribe("test-topic");
 

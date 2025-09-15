@@ -1,6 +1,7 @@
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
 using FinnhubClient;
+using FinnhubClient.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -44,7 +45,8 @@ catch (CreateTopicsException exception)
 
 
 var producerConfiguration = new ProducerConfig { BootstrapServers = options.BootstrapServers };
-var producerBuilder = new ProducerBuilder<Null, string>(producerConfiguration);
+var producerBuilder = new ProducerBuilder<Null, Quote>(producerConfiguration)
+    .SetValueSerializer(new QuoteSerializer());
 
 using var producer = producerBuilder.Build();
 
@@ -53,7 +55,7 @@ try
     foreach (var symbol in quotes.Symbols)
     {
         var result = await client.GetQuoteAsync(symbol, CancellationToken.None);
-        var message = await producer.ProduceAsync("test-topic", new Message<Null, string> { Value = result });
+        var message = await producer.ProduceAsync("test-topic", new Message<Null, Quote> { Value = result });
         Console.WriteLine($"Delivered '{message.Value} to {message.TopicPartitionOffset}'");
     }
 }
