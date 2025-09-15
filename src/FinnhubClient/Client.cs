@@ -19,7 +19,6 @@ public class Client
         _client = client;
     }
 
-
     public async Task<string> GetQuoteAsync(string symbol, CancellationToken cancellationToken)
     {
         return await _client.GetStringAsync($"quote?symbol={symbol}", cancellationToken);
