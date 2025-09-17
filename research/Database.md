@@ -45,7 +45,11 @@ SELECT * FROM add_dimension('conditions', by_hash('device_id', 3));
 # Altering partition
 SELECT SET_NUMBER_PARTITIONS('conditions', 5, 'device_id');
 
+# Creating hypertable retrospectively
+SELECT create_hypertable('conditions', by_range('time'));
+
 ```
+
 
 #### Indexes
 Created by default on time, descending. Can be prevented by setting the `create_default_indexes` to `false`.
