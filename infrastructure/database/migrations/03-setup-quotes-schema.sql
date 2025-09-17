@@ -5,5 +5,8 @@ timestamp TIMESTAMPTZ NOT NULL,
 symbol_id INTEGER NOT NULL REFERENCES symbols(id),
 price DECIMAL(12,4));
 
-SET search_path = core, quote, public;
+DO $$
+    BEGIN
+        EXECUTE 'SET search_path = ' || current_setting('search_path') || ', quote';
+END $$
 
