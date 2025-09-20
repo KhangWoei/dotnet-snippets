@@ -8,7 +8,7 @@ modiefied_at TIMESTAMPTZ DEFAULT NOW());
 
 CREATE TABLE core.exchanges(
 id SERIAL PRIMARY KEY,
-code TEXT UNIQUE NOT NULL,
+code VARCHAR(12) UNIQUE NOT NULL,
 name TEXT NOT NULL
 created_at TIMESTAMPTZ DEFAULT NOW(),
 modified_at TIMESTAMPTZ DEFAULT NOW()
@@ -18,7 +18,7 @@ CREATE TABLE core.symbols(
 id SERIAL PRIMARY KEY,
 company_id INTEGER NOT NULL REFERENCES companies(id),
 exchange_id INTEGER NOT NULL REFERENCES exchanges(id),
-symbol TEXT NOT NULL,
+symbol VARCHAR(8) NOT NULL,
 created_at TIMESTAMPTZ DEFAULT NOW(),
 modified_at TIMESTAMPTZ DEFAULT NOW(),
 UNIQUE(company_id, exchange_id),
