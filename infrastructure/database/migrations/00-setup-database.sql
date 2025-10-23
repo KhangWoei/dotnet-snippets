@@ -1,0 +1,5 @@
+CREATE DATABASE market_data;
+
+CREATE ROLE market_data LOGIN WITH PASSWORD <SOME_PASSWORD>;
+ALTER DATABASE market_data OWNER TO market_data;
+
