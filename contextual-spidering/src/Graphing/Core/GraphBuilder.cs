@@ -2,7 +2,7 @@ namespace ContextSpider.Graphing.Core;
 
 public class GraphBuilder
 {
-    private readonly Graph _graph = new Graph();
+    private readonly Graph _graph = new();
     private readonly Dictionary<string, Vertex> _vertices = [];
 
     public GraphBuilder AddVertex(string name)
