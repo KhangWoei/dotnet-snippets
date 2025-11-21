@@ -9,7 +9,9 @@ public class GraphBuilder
     {
         if (!_vertices.ContainsKey(name))
         {
-            _vertices[name] = new Vertex(name);
+            var vertex = new Vertex(name);
+            _vertices[name] = vertex;
+            _graph.AddVertex(vertex);
         }
 
         return this;

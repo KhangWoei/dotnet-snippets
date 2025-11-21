@@ -1,3 +1,4 @@
+using System.Numerics;
 using ContextSpider.Graphing.Core;
 
 namespace ContextSpider.Spidering.Core;
@@ -6,16 +7,21 @@ public sealed class Spider(Graph graph)
 {
     private readonly Frontier _frontier = new(graph);
     
-    public void Traverse(Vertex starting)
+    public Vertex[] Traverse(Vertex starting)
     {
         var vertex = graph.Vertices.Single(v => v.Name == starting.Name);
         _frontier.Add(vertex);
+
+        var order = new List<Vertex>();
 
         while (_frontier.HasNext())
         {
             var next = _frontier.Next();
             Visit(next);
+            order.Add(next);
         }
+
+        return order.ToArray();
     }
 
     public void Visit(Vertex vertex)

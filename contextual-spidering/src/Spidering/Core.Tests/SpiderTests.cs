@@ -5,60 +5,72 @@ namespace ContextSpider.Spidering.Core.Tests;
 [TestFixture]
 public class SpiderTests
 {
-    /*
-     *                                    ┌─────┐
-     *                                    │     │
-     *                                ┌───┤  4  │
-     *                                │   │     │
-     *                                │   └──▲──┘
-     *                                │      │
-     *                             ┌──▼──┐   │
-     *                             │     ├───┘
-     *            ┌─────┐          │  1  │
-     *            │     │       ┌──┤     ◄───┐
-     *            │  5  │       │  └─────┘   │
-     *            │     │       │            │
-     *            └──▲──┘    ┌──▼──┐      ┌──┴──┐
-     *               │       │     │      │     ◄───────┐
-     *               └───────┤  2  │      │  3  │       │
-     *                       │     │      │     │    ┌──┴──┐
-     * ┌─────┐    ┌─────┐    └──▲──┘      └──┬──┘    │     │
-     * │     │    │     │       │            │       │  8  │
-     * │  9  ◄────┤  6  ├───────┘            │       │     │
-     * │     │    │     │                 ┌──▼──┐    └──▲──┘
-     * └─────┘    └──┬──┘                 │     ├───────┘
-     *               │       ┌─────┐      │  7  ├───────┐
-     *               │       │     │      │     │    ┌──▼──┐
-     *               └───────► 10  │      └──▲──┘    │     │
-     *                       │     ├─────────┘       │ 11  │
-     *                       └─────┘                 │     │
-     *                                               └─────┘
-     */
     [Test]
-    public void Temp()
+    public void SingleVertex()
     {
-        var graphBuilder = new GraphBuilder();
-        graphBuilder.AddBidirectedEdge("1", "4");
-        graphBuilder.AddDirectedEdge("1", "2");
-        
-        graphBuilder.AddDirectedEdge("2", "5");
-        
-        graphBuilder.AddDirectedEdge("3", "1");
-        graphBuilder.AddDirectedEdge("3", "7");
-        
-        graphBuilder.AddDirectedEdge("6", "2");
-        graphBuilder.AddDirectedEdge("6", "9");
-        graphBuilder.AddDirectedEdge("6", "10");
-        
-        graphBuilder.AddDirectedEdge("7", "8");
-        graphBuilder.AddDirectedEdge("7", "11");
-        
-        graphBuilder.AddDirectedEdge("8", "3");
+        var graph = new GraphBuilder()
+            .AddVertex("A")
+            .Build();
 
-        graphBuilder.AddDirectedEdge("10", "7");
+        var order = new Spider(graph).Traverse(new Vertex("A"));
 
-        var spider = new Spider(graphBuilder.Build());
+        var actual = order.FirstOrDefault();
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual.Name, Is.EqualTo("A"));
+    }
+    
+    [Test]
+    public void DisconnectedVertices_OnlyVisitsReachableNodes()
+    {
+        var graph = new GraphBuilder()
+            .AddVertex("A")
+            .AddDirectedEdge("B", "C")
+            .Build();
         
-        spider.Traverse(new Vertex("1"));
+        var order = new Spider(graph).Traverse(new Vertex("A"));
+
+        Assert.That(order, Has.Length.EqualTo(1));
+        
+        var actual = order.First();
+        Assert.That(actual.Name, Is.EqualTo("A"));
+    }
+    
+    [Test]
+    public void LeastNeighbors_HasHigherPriority()
+    {
+        var graph = new GraphBuilder()
+            .AddBidirectedEdge("A", "B")
+            .AddBidirectedEdge("A", "C")
+            .AddBidirectedEdge("B", "D")
+            .AddBidirectedEdge("C", "D")
+            .AddBidirectedEdge("C", "E")
+            .Build();
+        
+        var spider = new Spider(graph);
+        var order = spider.Traverse(new Vertex("A"));
+        
+        Assert.That(order[0].Name, Is.EqualTo("A"));
+        Assert.That(order[3].Name, Is.Not.EqualTo("D"));
+    }
+    
+    [Test]
+    public void FewestUnvisitedNeighbors_HasHigherPriority()
+    {
+        var graph = new GraphBuilder()
+            .AddBidirectedEdge("A", "B")
+            .AddBidirectedEdge("A", "C")
+            .AddBidirectedEdge("B", "D")
+            .AddBidirectedEdge("C", "D")
+            .AddBidirectedEdge("D", "E")
+            .AddBidirectedEdge("D", "F")
+            .AddBidirectedEdge("E", "G")
+            .AddBidirectedEdge("E", "H")
+            .Build();
+        
+        var spider = new Spider(graph);
+        var order = spider.Traverse(new Vertex("A"));
+        
+        Assert.That(order[0].Name, Is.EqualTo("A"));
+        Assert.That(order[3].Name, Is.EqualTo("D"));
     }
 }
