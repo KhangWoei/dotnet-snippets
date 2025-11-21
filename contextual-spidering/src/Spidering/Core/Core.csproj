@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <RootNamespace>ContextSpider.Spidering.Core</RootNamespace>
+        <AssemblyName>ContextSpider.Spidering.Core</AssemblyName>
         <OutputType>lib</OutputType>
     </PropertyGroup>
     

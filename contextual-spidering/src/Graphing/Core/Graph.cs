@@ -11,6 +11,11 @@ public sealed class Graph
 
     public IEnumerable<Edge> Edges => _edges;
 
+    public IEnumerable<Vertex> GetNeighbors(Vertex vertex) => _edges.Where(e => 
+            e.Source == vertex || e.Target == vertex)
+        .SelectMany(e => new[] { e.Source, e.Target })
+        .Except([vertex]);
+
     public void AddVertex(Vertex vertex) => _vertices.Add(vertex);
 
     public void AddVertices(params Vertex[] vertices) => _vertices.UnionWith(vertices);
