@@ -2,7 +2,7 @@
     <PropertyGroup>
         <RootNamespace>ContextSpider.Spidering.Core</RootNamespace>
         <AssemblyName>ContextSpider.Spidering.Core</AssemblyName>
-        <OutputType>lib</OutputType>
+        <OutputType>library</OutputType>
     </PropertyGroup>
     
     <ItemGroup>

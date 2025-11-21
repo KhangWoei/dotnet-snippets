@@ -2,6 +2,6 @@
   <PropertyGroup>
     <RootNamespace>ContextSpider.Graphing.Core</RootNamespace>
     <AssemblyName>ContextSpider.Graphing.Core</AssemblyName>
-    <OutputType>lib</OutputType>
+    <OutputType>library</OutputType>
   </PropertyGroup>
 </Project>
