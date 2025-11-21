@@ -4,7 +4,7 @@ namespace ContextSpider.Spidering.Core;
 
 public sealed class Spider(Graph graph)
 {
-    private readonly Frontier _frontier = new Frontier(graph);
+    private readonly Frontier _frontier = new(graph);
     
     public void Traverse(Vertex starting)
     {
