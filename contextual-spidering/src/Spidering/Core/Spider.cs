@@ -20,7 +20,7 @@ public sealed class Spider(Graph graph)
 
     public void Visit(Vertex vertex)
     {
-        Console.WriteLine($"Visiting {vertex}");
+        Console.WriteLine($"Visiting {vertex.Name}");
         
         // TODO lots of vertices are going to be revisited from this
         foreach (var neighbor in graph.GetNeighbors(vertex))
@@ -59,7 +59,8 @@ internal sealed class Frontier(Graph graph)
                     Unvisited = unvisited
                 };
             })
-            .OrderBy(v => v.Visited)
+            .OrderBy(v => v.Visited + v.Unvisited)
+            .ThenBy(v => v.Visited)
             .ThenBy(v => v.Unvisited)
             .ThenBy(v => v.Vertex.Name)
             .First()
