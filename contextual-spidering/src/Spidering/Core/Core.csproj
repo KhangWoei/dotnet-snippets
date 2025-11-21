@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>ContextSpider.Spidering.Core</RootNamespace>
+        <OutputType>lib</OutputType>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\..\Graphing\Core\Core.csproj"/>
+    </ItemGroup>
+</Project>
