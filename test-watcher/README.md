@@ -1,0 +1,1 @@
+Meant to be a a sandbox for me to mess around with some bit manipulation magic found [here](https://graphics.stanford.edu/~seander/bithacks.html#OperationCounting). Got distracted with figuring out how to get a test watcher working on all assemblies in a solution instead.
