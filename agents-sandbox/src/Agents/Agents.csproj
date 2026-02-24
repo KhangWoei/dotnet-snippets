@@ -4,8 +4,16 @@
     <AssemblyName>AgentSandbox.Agents</AssemblyName>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.Agents.AI.Anthropic" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Agents.AI.Anthropic" Version="1.0.0-rc1"/>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.3"/>
+    <PackageReference Include="System.CommandLine" Version="3.0.0-preview.1.26104.118" />
   </ItemGroup>
 </Project>
