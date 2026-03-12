@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CascadingConfiguration/CascadingConfiguration.csproj" />
+  <Project Path="CascadingConfigurationTests/CascadingConfigurationTests.csproj" />
+</Solution>
