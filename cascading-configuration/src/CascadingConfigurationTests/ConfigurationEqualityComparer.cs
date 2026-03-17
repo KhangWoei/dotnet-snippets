@@ -21,7 +21,8 @@ internal sealed class ConfigurationEqualityComparer : IEqualityComparer<Configur
         return
             left.Name == right.Name
             && ChildConfigurationEqualityComparer.Instance.Equals(left.Child, right.Child)
-            && left.Strings.All(s => right.Strings.Contains(s));
+            && left.Strings.All(s => right.Strings.Contains(s))
+            && right.Strings.All(s => left.Strings.Contains(s));
     }
 
     public int GetHashCode(Configuration configuration)

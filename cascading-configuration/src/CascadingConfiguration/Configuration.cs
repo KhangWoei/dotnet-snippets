@@ -9,13 +9,11 @@ public sealed class Configuration(string name, ChildConfiguration? child, string
     public string[] Strings { get; } = strings ?? [];
 
     public Configuration Combine(Configuration other) {
-
-
-        return other;
+        return this;
     }
 
     public Configuration Difference(Configuration other) {
-        return other;
+        return this;
     }
 }
 

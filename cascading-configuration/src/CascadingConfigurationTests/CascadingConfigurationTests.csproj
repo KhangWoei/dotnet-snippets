@@ -14,4 +14,8 @@
   <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CascadingConfiguration\CascadingConfiguration.csproj" />
+  </ItemGroup>
 </Project>
