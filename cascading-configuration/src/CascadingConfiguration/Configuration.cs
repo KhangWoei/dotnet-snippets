@@ -8,8 +8,11 @@ public sealed class Configuration(string name, ChildConfiguration? child, string
 
     public string[] Strings { get; } = strings ?? [];
 
-    public Configuration Combine(Configuration other) {
-        return this;
+    public Configuration Combine(Configuration other)
+    {
+        var name = string.IsNullOrEmpty(other.Name) ? Name : other.Name;
+        
+        return new Configuration(name, Child, Strings);
     }
 
     public Configuration Difference(Configuration other) {
