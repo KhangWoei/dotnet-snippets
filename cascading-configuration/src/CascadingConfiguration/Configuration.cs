@@ -6,30 +6,15 @@ public sealed class Configuration(string name, ChildConfiguration[]? childs = nu
 
     public ChildConfiguration[] Childs { get; } = childs ?? [];
 
-    public Configuration Combine(Configuration? other)
+    public Configuration Combine(Configuration? other, ICombiner<Configuration>? combiner = null)
     {
         if (other is null)
         {
             return this;
         }
-        
-        var name = string.IsNullOrEmpty(other.Name) ? Name : other.Name;
 
-        var baseChildsLookup = Childs.ToDictionary(k => k.Name, v => v);
-
-        foreach (var otherChild in other.Childs)
-        {
-            if (baseChildsLookup.TryGetValue(otherChild.Name, out var baseChild))
-            {
-                baseChildsLookup[otherChild.Name] = baseChild.Combine(otherChild);
-            }
-            else
-            {
-                baseChildsLookup[otherChild.Name] = otherChild;
-            }
-        }
-        
-        return new Configuration(name, baseChildsLookup.Values.ToArray());
+        combiner ??= new ConfigurationCombiner();
+        return combiner.Combine(this, other);
     }
 
     public Configuration Difference(Configuration other) {

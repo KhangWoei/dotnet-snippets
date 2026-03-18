@@ -8,18 +8,16 @@ public sealed class ChildConfiguration(string name, bool? enabled = null, bool? 
 
     public bool? Disabled { get; } = disabled;
 
-    public ChildConfiguration Combine(ChildConfiguration? other)
+    public ChildConfiguration Combine(ChildConfiguration? other, ICombiner<ChildConfiguration>? combiner = null)
     {
         if (other is null)
         {
             return this;
         }
+
+        combiner ??= new ChildConfigurationCombiner();
         
-        var name = string.IsNullOrEmpty(other.Name) ? Name : other.Name;
-        var enabled = other.Enabled ?? Enabled;
-        var disabled = other.Disabled ?? Disabled;
-        
-        return new ChildConfiguration(name, enabled, disabled);
+        return combiner.Combine(this, other);
     }
     
     public ChildConfiguration Difference(ChildConfiguration other)
