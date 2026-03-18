@@ -1,6 +1,6 @@
-﻿using CascadingConfiguration.Configuration.Diffing;
+﻿using CascadingConfiguration.Configurations.Diffing;
 
-namespace CascadingConfiguration.Configuration.Child;
+namespace CascadingConfiguration.Configurations.Child;
 
 public class ChildConfigurationDiffer : IDiffer<ChildConfiguration, ChildConfigurationDifference>
 {

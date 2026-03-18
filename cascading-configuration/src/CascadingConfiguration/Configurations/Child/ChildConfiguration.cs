@@ -1,7 +1,7 @@
-using CascadingConfiguration.Configuration.Combination;
-using CascadingConfiguration.Configuration.Diffing;
+using CascadingConfiguration.Configurations.Combination;
+using CascadingConfiguration.Configurations.Diffing;
 
-namespace CascadingConfiguration.Configuration.Child;
+namespace CascadingConfiguration.Configurations.Child;
 
 public sealed class ChildConfiguration(string name, bool? enabled = null, bool? disabled = null)
 {

@@ -1,4 +1,4 @@
-﻿using CascadingConfiguration.Configuration.Diffing;
+﻿using CascadingConfiguration.Configurations.Diffing;
 
 namespace CascadingConfigurationTests.Configuration.Diffing;
 

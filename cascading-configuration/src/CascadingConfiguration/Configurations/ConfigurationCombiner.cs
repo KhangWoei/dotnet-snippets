@@ -1,10 +1,10 @@
-﻿using CascadingConfiguration.Configuration.Combination;
+﻿using CascadingConfiguration.Configurations.Combination;
 
-namespace CascadingConfiguration.Configuration;
+namespace CascadingConfiguration.Configurations;
 
-internal sealed class ConfigurationCombiner : ICombiner<Configuration>
+internal sealed class ConfigurationCombiner : ICombiner<Configurations.Configuration>
 {
-    public Configuration Combine(Configuration baseConfiguration, Configuration otherConfiguration)
+    public Configurations.Configuration Combine(Configurations.Configuration baseConfiguration, Configurations.Configuration otherConfiguration)
     {
         var name = string.IsNullOrEmpty(otherConfiguration.Name) ? baseConfiguration.Name : otherConfiguration.Name;
 
@@ -22,6 +22,6 @@ internal sealed class ConfigurationCombiner : ICombiner<Configuration>
             }
         }
         
-        return new Configuration(name, baseChildsLookup.Values.ToArray());
+        return new Configurations.Configuration(name, baseChildsLookup.Values.ToArray());
     }
 }

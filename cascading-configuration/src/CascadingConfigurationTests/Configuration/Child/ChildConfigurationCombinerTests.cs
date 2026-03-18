@@ -1,4 +1,4 @@
-﻿using CascadingConfiguration.Configuration.Child;
+﻿using CascadingConfiguration.Configurations.Child;
 
 namespace CascadingConfigurationTests.Configuration.Child;
 

@@ -1,5 +1,5 @@
-﻿using CascadingConfiguration.Configuration;
-using CascadingConfiguration.Configuration.Child;
+﻿using CascadingConfiguration.Configurations;
+using CascadingConfiguration.Configurations.Child;
 using CascadingConfigurationTests.Configuration.Child;
 
 namespace CascadingConfigurationTests.Configuration;
@@ -13,8 +13,8 @@ internal sealed class ConfigurationCombinerTests
         [Test]
         public void WhenOtherIsEmpty_TakesBase()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("a");
-            var other = new CascadingConfiguration.Configuration.Configuration(string.Empty);
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("a");
+            var other = new CascadingConfiguration.Configurations.Configuration(string.Empty);
 
             var result = Create().Combine(baseConfig, other);
 
@@ -24,8 +24,8 @@ internal sealed class ConfigurationCombinerTests
         [Test]
         public void WhenBaseIsEmpty_TakesOther()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration(string.Empty);
-            var other = new CascadingConfiguration.Configuration.Configuration("b");
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration(string.Empty);
+            var other = new CascadingConfiguration.Configurations.Configuration("b");
 
             var result = Create().Combine(baseConfig, other);
 
@@ -35,8 +35,8 @@ internal sealed class ConfigurationCombinerTests
         [Test]
         public void WhenBothIsEmpty_UseEmpty()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration(string.Empty);
-            var other = new CascadingConfiguration.Configuration.Configuration(string.Empty);
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration(string.Empty);
+            var other = new CascadingConfiguration.Configurations.Configuration(string.Empty);
 
             var result = Create().Combine(baseConfig, other);
 
@@ -46,8 +46,8 @@ internal sealed class ConfigurationCombinerTests
         [Test]
         public void WhenBothHaveName_TakesOther()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("a");
-            var other = new CascadingConfiguration.Configuration.Configuration("b");
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("a");
+            var other = new CascadingConfiguration.Configurations.Configuration("b");
 
             var result = Create().Combine(baseConfig, other);
 
@@ -62,8 +62,8 @@ internal sealed class ConfigurationCombinerTests
         public void WhenBaseHasChild_OtherDoesNot_TakesBaseChild()
         {
             var baseChild = new ChildConfiguration("baseChild", true);
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("name", [baseChild]);
-            var other = new CascadingConfiguration.Configuration.Configuration("name");
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("name", [baseChild]);
+            var other = new CascadingConfiguration.Configurations.Configuration("name");
 
             var result = Create().Combine(baseConfig, other);
 
@@ -74,9 +74,9 @@ internal sealed class ConfigurationCombinerTests
         [Test]
         public void WhenOtherHasChild_BaseDoesNot_TakesOtherChild()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("name");
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("name");
             var otherChild = new ChildConfiguration("otherChid");
-            var other = new CascadingConfiguration.Configuration.Configuration("name", [otherChild]);
+            var other = new CascadingConfiguration.Configurations.Configuration("name", [otherChild]);
 
             var result = Create().Combine(baseConfig, other);
 
@@ -87,8 +87,8 @@ internal sealed class ConfigurationCombinerTests
         [Test]
         public void WhenNeitherHasChild_ResultHasNoChild()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("name");
-            var other = new CascadingConfiguration.Configuration.Configuration("name");
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("name");
+            var other = new CascadingConfiguration.Configurations.Configuration("name");
 
             var result = Create().Combine(baseConfig, other);
 
@@ -99,10 +99,10 @@ internal sealed class ConfigurationCombinerTests
         public void WhenBothHaveChildWithTheSameName_ChildrenAreCombined()
         {
             var baseChild = new ChildConfiguration("sharedChild", true);
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("name", [baseChild]);
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("name", [baseChild]);
 
             var otherChild = new ChildConfiguration("sharedChild", false);
-            var other = new CascadingConfiguration.Configuration.Configuration("name", [otherChild]);
+            var other = new CascadingConfiguration.Configurations.Configuration("name", [otherChild]);
 
             var result = Create().Combine(baseConfig, other);
 
@@ -115,10 +115,10 @@ internal sealed class ConfigurationCombinerTests
         public void WhenBothHaveChildWithDifferentName_ChildrenAreAppended()
         {
             var baseChild = new ChildConfiguration("baseChild");
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("name", [baseChild]);
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("name", [baseChild]);
 
             var otherChild = new ChildConfiguration("otherChild");
-            var other = new CascadingConfiguration.Configuration.Configuration("name", [otherChild]);
+            var other = new CascadingConfiguration.Configurations.Configuration("name", [otherChild]);
 
             var result = Create().Combine(baseConfig, other);
 

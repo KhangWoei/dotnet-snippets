@@ -1,8 +1,8 @@
-using CascadingConfiguration.Configuration.Child;
-using CascadingConfiguration.Configuration.Combination;
-using CascadingConfiguration.Configuration.Diffing;
+using CascadingConfiguration.Configurations.Child;
+using CascadingConfiguration.Configurations.Combination;
+using CascadingConfiguration.Configurations.Diffing;
 
-namespace CascadingConfiguration.Configuration;
+namespace CascadingConfiguration.Configurations;
 
 public sealed class Configuration(string name, ChildConfiguration[]? childs = null) {
 

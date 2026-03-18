@@ -1,4 +1,4 @@
-﻿namespace CascadingConfiguration.Configuration.Combination;
+﻿namespace CascadingConfiguration.Configurations.Combination;
 
 public interface ICombiner<T>
 {

@@ -8,7 +8,7 @@ public sealed class ConfigurationTests
         [Test]
         public void WhenOtherIsNull_ReturnsBase()
         {
-            var baseConfig = new CascadingConfiguration.Configuration.Configuration("a");
+            var baseConfig = new CascadingConfiguration.Configurations.Configuration("a");
 
             var result = baseConfig.Combine(null);
 

@@ -1,6 +1,6 @@
-﻿using CascadingConfiguration.Configuration.Combination;
+﻿using CascadingConfiguration.Configurations.Combination;
 
-namespace CascadingConfiguration.Configuration.Child;
+namespace CascadingConfiguration.Configurations.Child;
 
 internal sealed class ChildConfigurationCombiner : ICombiner<ChildConfiguration>
 {

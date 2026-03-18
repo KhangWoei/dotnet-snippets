@@ -1,4 +1,4 @@
-﻿namespace CascadingConfiguration.Configuration.Diffing;
+﻿namespace CascadingConfiguration.Configurations.Diffing;
 
 public interface IDiffer<in T, out TR>
 {

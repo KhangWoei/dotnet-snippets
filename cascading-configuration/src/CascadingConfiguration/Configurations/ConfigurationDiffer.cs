@@ -1,13 +1,13 @@
-﻿using CascadingConfiguration.Configuration.Child;
-using CascadingConfiguration.Configuration.Diffing;
+﻿using CascadingConfiguration.Configurations.Child;
+using CascadingConfiguration.Configurations.Diffing;
 
-namespace CascadingConfiguration.Configuration;
+namespace CascadingConfiguration.Configurations;
 
-internal sealed class ConfigurationDiffer : IDiffer<Configuration, ConfigurationDifference>
+internal sealed class ConfigurationDiffer : IDiffer<Configurations.Configuration, ConfigurationDifference>
 {
-    public ConfigurationDifference Difference(Configuration diffBase, Configuration other)
+    public ConfigurationDifference Difference(Configurations.Configuration diffBase, Configurations.Configuration other)
     {
-        var nameChange = FieldChangeCalculator<string>.Calculate(nameof(Configuration.Name), diffBase.Name, other.Name);
+        var nameChange = FieldChangeCalculator<string>.Calculate(nameof(Configurations.Configuration.Name), diffBase.Name, other.Name);
 
         var additions = new List<ChildConfiguration>();
         var deletions = new List<ChildConfiguration>();
