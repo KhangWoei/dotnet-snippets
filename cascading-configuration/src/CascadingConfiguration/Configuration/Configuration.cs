@@ -1,4 +1,7 @@
-namespace CascadingConfiguration;
+using CascadingConfiguration.Configuration.Child;
+using CascadingConfiguration.Configuration.Combination;
+
+namespace CascadingConfiguration.Configuration;
 
 public sealed class Configuration(string name, ChildConfiguration[]? childs = null) {
 

@@ -1,4 +1,6 @@
-﻿namespace CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration.Combination;
+
+namespace CascadingConfiguration.Configuration.Child;
 
 internal sealed class ChildConfigurationCombiner : ICombiner<ChildConfiguration>
 {

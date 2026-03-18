@@ -1,12 +1,12 @@
-using CascadingConfiguration;
+using CascadingConfigurationTests.Configuration.Child;
 
-namespace CascadingConfigurationTests;
+namespace CascadingConfigurationTests.Configuration;
 
-internal sealed class ConfigurationEqualityComparer : IEqualityComparer<Configuration>
+internal sealed class ConfigurationEqualityComparer : IEqualityComparer<CascadingConfiguration.Configuration.Configuration>
 {
     public static ConfigurationEqualityComparer Instance = new ();
     
-    public bool Equals(Configuration? left, Configuration? right)
+    public bool Equals(CascadingConfiguration.Configuration.Configuration? left, CascadingConfiguration.Configuration.Configuration? right)
     {
         if (ReferenceEquals(left, right))
         {
@@ -22,7 +22,7 @@ internal sealed class ConfigurationEqualityComparer : IEqualityComparer<Configur
                && left.Childs.SequenceEqual(right.Childs, ChildConfigurationEqualityComparer.Instance);
     }
 
-    public int GetHashCode(Configuration configuration)
+    public int GetHashCode(CascadingConfiguration.Configuration.Configuration configuration)
     {
         var childHashCode = configuration.Childs.Aggregate(0, (acc, current) =>  HashCode.Combine(acc, ChildConfigurationEqualityComparer.Instance.GetHashCode(current)));
         

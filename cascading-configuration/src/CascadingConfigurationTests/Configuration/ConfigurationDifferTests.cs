@@ -1,6 +1,8 @@
-﻿using CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration;
+using CascadingConfiguration.Configuration.Child;
+using CascadingConfigurationTests.Configuration.Child;
 
-namespace CascadingConfigurationTests;
+namespace CascadingConfigurationTests.Configuration;
 
 [TestFixture]
 public sealed class ConfigurationDifferTests
@@ -12,8 +14,8 @@ public sealed class ConfigurationDifferTests
         public void BaseHasNoChildrenAndOtherHasOneChild_CapturedAsAdded()
         {
             var child = new ChildConfiguration("child");
-            var baseConfiguration = new Configuration("", []);
-            var otherConfiguration = new Configuration("", [child]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -25,8 +27,8 @@ public sealed class ConfigurationDifferTests
         {
             var child1 = new ChildConfiguration("child1");
             var child2 = new ChildConfiguration("child2");
-            var baseConfiguration = new Configuration("", []);
-            var otherConfiguration = new Configuration("", [child1, child2]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -38,8 +40,8 @@ public sealed class ConfigurationDifferTests
         {
             var child1 = new ChildConfiguration("child1");
             var child2 = new ChildConfiguration("child2");
-            var baseConfiguration = new Configuration("", [child1]);
-            var otherConfiguration = new Configuration("", [child1, child2]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1]);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -54,11 +56,11 @@ public sealed class ConfigurationDifferTests
         public void BaseHasChildrenAndOtherRemovedChildren_CapturedAsDeletion()
         {
             var deletedConfiguration = new ChildConfiguration("child");
-            var baseConfiguration = new Configuration("", new[]
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", new[]
             {
                 deletedConfiguration
             });
-            var otherConfiguration = new Configuration("", []);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -70,8 +72,8 @@ public sealed class ConfigurationDifferTests
         {
             var child1 = new ChildConfiguration("child1");
             var child2 = new ChildConfiguration("child2");
-            var baseConfiguration = new Configuration("", [child1, child2]);
-            var otherConfiguration = new Configuration("", [child1]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -86,8 +88,8 @@ public sealed class ConfigurationDifferTests
         public void ChildPresentInBothBaseAndOther_CapturedAsUpdate()
         {
             var child = new ChildConfiguration("child");
-            var baseConfiguration = new Configuration("", [child]);
-            var otherConfiguration = new Configuration("", [child]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -99,8 +101,8 @@ public sealed class ConfigurationDifferTests
         {
             var child1 = new ChildConfiguration("child1");
             var child2 = new ChildConfiguration("child2");
-            var baseConfiguration = new Configuration("", [child1, child2]);
-            var otherConfiguration = new Configuration("", [child1, child2]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -114,8 +116,8 @@ public sealed class ConfigurationDifferTests
         [Test]
         public void BothConfigurationsHaveNoChildren_NoChangesCapture()
         {
-            var baseConfiguration = new Configuration("", []);
-            var otherConfiguration = new Configuration("", []);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 
@@ -128,8 +130,8 @@ public sealed class ConfigurationDifferTests
         public void ChildPresentInBothBaseAndOther_NotCapturedAsAddedOrDeleted()
         {
             var child = new ChildConfiguration("child");
-            var baseConfiguration = new Configuration("", [child]);
-            var otherConfiguration = new Configuration("", [child]);
+            var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
+            var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
 
             var result = Create().Diff(baseConfiguration, otherConfiguration);
 

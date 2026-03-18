@@ -1,4 +1,4 @@
-﻿namespace CascadingConfiguration;
+﻿namespace CascadingConfiguration.Configuration.Diffing;
 
 internal static class FieldChangeCalculator<T>
 {

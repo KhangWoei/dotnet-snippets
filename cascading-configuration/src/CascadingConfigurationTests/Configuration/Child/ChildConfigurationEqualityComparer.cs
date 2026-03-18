@@ -1,6 +1,6 @@
-﻿using CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration.Child;
 
-namespace CascadingConfigurationTests;
+namespace CascadingConfigurationTests.Configuration.Child;
 
 internal sealed class ChildConfigurationEqualityComparer : IEqualityComparer<ChildConfiguration>
 {

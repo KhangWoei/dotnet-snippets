@@ -1,7 +1,6 @@
+using CascadingConfiguration.Configuration.Child;
 
-using CascadingConfiguration;
-
-namespace CascadingConfigurationTests;
+namespace CascadingConfigurationTests.Configuration.Child;
 
 [TestFixture]
 public sealed class ChildConfigurationTests

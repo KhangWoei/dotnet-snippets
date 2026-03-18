@@ -1,4 +1,6 @@
-﻿namespace CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration.Diffing;
+
+namespace CascadingConfiguration.Configuration.Child;
 
 public class ChildConfigurationDiffer
 {

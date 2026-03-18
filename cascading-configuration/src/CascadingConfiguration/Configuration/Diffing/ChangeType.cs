@@ -1,4 +1,4 @@
-﻿namespace CascadingConfiguration;
+﻿namespace CascadingConfiguration.Configuration.Diffing;
 
 public enum ChangeType
 {

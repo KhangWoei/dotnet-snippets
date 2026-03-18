@@ -1,4 +1,6 @@
-namespace CascadingConfiguration;
+using CascadingConfiguration.Configuration.Combination;
+
+namespace CascadingConfiguration.Configuration.Child;
 
 public sealed class ChildConfiguration(string name, bool? enabled = null, bool? disabled = null)
 {

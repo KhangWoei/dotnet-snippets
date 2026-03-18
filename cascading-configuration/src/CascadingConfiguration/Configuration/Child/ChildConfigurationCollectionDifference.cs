@@ -1,4 +1,4 @@
-﻿namespace CascadingConfiguration;
+﻿namespace CascadingConfiguration.Configuration.Child;
 
 public sealed class ChildConfigurationCollectionDifference(
     ICollection<ChildConfiguration> added,

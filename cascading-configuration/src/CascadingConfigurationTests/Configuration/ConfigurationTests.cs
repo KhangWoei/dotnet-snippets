@@ -1,6 +1,4 @@
-using CascadingConfiguration;
-
-namespace CascadingConfigurationTests;
+namespace CascadingConfigurationTests.Configuration;
 
 [TestFixture]
 public sealed class ConfigurationTests
@@ -10,7 +8,7 @@ public sealed class ConfigurationTests
         [Test]
         public void WhenOtherIsNull_ReturnsBase()
         {
-            var baseConfig = new Configuration("a");
+            var baseConfig = new CascadingConfiguration.Configuration.Configuration("a");
 
             var result = baseConfig.Combine(null);
 

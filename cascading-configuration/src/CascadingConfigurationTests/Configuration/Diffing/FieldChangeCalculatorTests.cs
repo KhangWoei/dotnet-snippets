@@ -1,6 +1,6 @@
-﻿using CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration.Diffing;
 
-namespace CascadingConfigurationTests;
+namespace CascadingConfigurationTests.Configuration.Diffing;
 
 [TestFixture]
 public sealed class FieldChangeCalculatorTests

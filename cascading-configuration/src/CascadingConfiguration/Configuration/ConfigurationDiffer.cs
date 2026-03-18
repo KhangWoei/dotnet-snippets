@@ -1,4 +1,7 @@
-﻿namespace CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration.Child;
+using CascadingConfiguration.Configuration.Diffing;
+
+namespace CascadingConfiguration.Configuration;
 
 internal sealed class ConfigurationDiffer(ChildConfigurationDiffer childConfigurationDiffer)
 {

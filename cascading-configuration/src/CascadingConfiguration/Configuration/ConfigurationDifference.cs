@@ -1,4 +1,7 @@
-﻿namespace CascadingConfiguration;
+﻿using CascadingConfiguration.Configuration.Child;
+using CascadingConfiguration.Configuration.Diffing;
+
+namespace CascadingConfiguration.Configuration;
 
 public sealed class ConfigurationDifference(
     FieldChange<string> nameChange,
