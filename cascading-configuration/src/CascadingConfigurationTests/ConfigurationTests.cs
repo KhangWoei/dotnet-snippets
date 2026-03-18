@@ -54,13 +54,17 @@ public sealed class ConfigurationTests {
             }
 
             [Test]
-            public void WhenBothHaveChild_ChildrenAreCombined() {
-                var baseConfig = new Configuration("name", new ChildConfiguration(true, null), null);
-                var other = new Configuration("name", new ChildConfiguration(null, false), null);
+            public void WhenBothHaveChild_ChildrenAreCombined()
+            {
+                var baseChild = new ChildConfiguration(true, null);
+                var baseConfig = new Configuration("name", baseChild, null);
+
+                var otherChild = new ChildConfiguration(null, false);
+                var other = new Configuration("name", otherChild, null);
 
                 var result = baseConfig.Combine(other);
 
-                var expected = new ChildConfiguration(true, false);
+                var expected = baseChild.Combine(otherChild);
                 Assert.That(result.Child, Is.EqualTo(expected).Using(ChildConfigurationEqualityComparer.Instance));
             }
         }
@@ -84,7 +88,7 @@ public sealed class ConfigurationTests {
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result.Strings, Is.EquivalentTo(new[] { "a", "b" }));
+                Assert.That(result.Strings, Is.EquivalentTo(["a", "b"]));
             }
 
             [Test]
@@ -94,7 +98,7 @@ public sealed class ConfigurationTests {
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result.Strings, Is.EquivalentTo(new[] { "a", "b" }));
+                Assert.That(result.Strings, Is.EquivalentTo(["a", "b"]));
             }
 
             [Test]
@@ -104,7 +108,7 @@ public sealed class ConfigurationTests {
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result.Strings, Is.EquivalentTo(new[] { "a", "b", "c", "d" }));
+                Assert.That(result.Strings, Is.EquivalentTo(["a", "b", "c", "d"]));
             }
 
             [Test]
@@ -116,7 +120,7 @@ public sealed class ConfigurationTests {
 
                 var expected = new Configuration("name", null, ["a", "b", "c"]);
                 Assert.That(result, Is.EqualTo(expected).Using(ConfigurationEqualityComparer.Instance));
-                Assert.That(result.Strings, Is.EquivalentTo(new[] { "a", "b", "c" }));
+                Assert.That(result.Strings, Is.EquivalentTo(["a", "b", "c"]));
             }
         }
     }
