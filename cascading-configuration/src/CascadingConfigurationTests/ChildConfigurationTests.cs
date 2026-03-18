@@ -2,93 +2,169 @@ using CascadingConfiguration;
 
 namespace CascadingConfigurationTests;
 
-public sealed class ChildConfigurationTests {
+[TestFixture]
+public sealed class ChildConfigurationTests
+{
     [TestFixture]
-    public sealed class Combine {
-
+    public sealed class Combine
+    {
         [TestFixture]
-        public sealed class Enabled {
+        public sealed class Name
+        {
             [Test]
-            public void WhenBaseSet_OtherNull_TakesBase() {
-                var baseConfig = new ChildConfiguration(true, null);
-                var other = new ChildConfiguration(null, null);
+            public void WhenOtherIsEmpty_TakesBase()
+            {
+                var baseConfig = new ChildConfiguration("base");
+                var other = new ChildConfiguration("");
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(true, null)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result.Name, Is.EqualTo(baseConfig.Name));
             }
 
             [Test]
-            public void WhenBaseNull_OtherSet_TakesOther() {
-                var baseConfig = new ChildConfiguration(null, null);
-                var other = new ChildConfiguration(false, null);
+            public void WhenBaseIsEmpty_TakesOther()
+            {
+                var baseConfig = new ChildConfiguration("");
+                var other = new ChildConfiguration("other");
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(false, null)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result.Name, Is.EqualTo(other.Name));
             }
 
             [Test]
-            public void WhenBothSet_OtherTakesPrecedence() {
-                var baseConfig = new ChildConfiguration(true, null);
-                var other = new ChildConfiguration(false, null);
+            public void WhenBothIsEmpty_UseEmpty()
+            {
+                var baseConfig = new ChildConfiguration(string.Empty);
+                var other = new ChildConfiguration(string.Empty);
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(false, null)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result.Name, Is.Empty);
             }
 
             [Test]
-            public void WhenBothNull_ResultIsNull() {
-                var baseConfig = new ChildConfiguration(null, null);
-                var other = new ChildConfiguration(null, null);
+            public void WhenBothHaveName_TakesOther()
+            {
+                var baseConfig = new ChildConfiguration("base");
+                var other = new ChildConfiguration("other");
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(null, null)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result.Name, Is.EqualTo(other.Name));
             }
         }
 
         [TestFixture]
-        public sealed class Disabled {
+        public sealed class Enabled
+        {
             [Test]
-            public void WhenBaseSet_OtherNull_TakesBase() {
-                var baseConfig = new ChildConfiguration(null, true);
-                var other = new ChildConfiguration(null, null);
+            public void WhenBaseSet_OtherNull_TakesBase()
+            {
+                var baseConfig = new ChildConfiguration("", true, null);
+                var other = new ChildConfiguration("", null, null);
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(null, true)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", true, null))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
             }
 
             [Test]
-            public void WhenBaseNull_OtherSet_TakesOther() {
-                var baseConfig = new ChildConfiguration(null, null);
-                var other = new ChildConfiguration(null, false);
+            public void WhenBaseNull_OtherSet_TakesOther()
+            {
+                var baseConfig = new ChildConfiguration("", null, null);
+                var other = new ChildConfiguration("", false, null);
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(null, false)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", false, null))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
             }
 
             [Test]
-            public void WhenBothSet_OtherTakesPrecedence() {
-                var baseConfig = new ChildConfiguration(null, true);
-                var other = new ChildConfiguration(null, false);
+            public void WhenBothSet_OtherTakesPrecedence()
+            {
+                var baseConfig = new ChildConfiguration("", true, null);
+                var other = new ChildConfiguration("", false, null);
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(null, false)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", false, null))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
             }
 
             [Test]
-            public void WhenBothNull_ResultIsNull() {
-                var baseConfig = new ChildConfiguration(null, null);
-                var other = new ChildConfiguration(null, null);
+            public void WhenBothNull_ResultIsNull()
+            {
+                var baseConfig = new ChildConfiguration("", null, null);
+                var other = new ChildConfiguration("", null, null);
 
                 var result = baseConfig.Combine(other);
 
-                Assert.That(result, Is.EqualTo(new ChildConfiguration(null, null)).Using(ChildConfigurationEqualityComparer.Instance));
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", null, null))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
+            }
+        }
+
+        [TestFixture]
+        public sealed class Disabled
+        {
+            [Test]
+            public void WhenBaseSet_OtherNull_TakesBase()
+            {
+                var baseConfig = new ChildConfiguration("", null, true);
+                var other = new ChildConfiguration("", null, null);
+
+                var result = baseConfig.Combine(other);
+
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", null, true))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
+            }
+
+            [Test]
+            public void WhenBaseNull_OtherSet_TakesOther()
+            {
+                var baseConfig = new ChildConfiguration("", null, null);
+                var other = new ChildConfiguration("", null, false);
+
+                var result = baseConfig.Combine(other);
+
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", null, false))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
+            }
+
+            [Test]
+            public void WhenBothSet_OtherTakesPrecedence()
+            {
+                var baseConfig = new ChildConfiguration("", null, true);
+                var other = new ChildConfiguration("", null, false);
+
+                var result = baseConfig.Combine(other);
+
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", null, false))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
+            }
+
+            [Test]
+            public void WhenBothNull_ResultIsNull()
+            {
+                var baseConfig = new ChildConfiguration("", null, null);
+                var other = new ChildConfiguration("", null, null);
+
+                var result = baseConfig.Combine(other);
+
+                Assert.That(result,
+                    Is.EqualTo(new ChildConfiguration("", null, null))
+                        .Using(ChildConfigurationEqualityComparer.Instance));
             }
         }
     }

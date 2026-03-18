@@ -5,25 +5,26 @@ namespace CascadingConfigurationTests;
 internal sealed class ChildConfigurationEqualityComparer : IEqualityComparer<ChildConfiguration>
 {
     public static ChildConfigurationEqualityComparer Instance = new();
-    
-    public bool Equals(ChildConfiguration? x, ChildConfiguration? y)
+
+    public bool Equals(ChildConfiguration? left, ChildConfiguration? right)
     {
-        if (ReferenceEquals(x, y))
+        if (ReferenceEquals(left, right))
         {
             return true;
         }
 
-        if (x is null || y is null)
+        if (left is null || right is null)
         {
             return false;
         }
-        
-        return x.Enabled == y.Enabled 
-               && x.Disabled == y.Disabled;
+
+        return left.Name == right.Name
+               && left.Enabled == right.Enabled
+               && left.Disabled == right.Disabled;
     }
 
     public int GetHashCode(ChildConfiguration obj)
     {
-        return HashCode.Combine(obj.Enabled, obj.Disabled);
+        return HashCode.Combine(obj.Name, obj.Enabled, obj.Disabled);
     }
 }

@@ -18,20 +18,11 @@ internal sealed class ConfigurationEqualityComparer : IEqualityComparer<Configur
             return false;
         }
 
-        return
-            left.Name == right.Name
-            && ChildConfigurationEqualityComparer.Instance.Equals(left.Child, right.Child)
-            && left.Strings.All(s => right.Strings.Contains(s))
-            && right.Strings.All(s => left.Strings.Contains(s));
+        return left.Name == right.Name;
     }
 
     public int GetHashCode(Configuration configuration)
     {
-        var childHashCode = configuration.Child is null ? 0 : ChildConfigurationEqualityComparer.Instance.GetHashCode(configuration.Child);
-        var stringsHashCode = configuration.Strings.Aggregate(0, HashCode.Combine);
-        
-        return HashCode.Combine(configuration.Name.GetHashCode(), 
-            childHashCode,
-            stringsHashCode);
+        return HashCode.Combine(configuration.Name.GetHashCode());
     }
 }
