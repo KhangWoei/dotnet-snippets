@@ -3,9 +3,9 @@ using CascadingConfiguration.Configuration.Diffing;
 
 namespace CascadingConfiguration.Configuration;
 
-internal sealed class ConfigurationDiffer(ChildConfigurationDiffer childConfigurationDiffer)
+internal sealed class ConfigurationDiffer : IDiffer<Configuration, ConfigurationDifference>
 {
-    public ConfigurationDifference Diff(Configuration diffBase, Configuration other)
+    public ConfigurationDifference Difference(Configuration diffBase, Configuration other)
     {
         var nameChange = FieldChangeCalculator<string>.Calculate(nameof(Configuration.Name), diffBase.Name, other.Name);
 
@@ -24,7 +24,7 @@ internal sealed class ConfigurationDiffer(ChildConfigurationDiffer childConfigur
 
             if (baseChild is not null && otherChild is not null)
             {
-                var update = childConfigurationDiffer.Difference(baseChild, otherChild);
+                var update = baseChild.Difference(otherChild);
                 updates.Add(update);
             } else if (baseChild is null && otherChild is not null)
             {

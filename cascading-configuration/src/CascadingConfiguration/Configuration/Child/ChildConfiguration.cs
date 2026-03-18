@@ -1,4 +1,5 @@
 using CascadingConfiguration.Configuration.Combination;
+using CascadingConfiguration.Configuration.Diffing;
 
 namespace CascadingConfiguration.Configuration.Child;
 
@@ -22,8 +23,10 @@ public sealed class ChildConfiguration(string name, bool? enabled = null, bool? 
         return combiner.Combine(this, other);
     }
     
-    public ChildConfiguration Difference(ChildConfiguration other)
+    public ChildConfigurationDifference Difference(ChildConfiguration other, IDiffer<ChildConfiguration, ChildConfigurationDifference>? differ = null)
     {
-        return this;
+        differ ??= new ChildConfigurationDiffer();
+
+        return differ.Difference(this, other);
     }
 }

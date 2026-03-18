@@ -17,7 +17,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Added, Is.EquivalentTo([child]).Using(ChildConfigurationEqualityComparer.Instance));
         }
@@ -30,7 +30,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Added, Is.EquivalentTo([child1, child2]).Using(ChildConfigurationEqualityComparer.Instance));
         }
@@ -43,7 +43,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1]);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Added, Is.EquivalentTo([child2]).Using(ChildConfigurationEqualityComparer.Instance));
         }
@@ -62,7 +62,7 @@ public sealed class ConfigurationDifferTests
             });
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Deleted, Is.EquivalentTo([deletedConfiguration]).Using(ChildConfigurationEqualityComparer.Instance));
         }
@@ -75,7 +75,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Deleted, Is.EquivalentTo([child2]).Using(ChildConfigurationEqualityComparer.Instance));
         }
@@ -91,7 +91,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Updated, Has.Count.EqualTo(1));
         }
@@ -104,7 +104,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child1, child2]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Updated, Has.Count.EqualTo(2));
         }
@@ -119,7 +119,7 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", []);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Added, Is.Empty);
             Assert.That(result.ChildChanges.Deleted, Is.Empty);
@@ -133,12 +133,12 @@ public sealed class ConfigurationDifferTests
             var baseConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
             var otherConfiguration = new CascadingConfiguration.Configuration.Configuration("", [child]);
 
-            var result = Create().Diff(baseConfiguration, otherConfiguration);
+            var result = Create().Difference(baseConfiguration, otherConfiguration);
 
             Assert.That(result.ChildChanges.Added, Is.Empty);
             Assert.That(result.ChildChanges.Deleted, Is.Empty);
         }
     }
 
-    private static ConfigurationDiffer Create() => new (new ChildConfigurationDiffer());
+    private static ConfigurationDiffer Create() => new ();
 }

@@ -2,7 +2,7 @@
 
 namespace CascadingConfiguration.Configuration.Child;
 
-public class ChildConfigurationDiffer
+public class ChildConfigurationDiffer : IDiffer<ChildConfiguration, ChildConfigurationDifference>
 {
     public ChildConfigurationDifference Difference(ChildConfiguration baseConfiguration, ChildConfiguration other)
     {

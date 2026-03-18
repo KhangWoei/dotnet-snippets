@@ -1,5 +1,6 @@
 using CascadingConfiguration.Configuration.Child;
 using CascadingConfiguration.Configuration.Combination;
+using CascadingConfiguration.Configuration.Diffing;
 
 namespace CascadingConfiguration.Configuration;
 
@@ -20,7 +21,10 @@ public sealed class Configuration(string name, ChildConfiguration[]? childs = nu
         return combiner.Combine(this, other);
     }
 
-    public Configuration Difference(Configuration other) {
-        return this;
+    public ConfigurationDifference Difference(Configuration other, IDiffer<Configuration, ConfigurationDifference>? differ = null)
+    {
+        differ ??= new ConfigurationDiffer();
+
+        return differ.Difference(this, other);
     }
 }
