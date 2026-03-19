@@ -1,4 +1,4 @@
-﻿namespace Downloader;
+namespace Downloader;
 
 public class FileDownloader(DownloaderFactory downloaderFactory)
 {
@@ -7,12 +7,12 @@ public class FileDownloader(DownloaderFactory downloaderFactory)
         if (Uri.TryCreate(source, UriKind.Absolute, out var uri))
         {
             var downloader = await downloaderFactory.CreateAsync(uri, cancellationToken);
-            
-            // probably need to validate that the destination is valid
+            var bytes = await downloader.DownloadAsync(uri, cancellationToken);
+            await File.WriteAllBytesAsync(destination, bytes, cancellationToken);
         }
         else
         {
-            throw new UriFormatException($"{uri} is not a valid URI.");
+            throw new UriFormatException($"{source} is not a valid URI.");
         }
     }
 }

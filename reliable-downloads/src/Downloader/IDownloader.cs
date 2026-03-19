@@ -2,5 +2,5 @@ namespace Downloader;
 
 public interface IDownloader
 {
-    byte[] Download(Uri source);
+    Task<byte[]> DownloadAsync(Uri uri, CancellationToken cancellationToken);
 }

@@ -8,6 +8,7 @@ public static class DownloaderSetup
     {
         return services.AddHttpClient()
             .AddTransient<FileDownloader>()
-            .AddTransient<DownloaderFactory>();
+            .AddTransient<DownloaderFactory>()
+            .AddSingleton<ExponentialBackoff>();
     }
 }

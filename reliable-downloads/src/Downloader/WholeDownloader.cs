@@ -1,9 +1,10 @@
 namespace Downloader;
 
-internal sealed class WholeDownloader() : IDownloader
+internal sealed class WholeDownloader(IHttpClientFactory clientFactory) : IDownloader
 {
-    public byte[] Download(Uri source)
+    public async Task<byte[]> DownloadAsync(Uri uri, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var client = clientFactory.CreateClient();
+        return await client.GetByteArrayAsync(uri, cancellationToken);
     }
 }
