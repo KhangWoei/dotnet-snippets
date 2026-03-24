@@ -9,9 +9,7 @@ public class DownloaderFactoryTests
     [Test]
     public async Task CreateAsync_WithAcceptRangesAndContentLength_ReturnsChunkedDownloader()
     {
-        var response = new HttpResponseMessage();
-        response.Headers.Add("Accept-Ranges", "bytes");
-        response.Content.Headers.ContentLength = 1000;
+        var response = new HttpResponseMessageBuilder().WithAcceptRange().WithContentLength(1000).Build();
 
         var factory = new DownloaderFactory(new FakeHttpClientFactory(new FakeHttpMessageHandler(response)));
 
@@ -23,8 +21,7 @@ public class DownloaderFactoryTests
     [Test]
     public async Task CreateAsync_WithNoAcceptRanges_ReturnsWholeDownloader()
     {
-        var response = new HttpResponseMessage();
-        response.Content.Headers.ContentLength = 1000;
+        var response = new HttpResponseMessageBuilder().WithContentLength(1000).Build();
 
         var factory = new DownloaderFactory(new FakeHttpClientFactory(new FakeHttpMessageHandler(response)));
 
