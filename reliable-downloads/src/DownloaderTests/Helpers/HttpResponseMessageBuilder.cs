@@ -11,6 +11,12 @@ public sealed class HttpResponseMessageBuilder
         _message.Headers.Add("Accept-Ranges", "bytes");
         return this;
     }
+    
+    public HttpResponseMessageBuilder WithContent(HttpContent content)
+    {
+        _message.Content = content;
+        return this;
+    }
 
     public HttpResponseMessageBuilder WithContentLength(long bytes)
     {
