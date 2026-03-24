@@ -16,6 +16,6 @@ public sealed class DownloaderFactory(IHttpClientFactory clientFactory)
             return new ChunkedDownloader((long) totalBytes);
         }
 
-        return new WholeDownloader();
+        return new WholeDownloader(clientFactory);
     }
 }
